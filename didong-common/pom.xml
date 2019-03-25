@@ -9,13 +9,9 @@
     </parent>
 
     <groupId>com.didong</groupId>
-    <artifactId>didong_common</artifactId>
+    <artifactId>didong-common</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>didong_common</name>
 
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
