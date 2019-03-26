@@ -37,4 +37,4 @@ spring:
       com.mark.user.mapper: debug
 
 mybatis-plus:
-  mapper-locations: classpath:/xml/*Mapper.xml
+  mapper-locations: classpath:/mapper/*Mapper.xml
