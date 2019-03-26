@@ -2,6 +2,7 @@ package com.didong.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.didong.entity.UserInfo;
 import com.didong.service.UserService;
 import com.didong.util.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +46,16 @@ public class LoginController {
     }
 
     /**
+     * qq登录
+     * @param userInfo
+     * @return
+     */
+    @RequestMapping("/qqLogin")
+    public String qqLogin(UserInfo userInfo){
+        return userService.postRestTemplate("loginController/qqLogin",userInfo,String.class);
+    }
+
+    /**
      * 获取短信验证码
      * @param userPhone
      * @param udid
@@ -62,12 +73,12 @@ public class LoginController {
         jsonObject = userService.postRestTemplate("loginController/getSmsCode", map, JSONObject.class);
         log.info("[获取短信验证码] -- jsonObject:{}", jsonObject);
         if(jsonObject.size()==0){
-            return JSON.toJSONString(new Response().error("用户已存在",""));
+            return JSON.toJSONString(Response.error("用户已存在",""));
         }
         if (!jsonObject.getString("code").equals(Response.successCode.toString())){
-            return JSON.toJSONString(new Response().error("获取短信验证码失败",jsonObject));
+            return JSON.toJSONString(Response.error("获取短信验证码失败",jsonObject));
         }
-        return JSON.toJSONString(new Response().success(jsonObject));
+        return JSON.toJSONString(Response.success(jsonObject));
     }
 
     /**
@@ -86,12 +97,12 @@ public class LoginController {
         map.put("smsCode",smsCode);
         String result=userService.postRestTemplate("loginController/checkSmsCode", map, String.class);
         if(result.equals("false")){
-            return JSON.toJSONString(new Response().error("验证码验证失败",result));
+            return JSON.toJSONString(Response.error("验证码验证失败",result));
         }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code",Response.successCode);
         jsonObject.put("result",result);
-        return JSON.toJSONString(new Response().success(jsonObject));
+        return JSON.toJSONString(Response.success(jsonObject));
 
     }
 
