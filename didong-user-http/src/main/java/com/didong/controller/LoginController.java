@@ -41,7 +41,7 @@ public class LoginController {
         map.put("grant_type",grant_type);
         map.put("phone",phone);
         map.put("udid",udid);
-        return userService.postRestTemplate("thirdPatryController/getWXAccessToken",map,String.class);
+        return userService.postRestTemplate("loginController/getWXAccessToken",map,String.class);
     }
 
     @RequestMapping("/getSmsCode")
@@ -53,7 +53,7 @@ public class LoginController {
         map.put("udid",udid);
         JSONObject jsonObject = new JSONObject();
         jsonObject = userService.postRestTemplate("loginController/getSmsCode", map, JSONObject.class);
-
+        log.info("[获取短信验证码] -- jsonObject:{}", jsonObject);
 //        if (!jsonObject.getString("code").equals(Response.successCode.toString())){
 //            return JSON.toJSONString(new Response(500,"获取短信验证码异常",jsonObject));
 //        }
@@ -68,6 +68,9 @@ public class LoginController {
         map.put("userId",userId);
         map.put("smsCode",smsCode);
         String result=userService.postRestTemplate("loginController/checkSmsCode", map, String.class);
+        if(result.equals("false")){
+            return JSON.toJSONString(new Response().error("验证码验证失败",result));
+        }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code",200);
         jsonObject.put("result",result);

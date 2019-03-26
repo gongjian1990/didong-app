@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Map;
 import java.util.UUID;
 
@@ -48,6 +49,11 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
         return result;
     }
 
+    /**
+     * 获取短信验证码
+     * @param map
+     * @return
+     */
     @Override
     public JSONObject getSmsCode(Map<String,String> map) {
         JSONObject jsonObject=new JSONObject();
@@ -64,21 +70,24 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
         userInfo.setUserId(userId);
         userInfo.setUserPhone(map.get("userPhone"));
         userInfo.setUdid(map.get("udid"));
-        RedisUtil.set("smsCode:"+userId,jsonObject.getString("smsCode"),60);
+        RedisUtil.set("smsCode:"+userId,jsonObject.getString("smsCode"),60*100);
 //        UserInfo userInfo1=baseMapper.selectById(1);
         baseMapper.insert(userInfo);
         log.info("获取短信验证码,userInfo:{}",userInfo.toString());
         return jsonObject;
     }
 
+    /**
+     * 校验短信验证码
+     * @param map
+     * @return
+     */
     @Override
     public String checkSmsCode(Map<String, String> map) {
         String userId=map.get("userId");
         String smsCode=map.get("smsCode");
-        if(!userId.equals(RedisUtil.get("userId"))){
-            return "false";
-        }
-        if(!smsCode.equals(RedisUtil.get("smsCode"))){
+        log.info("smsCode:{}","smsCode:"+userId);
+        if(!smsCode.equals(RedisUtil.get("smsCode:"+userId))){
             return "false";
         }
         return "success";
