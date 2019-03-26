@@ -1,6 +1,7 @@
 package com.didong.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.didong.entity.UserInfo;
 import com.didong.mapper.UserInfoMapper;
@@ -57,6 +58,12 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
     @Override
     public JSONObject getSmsCode(Map<String,String> map) {
         JSONObject jsonObject=new JSONObject();
+        UserInfo user=baseMapper.selectOne(new QueryWrapper<UserInfo>()
+                .eq("user_phone",map.get("userPhone"))
+                .eq("login_type",map.get("loginType")));
+        if(user!=null){
+            return jsonObject;
+        }
         /*try {
             jsonObject=MobileMessageSend.sendMsg(userPhone);
         } catch (IOException e) {
@@ -70,6 +77,7 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
         userInfo.setUserId(userId);
         userInfo.setUserPhone(map.get("userPhone"));
         userInfo.setUdid(map.get("udid"));
+        userInfo.setLoginType("sms_login");
         RedisUtil.set("smsCode:"+userId,jsonObject.getString("smsCode"),60*100);
 //        UserInfo userInfo1=baseMapper.selectById(1);
         baseMapper.insert(userInfo);

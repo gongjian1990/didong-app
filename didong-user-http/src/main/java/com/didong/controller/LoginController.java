@@ -44,6 +44,12 @@ public class LoginController {
         return userService.postRestTemplate("loginController/getWXAccessToken",map,String.class);
     }
 
+    /**
+     * 获取短信验证码
+     * @param userPhone
+     * @param udid
+     * @return
+     */
     @RequestMapping("/getSmsCode")
     public String getSmsCode(@NotBlank(message = "手机号不能为空") @RequestParam("userPhone") String userPhone,
                              @NotBlank(message = "设备号不能为空") @RequestParam("udid") String udid) {
@@ -51,19 +57,30 @@ public class LoginController {
         Map<String,String> map=new HashMap<String, String>();
         map.put("userPhone",userPhone);
         map.put("udid",udid);
+        map.put("loginType","sms_login");
         JSONObject jsonObject = new JSONObject();
         jsonObject = userService.postRestTemplate("loginController/getSmsCode", map, JSONObject.class);
         log.info("[获取短信验证码] -- jsonObject:{}", jsonObject);
-//        if (!jsonObject.getString("code").equals(Response.successCode.toString())){
-//            return JSON.toJSONString(new Response(500,"获取短信验证码异常",jsonObject));
-//        }
+        if(jsonObject.size()==0){
+            return JSON.toJSONString(new Response().error("用户已存在",""));
+        }
+        if (!jsonObject.getString("code").equals(Response.successCode.toString())){
+            return JSON.toJSONString(new Response().error("获取短信验证码失败",jsonObject));
+        }
         return JSON.toJSONString(new Response().success(jsonObject));
     }
 
+    /**
+     * 验证短信验证码
+     * @param userId
+     * @param smsCode
+     * @return
+     */
     @RequestMapping("/checkSmsCode")
     public String checkSmsCode(@NotBlank(message = "用户ID") @RequestParam("userId") String userId,
                                @NotBlank(message = "短信验证码") @RequestParam("smsCode") String smsCode)  {
 
+        log.info("[验证短信验证码] -- userId:{}，smsCode:{}", userId,smsCode);
         Map<String,String> map=new HashMap<String, String>();
         map.put("userId",userId);
         map.put("smsCode",smsCode);
@@ -72,7 +89,7 @@ public class LoginController {
             return JSON.toJSONString(new Response().error("验证码验证失败",result));
         }
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code",200);
+        jsonObject.put("code",Response.successCode);
         jsonObject.put("result",result);
         return JSON.toJSONString(new Response().success(jsonObject));
 
