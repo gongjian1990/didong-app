@@ -10,7 +10,7 @@ import java.util.Date;
 public class UserInfo {
 
 
-    private Integer id;
+    private Long id;
 
     private String userId;
 
