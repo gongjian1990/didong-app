@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotBlank;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,8 +52,14 @@ public class LoginController {
      * @return
      */
     @RequestMapping("/qqLogin")
-    public String qqLogin(UserInfo userInfo){
-        return userService.postRestTemplate("loginController/qqLogin",userInfo,String.class);
+    public String qqLogin(UserInfo userInfo, HttpServletRequest request){
+        userInfo.setLastOnlineIp(request.getHeader("x-forwarded-for"));
+        String result=userService.postRestTemplate("loginController/qqLogin",userInfo,String.class);
+        if(!result.equals("success")){
+            return JSON.toJSONString(Response.error("登录失败,请重新登录",result));
+        }
+        return JSON.toJSONString(Response.success(result));
+
     }
 
     /**
@@ -68,7 +75,7 @@ public class LoginController {
         Map<String,String> map=new HashMap<String, String>();
         map.put("userPhone",userPhone);
         map.put("udid",udid);
-        map.put("loginType","sms_login");
+        map.put("loginType","sms");
         JSONObject jsonObject = new JSONObject();
         jsonObject = userService.postRestTemplate("loginController/getSmsCode", map, JSONObject.class);
         log.info("[获取短信验证码] -- jsonObject:{}", jsonObject);
@@ -105,5 +112,6 @@ public class LoginController {
         return JSON.toJSONString(Response.success(jsonObject));
 
     }
+
 
 }

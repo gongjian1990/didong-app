@@ -12,7 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -50,6 +51,7 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
         return result;
     }
 
+
     /**
      * 获取短信验证码
      * @param map
@@ -77,7 +79,9 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
         userInfo.setUserId(userId);
         userInfo.setUserPhone(map.get("userPhone"));
         userInfo.setUdid(map.get("udid"));
-        userInfo.setLoginType("sms_login");
+        userInfo.setLoginType("sms");
+        userInfo.setCreateTime(new Date());
+        userInfo.setLastUpdateTime(new Date());
         RedisUtil.set("smsCode:"+userId,jsonObject.getString("smsCode"),60*100);
 //        UserInfo userInfo1=baseMapper.selectById(1);
         baseMapper.insert(userInfo);
@@ -100,4 +104,29 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
         }
         return "success";
     }
+
+    /**
+     * QQ登录
+     * @param userInfo
+     * @return
+     */
+    @Override
+    public String qqLogin(UserInfo userInfo) {
+        log.info("用户qq登录信息,userInfo:{}",userInfo.toString());
+//        UserInfo user=baseMapper.selectOne(new QueryWrapper<UserInfo>()
+//                .eq("user_phone",userInfo.getUserPhone())
+//                .eq("login_type",userInfo.getLoginType()));
+//        if(user!=null){
+//            return "false";
+//        }
+        String userId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 15);
+        userInfo.setLoginType("qq");
+        userInfo.setUserId(userId);
+        userInfo.setCreateTime(new Date());
+        userInfo.setLastUpdateTime(new Date());
+        userInfo.setLastOnlineTime(new Date());
+        baseMapper.insert(userInfo);
+        return "success";
+    }
+
 }
