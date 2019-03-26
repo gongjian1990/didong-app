@@ -35,3 +35,6 @@ spring:
   logging:
     level:
       com.mark.user.mapper: debug
+
+mybatis-plus:
+  mapper-locations: classpath:/xml/*Mapper.xml

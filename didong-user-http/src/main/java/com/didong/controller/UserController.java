@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -23,15 +24,15 @@ public class UserController {
     }
 
 
-    @RequestMapping("/authWX")
-    public String authWX(Map map){
-
-        String test = (String) map.get("test");
-
-        System.out.println("test--"+test);
+    @RequestMapping("/test2")
+    public Map authWX(String test1,String test2){
 
 
-        return null;
+
+        HashMap<Object, Object> map = new HashMap<>();
+        map.put("code","200");
+
+        return map;
     }
 
 }

@@ -12,11 +12,7 @@
         <module>didong-eruka-server</module>
         <module>didong-user-service</module>
         <module>didong-user-http</module>
-        <module>didong-back-service</module>
         <module>didong-zuul</module>
-        <module>didong-common</module>
-        <module>didong-http-domain</module>
-        <module>didong-service-domain</module>
     </modules>
 
     <parent>
@@ -25,7 +21,6 @@
         <version>2.1.3.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-
 
     <properties>
         <java.version>1.8</java.version>

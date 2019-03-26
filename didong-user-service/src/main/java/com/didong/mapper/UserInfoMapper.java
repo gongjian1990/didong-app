@@ -9,4 +9,6 @@ import com.didong.entity.UserInfo;
  */
 public interface UserInfoMapper extends BaseMapper<UserInfo> {
 
+    UserInfo selectUserInfoByPhoneAndLoginType(String phone,String loginType);
+
 }
