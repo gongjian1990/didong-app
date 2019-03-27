@@ -1,5 +1,6 @@
 package com.didong.service;
 
+import com.alibaba.fastjson.JSON;
 import com.didong.util.Response;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class UserService {
     }
 
 
-    public Response errorMethod(){
-        return Response.error("服务调用异常","");
+    public <T> T errorMethod(String url,Object request,Class<T> returnType){
+        return (T) JSON.toJSONString(Response.error("服务调用异常",""));
     }
 
 }

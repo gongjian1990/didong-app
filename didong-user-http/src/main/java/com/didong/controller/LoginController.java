@@ -48,13 +48,19 @@ public class LoginController {
 
     /**
      * qq登录
-     * @param userInfo
+     * @param request
+     * @param access_token
+     * @param openId
      * @return
      */
     @RequestMapping("/qqLogin")
-    public String qqLogin(UserInfo userInfo, HttpServletRequest request){
-        userInfo.setLastOnlineIp(request.getHeader("x-forwarded-for"));
-        String result=userService.postRestTemplate("loginController/qqLogin",userInfo,String.class);
+    public String qqLogin(HttpServletRequest request, String access_token, String openid){
+        Map<String,String> map=new HashMap<String,String>();
+
+        map.put("access_token",access_token);
+        map.put("openId",openid);
+        map.put("ip",request.getHeader("x-forwarded-for"));
+        String result=userService.postRestTemplate("loginController/qqLogin",map,String.class);
         if(!result.equals("success")){
             return JSON.toJSONString(Response.error("登录失败,请重新登录",result));
         }
@@ -64,13 +70,20 @@ public class LoginController {
 
     /**
      * 微博登录
-     * @param userInfo
+     * @param request
+     * @param access_token
+     * @param uid
      * @return
      */
     @RequestMapping("/wbLogin")
-    public String wbLogin(UserInfo userInfo, HttpServletRequest request){
-        userInfo.setLastOnlineIp(request.getHeader("x-forwarded-for"));
-        String result=userService.postRestTemplate("loginController/wbLogin",userInfo,String.class);
+    public String wbLogin(HttpServletRequest request, String access_token, String uid){
+
+        Map<String,String> map=new HashMap<String,String>();
+
+        map.put("access_token",access_token);
+        map.put("uid",uid);
+        map.put("ip",request.getHeader("x-forwarded-for"));
+        String result=userService.postRestTemplate("loginController/wbLogin",map,String.class);
         if(!result.equals("success")){
             return JSON.toJSONString(Response.error("登录失败,请重新登录",result));
         }

@@ -26,15 +26,15 @@ public class LoginController {
     }
 
     @RequestMapping("/qqLogin")
-    public String qqLogin(@RequestBody UserInfo userInfo){
+    public String qqLogin(@RequestBody Map<String,String> map){
 
-        return loginService.qqLogin(userInfo);
+        return loginService.qqLogin(map);
     }
 
     @RequestMapping("/wbLogin")
-    public String wbLogin(@RequestBody UserInfo userInfo){
+    public String wbLogin(@RequestBody  Map<String,String> map){
 
-        return loginService.wbLogin(userInfo);
+        return loginService.wbLogin(map);
     }
 
     @RequestMapping("/getSmsCode")
