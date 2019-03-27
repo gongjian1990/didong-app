@@ -1,16 +1,21 @@
 package com.didong.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.didong.entity.UserInfo;
 import com.didong.mapper.UserInfoMapper;
 import com.didong.redis.RedisUtil;
 import com.didong.service.LoginService;
+import com.didong.util.Response;
 import com.didong.utils.HttpClientUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -82,5 +87,57 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
             return "false";
         }
         return "success";
+    }
+
+    @Override
+    public Response checkWXAccessToken(Map map) {
+        try {
+            String access_token = (String) map.get("access_token");
+            String openid = (String) map.get("openid");
+            String ip = (String) map.get("ip");
+
+            JSONObject result = HttpClientUtils.httpGet("https://api.weixin.qq.com/sns/auth?access_token="+access_token+"&openid="+openid);
+            System.out.println("result1---"+result);
+
+            if(result!= null){
+                if("0".equals(result.get("errcode"))){
+                    result = HttpClientUtils.httpGet("https://api.weixin.qq.com/sns/userinfo?access_token="+access_token+"&openid="+openid);
+
+                    System.out.println("result2---"+result);
+                    if(result!= null){
+                        // 正确返回
+                        if(null == result.get("errcode")){
+                            //微信用户统一标识
+                            String unionid = (String) result.get("unionid");
+                            UserInfo userInfo = baseMapper.selectOne(new QueryWrapper<UserInfo>().eq("unionid", unionid));
+                            if(userInfo!= null){
+                                userInfo.setLastOnlineTime(new Date());
+                                userInfo.setLastOnlineIp(ip);
+                                baseMapper.updateById(userInfo);
+                            }else {
+                                userInfo = new UserInfo();
+                                userInfo.setUdid(UUID.randomUUID().toString());
+                                userInfo.setLoginType("wx");
+                                userInfo.setUnionid(unionid);
+                                userInfo.setLastOnlineTime(new Date());
+                                userInfo.setLastOnlineIp(ip);
+                                baseMapper.insert(userInfo);
+                            }
+                            return Response.success(userInfo);
+                        }else {
+                            return Response.error("获取用户个人信息失败","");
+                        }
+                    }
+                }else if("40003".equals(result.get("errcode"))){
+                    return Response.error("检验授权凭证失败","");
+                }else {
+                    return Response.error("处理异常","");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.error("服务器异常","");
+        }
+        return null;
     }
 }

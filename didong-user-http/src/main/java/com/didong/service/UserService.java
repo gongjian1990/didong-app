@@ -1,5 +1,7 @@
 package com.didong.service;
 
+import com.didong.util.Response;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -18,9 +20,15 @@ public class UserService {
      * @param returnType  服务的返回值 一般是String
      * @return
      */
+    @HystrixCommand(fallbackMethod = "errorMethod")
     public <T> T postRestTemplate(String url,Object request,Class<T> returnType) {
         T jsonString = restTemplate.postForObject(SERVICE_URL+url, request, returnType);
         return jsonString;
+    }
+
+
+    public Response errorMethod(){
+        return Response.error("服务调用异常","");
     }
 
 }

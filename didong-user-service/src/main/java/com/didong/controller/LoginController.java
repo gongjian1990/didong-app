@@ -2,6 +2,7 @@ package com.didong.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.didong.service.LoginService;
+import com.didong.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +33,11 @@ public class LoginController {
     public String checkSmsCode(@RequestBody Map<String,String> map){
 
         return loginService.checkSmsCode(map);
+    }
+
+    @RequestMapping("/checkWXAccessToken")
+    public Response checkWXAccessToken(@RequestBody Map map){
+        return loginService.checkWXAccessToken(map);
     }
 
 }

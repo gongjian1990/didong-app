@@ -5,11 +5,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.didong.service.UserService;
 import com.didong.util.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotBlank;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +43,7 @@ public class LoginController {
         map.put("grant_type",grant_type);
         map.put("phone",phone);
         map.put("udid",udid);
-        return userService.postRestTemplate("thirdPatryController/getWXAccessToken",map,String.class);
+        return userService.postRestTemplate("loginController/getWXAccessToken",map,String.class);
     }
 
     @RequestMapping("/getSmsCode")
@@ -73,6 +75,26 @@ public class LoginController {
         jsonObject.put("result",result);
         return JSON.toJSONString(new Response().success(jsonObject));
 
+    }
+
+
+    /**
+     * 校验 微信 Access_token ,并返回用户信息
+     * @param request
+     * @param access_token
+     * @param openid
+     * @return
+     */
+    @RequestMapping("/checkWXAccessToken")
+    public String checkWXAccessToken(HttpServletRequest request, String access_token, String openid){
+
+        Map map = new HashMap();
+
+        map.put("access_token",access_token);
+        map.put("openid",openid);
+        map.put("ip",request.getRemoteHost());
+
+        return userService.postRestTemplate("loginController/checkWXAccessToken",map,String.class);
     }
 
 }
