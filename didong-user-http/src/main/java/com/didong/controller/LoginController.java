@@ -50,7 +50,7 @@ public class LoginController {
      * qq登录
      * @param request
      * @param access_token
-     * @param openId
+     * @param openid
      * @return
      */
     @RequestMapping("/qqLogin")

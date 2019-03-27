@@ -1,5 +1,6 @@
 package com.didong.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.didong.entity.UserInfo;
 import com.didong.mapper.UserInfoMapper;
@@ -16,7 +17,11 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
 
 
     @Override
-    public UserInfo getbyId(String sex) {
-        return baseMapper.selectById(sex);
+    public String updateUserData(UserInfo userInfo) {
+        int i=baseMapper.update(userInfo,new QueryWrapper<UserInfo>().eq("user_id",userInfo.getUserId()));
+        if(i>0){
+            return "success";
+        }
+        return "false";
     }
 }

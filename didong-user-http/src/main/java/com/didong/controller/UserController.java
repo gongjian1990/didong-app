@@ -1,26 +1,40 @@
 package com.didong.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.didong.entity.UserInfo;
 import com.didong.service.UserService;
+import com.didong.util.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @RequestMapping("/test1")
-    public String hello(){
+    /**
+     * 新用户个人资料完善
+     * @param userInfo
+     * @return
+     */
+    @RequestMapping("/updateUserData")
+    public String updateUserData(UserInfo userInfo){
+        log.info("[新用户个人资料完善] -- userInfo:{}", userInfo);
+        String result=userService.postRestTemplate("userController/updateUserData",userInfo,String.class);
+        if(!result.equals("success")){
+            return JSON.toJSONString(Response.error("修改资料失败",result));
+        }
+        return JSON.toJSONString(Response.success(result));
 
-        String s = userService.postRestTemplate("user/test","55",String.class);
-        System.out.println("s-----"+s);
-        return "";
     }
 
 

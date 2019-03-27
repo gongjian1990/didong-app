@@ -9,29 +9,16 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/userController")
 @Slf4j
 public class UserController {
 
     @Autowired
-    public UserInfoService userService;
+    public UserInfoService userinfoService;
 
-//    @GetMapping("/{sex}")
-//    public String test(@PathVariable("sex") String sex) {
-//        log.info("做个test");
-//
-//
-//        UserInfo userInfo = userService.getbyId(sex);
-//        if (userInfo == null) {
-//            return "未查到用户数据";
-//        }
-//        return userInfo.getEmail();
-//    }
-
-    @RequestMapping("/test")
-    public String test(@RequestBody String in){
-        System.out.println("in--------->"+in);
-        return "world";
+    @RequestMapping("/updateUserData")
+    public String updateUserData(@RequestBody UserInfo userInfo){
+        return userinfoService.updateUserData(userInfo);
     }
 
 }
