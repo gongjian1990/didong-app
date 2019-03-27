@@ -63,6 +63,22 @@ public class LoginController {
     }
 
     /**
+     * 微博登录
+     * @param userInfo
+     * @return
+     */
+    @RequestMapping("/wbLogin")
+    public String wbLogin(UserInfo userInfo, HttpServletRequest request){
+        userInfo.setLastOnlineIp(request.getHeader("x-forwarded-for"));
+        String result=userService.postRestTemplate("loginController/wbLogin",userInfo,String.class);
+        if(!result.equals("success")){
+            return JSON.toJSONString(Response.error("登录失败,请重新登录",result));
+        }
+        return JSON.toJSONString(Response.success(result));
+
+    }
+
+    /**
      * 获取短信验证码
      * @param userPhone
      * @param udid

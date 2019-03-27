@@ -15,4 +15,5 @@ public interface LoginService {
 
     String qqLogin(UserInfo userInfo);
 
+    String wbLogin(UserInfo userInfo);
 }

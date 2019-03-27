@@ -7,11 +7,13 @@ import com.didong.entity.UserInfo;
 import com.didong.mapper.UserInfoMapper;
 import com.didong.redis.RedisUtil;
 import com.didong.service.LoginService;
+import com.didong.util.MobileMessageSend;
 import com.didong.utils.HttpClientUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -66,13 +68,13 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
         if(user!=null){
             return jsonObject;
         }
-        /*try {
-            jsonObject=MobileMessageSend.sendMsg(userPhone);
+        try {
+            jsonObject= MobileMessageSend.sendMsg(map.get("userPhone"));
         } catch (IOException e) {
             log.error("获取短信验证码异常,异常类型e:{}",e);
-        }*/
-        jsonObject.put("smsCode","1234");
-        jsonObject.put("code","200");
+        }
+//        jsonObject.put("smsCode","1234");
+//        jsonObject.put("code","200");
         String userId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 15);
         jsonObject.put("userId",userId);
         UserInfo userInfo=new UserInfo();
@@ -127,6 +129,11 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
         userInfo.setLastOnlineTime(new Date());
         baseMapper.insert(userInfo);
         return "success";
+    }
+
+    @Override
+    public String wbLogin(UserInfo userInfo) {
+        return null;
     }
 
 }

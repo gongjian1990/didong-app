@@ -30,6 +30,12 @@ public class LoginController {
         return loginService.qqLogin(userInfo);
     }
 
+    @RequestMapping("/wbLogin")
+    public String wbLogin(@RequestBody UserInfo userInfo){
+
+        return loginService.wbLogin(userInfo);
+    }
+
     @RequestMapping("/getSmsCode")
     public JSONObject getSmsCode(@RequestBody Map<String,String> map){
         return loginService.getSmsCode(map);
