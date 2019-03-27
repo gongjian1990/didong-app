@@ -1,6 +1,7 @@
 package com.didong.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.didong.entity.UserInfo;
 import com.didong.service.LoginService;
 import com.didong.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,18 @@ public class LoginController {
     public JSONObject getWXAccessToken(@RequestBody Map map){
 
         return loginService.getWXAccessToken(map);
+    }
+
+    @RequestMapping("/qqLogin")
+    public String qqLogin(@RequestBody UserInfo userInfo){
+
+        return loginService.qqLogin(userInfo);
+    }
+
+    @RequestMapping("/wbLogin")
+    public String wbLogin(@RequestBody UserInfo userInfo){
+
+        return loginService.wbLogin(userInfo);
     }
 
     @RequestMapping("/getSmsCode")

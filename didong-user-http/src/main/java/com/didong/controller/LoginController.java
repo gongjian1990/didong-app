@@ -2,10 +2,10 @@ package com.didong.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.didong.entity.UserInfo;
 import com.didong.service.UserService;
 import com.didong.util.Response;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,6 +46,44 @@ public class LoginController {
         return userService.postRestTemplate("loginController/getWXAccessToken",map,String.class);
     }
 
+    /**
+     * qq登录
+     * @param userInfo
+     * @return
+     */
+    @RequestMapping("/qqLogin")
+    public String qqLogin(UserInfo userInfo, HttpServletRequest request){
+        userInfo.setLastOnlineIp(request.getHeader("x-forwarded-for"));
+        String result=userService.postRestTemplate("loginController/qqLogin",userInfo,String.class);
+        if(!result.equals("success")){
+            return JSON.toJSONString(Response.error("登录失败,请重新登录",result));
+        }
+        return JSON.toJSONString(Response.success(result));
+
+    }
+
+    /**
+     * 微博登录
+     * @param userInfo
+     * @return
+     */
+    @RequestMapping("/wbLogin")
+    public String wbLogin(UserInfo userInfo, HttpServletRequest request){
+        userInfo.setLastOnlineIp(request.getHeader("x-forwarded-for"));
+        String result=userService.postRestTemplate("loginController/wbLogin",userInfo,String.class);
+        if(!result.equals("success")){
+            return JSON.toJSONString(Response.error("登录失败,请重新登录",result));
+        }
+        return JSON.toJSONString(Response.success(result));
+
+    }
+
+    /**
+     * 获取短信验证码
+     * @param userPhone
+     * @param udid
+     * @return
+     */
     @RequestMapping("/getSmsCode")
     public String getSmsCode(@NotBlank(message = "手机号不能为空") @RequestParam("userPhone") String userPhone,
                              @NotBlank(message = "设备号不能为空") @RequestParam("udid") String udid) {
@@ -53,27 +91,41 @@ public class LoginController {
         Map<String,String> map=new HashMap<String, String>();
         map.put("userPhone",userPhone);
         map.put("udid",udid);
+        map.put("loginType","sms");
         JSONObject jsonObject = new JSONObject();
         jsonObject = userService.postRestTemplate("loginController/getSmsCode", map, JSONObject.class);
-
-//        if (!jsonObject.getString("code").equals(Response.successCode.toString())){
-//            return JSON.toJSONString(new Response(500,"获取短信验证码异常",jsonObject));
-//        }
-        return JSON.toJSONString(new Response().success(jsonObject));
+        log.info("[获取短信验证码] -- jsonObject:{}", jsonObject);
+        if(jsonObject.size()==0){
+            return JSON.toJSONString(Response.error("用户已存在",""));
+        }
+        if (!jsonObject.getString("code").equals(Response.successCode.toString())){
+            return JSON.toJSONString(Response.error("获取短信验证码失败",jsonObject));
+        }
+        return JSON.toJSONString(Response.success(jsonObject));
     }
 
+    /**
+     * 验证短信验证码
+     * @param userId
+     * @param smsCode
+     * @return
+     */
     @RequestMapping("/checkSmsCode")
     public String checkSmsCode(@NotBlank(message = "用户ID") @RequestParam("userId") String userId,
                                @NotBlank(message = "短信验证码") @RequestParam("smsCode") String smsCode)  {
 
+        log.info("[验证短信验证码] -- userId:{}，smsCode:{}", userId,smsCode);
         Map<String,String> map=new HashMap<String, String>();
         map.put("userId",userId);
         map.put("smsCode",smsCode);
         String result=userService.postRestTemplate("loginController/checkSmsCode", map, String.class);
+        if(result.equals("false")){
+            return JSON.toJSONString(Response.error("验证码验证失败",result));
+        }
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code",200);
+        jsonObject.put("code",Response.successCode);
         jsonObject.put("result",result);
-        return JSON.toJSONString(new Response().success(jsonObject));
+        return JSON.toJSONString(Response.success(jsonObject));
 
     }
 

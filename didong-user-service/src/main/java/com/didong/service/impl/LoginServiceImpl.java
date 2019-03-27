@@ -7,14 +7,14 @@ import com.didong.entity.UserInfo;
 import com.didong.mapper.UserInfoMapper;
 import com.didong.redis.RedisUtil;
 import com.didong.service.LoginService;
+import com.didong.util.MobileMessageSend;
 import com.didong.util.Response;
 import com.didong.utils.HttpClientUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
@@ -53,37 +53,55 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
         return result;
     }
 
+
+    /**
+     * 获取短信验证码
+     * @param map
+     * @return
+     */
     @Override
     public JSONObject getSmsCode(Map<String,String> map) {
         JSONObject jsonObject=new JSONObject();
-        /*try {
-            jsonObject=MobileMessageSend.sendMsg(userPhone);
+        UserInfo user=baseMapper.selectOne(new QueryWrapper<UserInfo>()
+                .eq("user_phone",map.get("userPhone"))
+                .eq("login_type",map.get("loginType")));
+        if(user!=null){
+            return jsonObject;
+        }
+        try {
+            jsonObject= MobileMessageSend.sendMsg(map.get("userPhone"));
         } catch (IOException e) {
             log.error("获取短信验证码异常,异常类型e:{}",e);
-        }*/
-        jsonObject.put("smsCode","1234");
-        jsonObject.put("code","200");
+        }
+//        jsonObject.put("smsCode","1234");
+//        jsonObject.put("code","200");
         String userId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 15);
         jsonObject.put("userId",userId);
         UserInfo userInfo=new UserInfo();
         userInfo.setUserId(userId);
         userInfo.setUserPhone(map.get("userPhone"));
         userInfo.setUdid(map.get("udid"));
-        RedisUtil.set("smsCode:"+userId,jsonObject.getString("smsCode"),60);
+        userInfo.setLoginType("sms");
+        userInfo.setCreateTime(new Date());
+        userInfo.setLastUpdateTime(new Date());
+        RedisUtil.set("smsCode:"+userId,jsonObject.getString("smsCode"),60*100);
 //        UserInfo userInfo1=baseMapper.selectById(1);
         baseMapper.insert(userInfo);
         log.info("获取短信验证码,userInfo:{}",userInfo.toString());
         return jsonObject;
     }
 
+    /**
+     * 校验短信验证码
+     * @param map
+     * @return
+     */
     @Override
     public String checkSmsCode(Map<String, String> map) {
         String userId=map.get("userId");
         String smsCode=map.get("smsCode");
-        if(!userId.equals(RedisUtil.get("userId"))){
-            return "false";
-        }
-        if(!smsCode.equals(RedisUtil.get("smsCode"))){
+        log.info("smsCode:{}","smsCode:"+userId);
+        if(!smsCode.equals(RedisUtil.get("smsCode:"+userId))){
             return "false";
         }
         return "success";
@@ -140,4 +158,33 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
         }
         return null;
     }
+    /**
+     * QQ登录
+     * @param userInfo
+     * @return
+     */
+    @Override
+    public String qqLogin(UserInfo userInfo) {
+        log.info("用户qq登录信息,userInfo:{}",userInfo.toString());
+//        UserInfo user=baseMapper.selectOne(new QueryWrapper<UserInfo>()
+//                .eq("user_phone",userInfo.getUserPhone())
+//                .eq("login_type",userInfo.getLoginType()));
+//        if(user!=null){
+//            return "false";
+//        }
+        String userId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 15);
+        userInfo.setLoginType("qq");
+        userInfo.setUserId(userId);
+        userInfo.setCreateTime(new Date());
+        userInfo.setLastUpdateTime(new Date());
+        userInfo.setLastOnlineTime(new Date());
+        baseMapper.insert(userInfo);
+        return "success";
+    }
+
+    @Override
+    public String wbLogin(UserInfo userInfo) {
+        return null;
+    }
+
 }

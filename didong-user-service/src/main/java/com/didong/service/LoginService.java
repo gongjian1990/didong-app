@@ -2,6 +2,7 @@ package com.didong.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.didong.util.Response;
+import com.didong.entity.UserInfo;
 
 import java.util.Map;
 
@@ -15,4 +16,7 @@ public interface LoginService {
 
     Response checkWXAccessToken(Map map);
 
+    String qqLogin(UserInfo userInfo);
+
+    String wbLogin(UserInfo userInfo);
 }
