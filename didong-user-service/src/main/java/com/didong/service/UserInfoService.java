@@ -1,4 +1,4 @@
-package com.didong;
+package com.didong.service;
 
 
 import com.alibaba.fastjson.JSONObject;

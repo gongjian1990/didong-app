@@ -1,7 +1,7 @@
 package com.didong.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.didong.UserInfoService;
+import com.didong.service.UserInfoService;
 import com.didong.entity.UserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

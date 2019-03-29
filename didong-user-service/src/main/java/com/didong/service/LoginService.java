@@ -1,8 +1,7 @@
-package com.didong;
+package com.didong.service;
 
 import com.alibaba.fastjson.JSONObject;
 import pojo.Response;
-import com.didong.entity.UserInfo;
 
 import java.util.Map;
 

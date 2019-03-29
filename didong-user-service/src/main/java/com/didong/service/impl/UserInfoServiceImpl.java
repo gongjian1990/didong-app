@@ -1,10 +1,10 @@
-package com.didong.impl;
+package com.didong.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.didong.UserInfoService;
+import com.didong.service.UserInfoService;
 import com.didong.entity.UserInfo;
 import com.didong.enums.AliTextLabelEnum;
 import com.didong.mapper.UserInfoMapper;
