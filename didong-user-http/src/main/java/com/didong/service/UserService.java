@@ -29,7 +29,7 @@ public interface UserService {
     String wbLogin(UserInfo userInfo);
 
     @RequestMapping(method = RequestMethod.POST,value = "loginController/qqLogin")
-    String qqLogin(UserInfo userInfo);
+    String qqLogin(Map<String,String> map);
 
     @RequestMapping(method = RequestMethod.POST,value = "loginController/getWXAccessToken")
     String getWXAccessToken(Map map);

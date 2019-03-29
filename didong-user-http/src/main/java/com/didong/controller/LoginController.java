@@ -53,9 +53,13 @@ public class LoginController {
      * @return
      */
     @RequestMapping("/qqLogin")
-    public String qqLogin(UserInfo userInfo, HttpServletRequest request){
-        userInfo.setLastOnlineIp(request.getHeader("x-forwarded-for"));
-        String result=userService.qqLogin(userInfo);
+    public String qqLogin(HttpServletRequest request, String access_token, String openid){
+        Map<String,String> map=new HashMap<String,String>();
+
+        map.put("access_token",access_token);
+        map.put("openId",openid);
+        map.put("ip",request.getHeader("x-forwarded-for"));
+        String result=userService.qqLogin(map);
         if(!result.equals("success")){
             return JSON.toJSONString(Response.error(new ResultData(500,"调用qq登录失败","")));
         }

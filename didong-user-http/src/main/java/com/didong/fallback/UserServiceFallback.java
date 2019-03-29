@@ -6,6 +6,7 @@ import com.didong.entity.UserInfo;
 import com.didong.service.UserService;
 import pojo.Response;
 import org.springframework.stereotype.Component;
+import pojo.ResultData;
 
 import java.util.Map;
 
@@ -14,38 +15,42 @@ public class UserServiceFallback implements UserService {
     @Override
     public Response hello(String s) {
 
-        System.out.println(s);
-
-        return Response.error("error",null);
+        return null;
     }
 
     @Override
     public Response checkWXAccessToken(Map map) {
-        return Response.error("error",null);
+        return null;
     }
 
     @Override
     public String checkSmsCode(Map map) {
-        return JSON.toJSONString(Response.error("调用短信验证失败",""));
+        return JSON.toJSONString(Response.error(new ResultData(500, "校验短信验证码失败", null)));
     }
 
     @Override
     public JSONObject getSmsCode(Map map) {
-        return JSONObject.parseObject(JSON.toJSONString(Response.error("调用短信验证失败","")));
+        return null;
     }
 
     @Override
     public String wbLogin(UserInfo userInfo) {
-        return JSON.toJSONString(Response.error("调用微博登录失败",""));
+        return JSON.toJSONString(Response.error(new ResultData(500, "调用微博登陆失败", null)));
     }
 
     @Override
-    public String qqLogin(UserInfo userInfo) {
-        return JSON.toJSONString(Response.error("调用qq登录失败",""));
+    public String qqLogin(Map<String, String> map) {
+        return JSON.toJSONString(Response.error(new ResultData(500, "调用qq登陆失败", null)));
     }
 
     @Override
     public String getWXAccessToken(Map map) {
-        return JSON.toJSONString(Response.error("获取微信AccessToken失败",""));
+        return JSON.toJSONString(Response.error(new ResultData(500, "调用微信登陆失败", null)));
+    }
+
+    @Override
+    public String updateUserData(UserInfo userInfo) {
+        return JSON.toJSONString(Response.error(new ResultData(500, "修改资料失败", null)));
+
     }
 }
