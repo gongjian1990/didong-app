@@ -1,6 +1,7 @@
 package com.didong.controller;
 
 import com.didong.service.UserService;
+import pojo.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,13 +16,18 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @RequestMapping("/test1")
+ /*   @RequestMapping("/test1")
     public String hello(){
 
         String s = userService.postRestTemplate("user/test","55",String.class);
         System.out.println("s-----"+s);
         return "";
-    }
+    }*/
+
+ @RequestMapping("/hello")
+ public Response hello(){
+    return userService.hello("hello");
+ }
 
 
     @RequestMapping("/test2")

@@ -15,6 +15,26 @@ spring:
     name: ZUUL-SERVICE
 
 zuul:
+  host:
+    connect-timeout-millis: 10000
+    socket-timeout-millis: 60000
+
   routes:
     USER-HTTP:
       path: /user-http/**
+    TEST-CLIENT:
+      path: /test-client/**
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+
+ribbon:
+  # 请求处理超时时间
+  ReadTimeout: 160000
+  # 请求连接超时时间
+  ConnectTimeout: 60000

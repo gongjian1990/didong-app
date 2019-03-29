@@ -2,8 +2,8 @@ package com.didong.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.didong.entity.UserInfo;
-import com.didong.service.LoginService;
-import com.didong.util.Response;
+import com.didong.LoginService;
+import pojo.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

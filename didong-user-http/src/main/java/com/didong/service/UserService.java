@@ -1,34 +1,37 @@
 package com.didong.service;
 
-import com.didong.util.Response;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
+import com.alibaba.fastjson.JSONObject;
+import com.didong.entity.UserInfo;
+import com.didong.fallback.UserServiceFallback;
+import pojo.Response;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-@Component
-public class UserService {
+import java.util.Map;
 
-    public static String SERVICE_URL = "http://user-service/";
-    @Autowired
-    RestTemplate restTemplate;
+@FeignClient(value = "user-service", fallback = UserServiceFallback.class)
+public interface UserService {
 
-    /**
-     *
-     * @param url 服务的url地址
-     * @param request 传入服务的对象
-     * @param returnType  服务的返回值 一般是String
-     * @return
-     */
-    @HystrixCommand(fallbackMethod = "errorMethod")
-    public <T> T postRestTemplate(String url,Object request,Class<T> returnType) {
-        T jsonString = restTemplate.postForObject(SERVICE_URL+url, request, returnType);
-        return jsonString;
-    }
+    @RequestMapping(method = RequestMethod.POST,value = "user/test")
+    Response hello(String s);
 
+    @RequestMapping(method = RequestMethod.POST,value = "loginController/checkWXAccessToken")
+    Response checkWXAccessToken(Map map);
 
-    public Response errorMethod(){
-        return Response.error("服务调用异常","");
-    }
+    @RequestMapping(method = RequestMethod.POST,value = "loginController/checkSmsCode")
+    String checkSmsCode(Map map);
+
+    @RequestMapping(method = RequestMethod.POST,value = "loginController/getSmsCode")
+    JSONObject getSmsCode(Map map);
+
+    @RequestMapping(method = RequestMethod.POST,value = "loginController/wbLogin")
+    String wbLogin(UserInfo userInfo);
+
+    @RequestMapping(method = RequestMethod.POST,value = "loginController/qqLogin")
+    String qqLogin(UserInfo userInfo);
+
+    @RequestMapping(method = RequestMethod.POST,value = "loginController/getWXAccessToken")
+    String getWXAccessToken(Map map);
 
 }

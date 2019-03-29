@@ -4,12 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.didong.entity.UserInfo;
 import com.didong.service.UserService;
-import com.didong.util.Response;
+import pojo.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pojo.ResultData;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotBlank;
@@ -43,7 +44,7 @@ public class LoginController {
         map.put("grant_type",grant_type);
         map.put("phone",phone);
         map.put("udid",udid);
-        return userService.postRestTemplate("loginController/getWXAccessToken",map,String.class);
+        return userService.getWXAccessToken(map);
     }
 
     /**
@@ -54,11 +55,11 @@ public class LoginController {
     @RequestMapping("/qqLogin")
     public String qqLogin(UserInfo userInfo, HttpServletRequest request){
         userInfo.setLastOnlineIp(request.getHeader("x-forwarded-for"));
-        String result=userService.postRestTemplate("loginController/qqLogin",userInfo,String.class);
+        String result=userService.qqLogin(userInfo);
         if(!result.equals("success")){
-            return JSON.toJSONString(Response.error("登录失败,请重新登录",result));
+            return JSON.toJSONString(Response.error(new ResultData(500,"调用qq登录失败","")));
         }
-        return JSON.toJSONString(Response.success(result));
+        return JSON.toJSONString(Response.success(new ResultData(200,"调用成功",result)));
 
     }
 
@@ -70,12 +71,12 @@ public class LoginController {
     @RequestMapping("/wbLogin")
     public String wbLogin(UserInfo userInfo, HttpServletRequest request){
         userInfo.setLastOnlineIp(request.getHeader("x-forwarded-for"));
-        String result=userService.postRestTemplate("loginController/wbLogin",userInfo,String.class);
+        String result=userService.wbLogin(userInfo);
         if(!result.equals("success")){
-            return JSON.toJSONString(Response.error("登录失败,请重新登录",result));
+            //"登录失败,请重新登录",result
+            return JSON.toJSONString(Response.error(new ResultData(500,"登录失败,请重新登录",result)));
         }
-        return JSON.toJSONString(Response.success(result));
-
+        return JSON.toJSONString(Response.success(new ResultData(200,"登录成功",result)));
     }
 
     /**
@@ -93,15 +94,15 @@ public class LoginController {
         map.put("udid",udid);
         map.put("loginType","sms");
         JSONObject jsonObject = new JSONObject();
-        jsonObject = userService.postRestTemplate("loginController/getSmsCode", map, JSONObject.class);
+        jsonObject = userService.getSmsCode(map);
         log.info("[获取短信验证码] -- jsonObject:{}", jsonObject);
         if(jsonObject.size()==0){
-            return JSON.toJSONString(Response.error("用户已存在",""));
+            return JSON.toJSONString(Response.error(new ResultData(500,"用户已存在","")));
         }
-        if (!jsonObject.getString("code").equals(Response.successCode.toString())){
-            return JSON.toJSONString(Response.error("获取短信验证码失败",jsonObject));
+        if (!jsonObject.getString("code").equals("200")){
+            return JSON.toJSONString(Response.error(new ResultData(500,"获取短信验证码失败","")));
         }
-        return JSON.toJSONString(Response.success(jsonObject));
+        return JSON.toJSONString(Response.success(new ResultData(200,"获取短信验证码成功",jsonObject)));
     }
 
     /**
@@ -118,14 +119,14 @@ public class LoginController {
         Map<String,String> map=new HashMap<String, String>();
         map.put("userId",userId);
         map.put("smsCode",smsCode);
-        String result=userService.postRestTemplate("loginController/checkSmsCode", map, String.class);
+        String result=userService.checkSmsCode(map);
         if(result.equals("false")){
-            return JSON.toJSONString(Response.error("验证码验证失败",result));
+            return JSON.toJSONString(Response.error(new ResultData(500,"验证码验证失败",null)));
         }
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code",Response.successCode);
+        jsonObject.put("code",200);
         jsonObject.put("result",result);
-        return JSON.toJSONString(Response.success(jsonObject));
+        return JSON.toJSONString(Response.success(new ResultData(200,"验证成功",jsonObject)));
 
     }
 
@@ -138,7 +139,7 @@ public class LoginController {
      * @return
      */
     @RequestMapping("/checkWXAccessToken")
-    public String checkWXAccessToken(HttpServletRequest request, String access_token, String openid){
+    public Response checkWXAccessToken(HttpServletRequest request, String access_token, String openid){
 
         Map map = new HashMap();
 
@@ -146,7 +147,7 @@ public class LoginController {
         map.put("openid",openid);
         map.put("ip",request.getRemoteHost());
 
-        return userService.postRestTemplate("loginController/checkWXAccessToken",map,String.class);
+        return userService.checkWXAccessToken(map);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.didong.service;
+package com.didong;
 
 
 import com.didong.entity.UserInfo;

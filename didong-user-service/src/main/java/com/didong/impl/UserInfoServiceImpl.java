@@ -1,9 +1,9 @@
-package com.didong.service.impl;
+package com.didong.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.didong.UserInfoService;
 import com.didong.entity.UserInfo;
 import com.didong.mapper.UserInfoMapper;
-import com.didong.service.UserInfoService;
 import org.springframework.stereotype.Service;
 
 /**

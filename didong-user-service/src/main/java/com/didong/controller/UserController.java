@@ -1,10 +1,9 @@
 package com.didong.controller;
 
-import com.didong.entity.UserInfo;
-import com.didong.service.UserInfoService;
+import com.didong.UserInfoService;
+import pojo.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -29,9 +28,9 @@ public class UserController {
 //    }
 
     @RequestMapping("/test")
-    public String test(@RequestBody String in){
+    public Response test(@RequestBody String in){
         System.out.println("in--------->"+in);
-        return "world";
+        return Response.success("success");
     }
 
 }

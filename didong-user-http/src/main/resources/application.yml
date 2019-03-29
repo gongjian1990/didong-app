@@ -13,10 +13,7 @@ spring:
   application:
     name: user-http
 
-hystrix:
-  command:
-    default:
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 5000 #缺省为1000  设置熔断超时时间
+# 开启熔断
+feign:
+  hystrix:
+    enabled: true
