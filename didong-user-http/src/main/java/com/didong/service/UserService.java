@@ -34,4 +34,7 @@ public interface UserService {
     @RequestMapping(method = RequestMethod.POST,value = "loginController/getWXAccessToken")
     String getWXAccessToken(Map map);
 
+    @RequestMapping(method = RequestMethod.POST,value = "user/updateUserData")
+    String updateUserData(UserInfo userInfo);
+
 }

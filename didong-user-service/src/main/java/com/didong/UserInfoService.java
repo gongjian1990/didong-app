@@ -5,5 +5,5 @@ import com.didong.entity.UserInfo;
 
 public interface UserInfoService {
 
-    UserInfo getbyId(String sex);
+    String updateUserData(UserInfo userInfo);
 }

@@ -16,7 +16,7 @@ public interface LoginService {
 
     Response checkWXAccessToken(Map map);
 
-    String qqLogin(UserInfo userInfo);
+    String qqLogin(Map<String,String> map);
 
-    String wbLogin(UserInfo userInfo);
+    String wbLogin(Map<String,String> map);
 }

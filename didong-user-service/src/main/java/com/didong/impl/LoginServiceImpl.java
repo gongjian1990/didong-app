@@ -36,9 +36,9 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
         String udid = (String) map.get("udid");
         String phone = (String) map.get("phone");
 
-        System.out.println("appid:"+appid+",secret:"+secret+",code:"+code+",grant_type:"+grant_type);
+        System.out.println("appid:" + appid + ",secret:" + secret + ",code:" + code + ",grant_type:" + grant_type);
 
-        String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+appid+"&secret="+secret+"&code="+code+"&grant_type="+grant_type+"";
+        String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appid + "&secret=" + secret + "&code=" + code + "&grant_type=" + grant_type + "";
 
         JSONObject result = HttpClientUtils.httpGet(url);
 
@@ -46,9 +46,9 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
 
         UserInfo userInfo = userInfoMapper.selectUserInfoByPhoneAndLoginType(phone, "wx");
 
-        System.out.println("userInfo:"+userInfo);
+        System.out.println("userInfo:" + userInfo);
 
-        System.out.println("result--------------:"+result);
+        System.out.println("result--------------:" + result);
 
         return result;
     }
@@ -56,52 +56,54 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
 
     /**
      * 获取短信验证码
+     *
      * @param map
      * @return
      */
     @Override
-    public JSONObject getSmsCode(Map<String,String> map) {
-        JSONObject jsonObject=new JSONObject();
-        UserInfo user=baseMapper.selectOne(new QueryWrapper<UserInfo>()
-                .eq("user_phone",map.get("userPhone"))
-                .eq("login_type",map.get("loginType")));
-        if(user!=null){
+    public JSONObject getSmsCode(Map<String, String> map) {
+        JSONObject jsonObject = new JSONObject();
+        UserInfo user = baseMapper.selectOne(new QueryWrapper<UserInfo>()
+                .eq("user_phone", map.get("userPhone"))
+                .eq("login_type", map.get("loginType")));
+        if (user != null) {
             return jsonObject;
         }
         try {
-            jsonObject= MobileMessageSend.sendMsg(map.get("userPhone"));
+            jsonObject = MobileMessageSend.sendMsg(map.get("userPhone"));
         } catch (IOException e) {
-            log.error("获取短信验证码异常,异常类型e:{}",e);
+            log.error("获取短信验证码异常,异常类型e:{}", e);
         }
 //        jsonObject.put("smsCode","1234");
 //        jsonObject.put("code","200");
         String userId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 15);
-        jsonObject.put("userId",userId);
-        UserInfo userInfo=new UserInfo();
+        jsonObject.put("userId", userId);
+        UserInfo userInfo = new UserInfo();
         userInfo.setUserId(userId);
         userInfo.setUserPhone(map.get("userPhone"));
         userInfo.setUdid(map.get("udid"));
         userInfo.setLoginType("sms");
         userInfo.setCreateTime(new Date());
         userInfo.setLastUpdateTime(new Date());
-        RedisUtil.set("smsCode:"+userId,jsonObject.getString("smsCode"),60*100);
+        RedisUtil.set("smsCode:" + userId, jsonObject.getString("smsCode"), 60 * 100);
 //        UserInfo userInfo1=baseMapper.selectById(1);
         baseMapper.insert(userInfo);
-        log.info("获取短信验证码,userInfo:{}",userInfo.toString());
+        log.info("获取短信验证码,userInfo:{}", userInfo.toString());
         return jsonObject;
     }
 
     /**
      * 校验短信验证码
+     *
      * @param map
      * @return
      */
     @Override
     public String checkSmsCode(Map<String, String> map) {
-        String userId=map.get("userId");
-        String smsCode=map.get("smsCode");
-        log.info("smsCode:{}","smsCode:"+userId);
-        if(!smsCode.equals(RedisUtil.get("smsCode:"+userId))){
+        String userId = map.get("userId");
+        String smsCode = map.get("smsCode");
+        log.info("smsCode:{}", "smsCode:" + userId);
+        if (!smsCode.equals(RedisUtil.get("smsCode:" + userId))) {
             return "false";
         }
         return "success";
@@ -114,25 +116,25 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
             String openid = (String) map.get("openid");
             String ip = (String) map.get("ip");
 
-            JSONObject result = HttpClientUtils.httpGet("https://api.weixin.qq.com/sns/auth?access_token="+access_token+"&openid="+openid);
-            System.out.println("result1---"+result);
+            JSONObject result = HttpClientUtils.httpGet("https://api.weixin.qq.com/sns/auth?access_token=" + access_token + "&openid=" + openid);
+            System.out.println("result1---" + result);
 
-            if(result!= null){
-                if("0".equals(result.get("errcode"))){
-                    result = HttpClientUtils.httpGet("https://api.weixin.qq.com/sns/userinfo?access_token="+access_token+"&openid="+openid);
+            if (result != null) {
+                if ("0".equals(result.get("errcode"))) {
+                    result = HttpClientUtils.httpGet("https://api.weixin.qq.com/sns/userinfo?access_token=" + access_token + "&openid=" + openid);
 
-                    System.out.println("result2---"+result);
-                    if(result!= null){
+                    System.out.println("result2---" + result);
+                    if (result != null) {
                         // 正确返回
-                        if(null == result.get("errcode")){
+                        if (null == result.get("errcode")) {
                             //微信用户统一标识
                             String unionid = (String) result.get("unionid");
                             UserInfo userInfo = baseMapper.selectOne(new QueryWrapper<UserInfo>().eq("unionid", unionid));
-                            if(userInfo!= null){
+                            if (userInfo != null) {
                                 userInfo.setLastOnlineTime(new Date());
                                 userInfo.setLastOnlineIp(ip);
                                 baseMapper.updateById(userInfo);
-                            }else {
+                            } else {
                                 userInfo = new UserInfo();
                                 userInfo.setUdid(UUID.randomUUID().toString());
                                 userInfo.setLoginType("wx");
@@ -142,49 +144,94 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
                                 baseMapper.insert(userInfo);
                             }
                             return Response.success(userInfo);
-                        }else {
-                            return Response.error("获取用户个人信息失败","");
+                        } else {
+                            return Response.error("获取用户个人信息失败", "");
                         }
                     }
-                }else if("40003".equals(result.get("errcode"))){
-                    return Response.error("检验授权凭证失败","");
-                }else {
-                    return Response.error("处理异常","");
+                } else if ("40003".equals(result.get("errcode"))) {
+                    return Response.error("检验授权凭证失败", "");
+                } else {
+                    return Response.error("处理异常", "");
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.error("服务器异常","");
+            return Response.error("服务器异常", "");
         }
         return null;
     }
+
     /**
      * QQ登录
-     * @param userInfo
+     *
+     * @param map
      * @return
      */
     @Override
-    public String qqLogin(UserInfo userInfo) {
-        log.info("用户qq登录信息,userInfo:{}",userInfo.toString());
+    public String qqLogin(Map<String, String> map) {
+        log.info("用户qq登录信息,userInfo:{}", map.toString());
 //        UserInfo user=baseMapper.selectOne(new QueryWrapper<UserInfo>()
 //                .eq("user_phone",userInfo.getUserPhone())
 //                .eq("login_type",userInfo.getLoginType()));
 //        if(user!=null){
 //            return "false";
 //        }
-        String userId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 15);
-        userInfo.setLoginType("qq");
-        userInfo.setUserId(userId);
-        userInfo.setCreateTime(new Date());
-        userInfo.setLastUpdateTime(new Date());
-        userInfo.setLastOnlineTime(new Date());
-        baseMapper.insert(userInfo);
+        UserInfo userInfo = new UserInfo();
+        String access_token = map.get("access_token");
+        String openid = map.get("openid");
+        String ip = map.get("ip");
+
+        JSONObject result = HttpClientUtils.httpGet(
+                "https://graph.qq.com/user/get_user_info?access_token="
+                        + access_token + "&openid=" + openid + "&format=json" + "&oauth_consumer_key=12345");
+
+
+        if (result.get("ret").equals("0")) {
+            log.info("qq登录,获取用户信息:{}", result.toJSONString());
+
+            String userId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 15);
+            userInfo.setNickName(result.get("nickname").toString());
+            userInfo.setAvatar(result.get("figureurl_qq_1").toString());
+            userInfo.setGender(result.get("gender").toString().equals("男")?1:2);
+            userInfo.setLoginType("qq");
+            userInfo.setUserId(userId);
+            userInfo.setLastOnlineIp(ip);
+            userInfo.setAccessToken(access_token);
+            userInfo.setUnionid(openid);
+            userInfo.setCreateTime(new Date());
+            userInfo.setLastUpdateTime(new Date());
+            userInfo.setLastOnlineTime(new Date());
+
+            baseMapper.insert(userInfo);
+        }
         return "success";
     }
 
     @Override
-    public String wbLogin(UserInfo userInfo) {
-        return null;
+    public String wbLogin(Map<String, String> map) {
+        UserInfo userInfo = new UserInfo();
+        String access_token = map.get("access_token");
+        String uid = map.get("uid");
+        String ip = map.get("ip");
+
+//        JSONObject result = HttpClientUtils.httpGet("https://api.weibo.com/2/users/show.json?access_token="+access_token);
+//
+//        if(result.size()>0){
+//            log.info("微博登录,获取用户信息:{}",result.toJSONString());
+//            result.get("screen_name");
+//            String userId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 15);
+//            userInfo.setLoginType("wb");
+//            userInfo.setUserId(userId);
+//            userInfo.setLastOnlineIp(ip);
+//            userInfo.setAccessToken(access_token);
+//            userInfo.setUnionid(uid);
+//            userInfo.setCreateTime(new Date());
+//            userInfo.setLastUpdateTime(new Date());
+//            userInfo.setLastOnlineTime(new Date());
+//
+//            baseMapper.insert(userInfo);
+//        }
+        return "success";
     }
 
 }
