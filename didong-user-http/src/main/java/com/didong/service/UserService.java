@@ -13,7 +13,7 @@ import java.util.Map;
 @FeignClient(value = "user-service", fallback = UserServiceFallback.class)
 public interface UserService {
 
-    @RequestMapping(method = RequestMethod.POST,value = "user/test")
+    @RequestMapping(method = RequestMethod.POST,value = "userController/test")
     Response hello(String s);
 
     @RequestMapping(method = RequestMethod.POST,value = "loginController/checkWXAccessToken")
