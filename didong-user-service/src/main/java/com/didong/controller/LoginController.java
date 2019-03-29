@@ -19,12 +19,6 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    @PostMapping("/getWXAccessToken")
-    public JSONObject getWXAccessToken(@RequestBody Map map){
-
-        return loginService.getWXAccessToken(map);
-    }
-
     @RequestMapping("/qqLogin")
     public String qqLogin(@RequestBody Map<String,String> map){
 

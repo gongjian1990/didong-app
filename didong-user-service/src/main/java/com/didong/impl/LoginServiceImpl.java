@@ -13,6 +13,7 @@ import com.didong.utils.HttpClientUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pojo.ResultData;
 
 import java.io.IOException;
 import java.util.Date;
@@ -22,37 +23,6 @@ import java.util.UUID;
 @Service("loginService")
 @Slf4j
 public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> implements LoginService {
-
-    @Autowired
-    private UserInfoMapper userInfoMapper;
-
-    @Override
-    public JSONObject getWXAccessToken(Map map) {
-
-        String appid = (String) map.get("appid");
-        String secret = (String) map.get("secret");
-        String code = (String) map.get("code");
-        String grant_type = (String) map.get("grant_type");
-        String udid = (String) map.get("udid");
-        String phone = (String) map.get("phone");
-
-        System.out.println("appid:" + appid + ",secret:" + secret + ",code:" + code + ",grant_type:" + grant_type);
-
-        String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appid + "&secret=" + secret + "&code=" + code + "&grant_type=" + grant_type + "";
-
-        JSONObject result = HttpClientUtils.httpGet(url);
-
-        phone = "15152212330";
-
-        UserInfo userInfo = userInfoMapper.selectUserInfoByPhoneAndLoginType(phone, "wx");
-
-        System.out.println("userInfo:" + userInfo);
-
-        System.out.println("result--------------:" + result);
-
-        return result;
-    }
-
 
     /**
      * 获取短信验证码
@@ -143,20 +113,22 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
                                 userInfo.setLastOnlineIp(ip);
                                 baseMapper.insert(userInfo);
                             }
-                            return Response.success(userInfo);
+                            return Response.success(new ResultData(200,"success",result));
                         } else {
-                            return Response.error("获取用户个人信息失败", "");
+                            return Response.error(new ResultData(500,"获取用户个人信息失败",null));
                         }
                     }
                 } else if ("40003".equals(result.get("errcode"))) {
-                    return Response.error("检验授权凭证失败", "");
+                    return Response.error(new ResultData(500,"检验授权凭证失败",null));
+
                 } else {
-                    return Response.error("处理异常", "");
+                    return Response.error(new ResultData(500,"处理异常",null));
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            return Response.error("服务器异常", "");
+            log.info("Exception:{}",e);
+            return Response.error(new ResultData(500,"服务器异常",null));
+
         }
         return null;
     }
