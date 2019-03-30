@@ -1,12 +1,13 @@
 package com.didong.service;
 
 
-import com.alibaba.fastjson.JSONObject;
+import com.aliyuncs.exceptions.ClientException;
 import com.didong.entity.UserInfo;
+import pojo.ResultData;
 
 import java.io.UnsupportedEncodingException;
 
 public interface UserInfoService {
 
-    JSONObject updateUserData(UserInfo userInfo) throws UnsupportedEncodingException;
+    ResultData updateUserData(UserInfo userInfo) throws UnsupportedEncodingException, ClientException;
 }

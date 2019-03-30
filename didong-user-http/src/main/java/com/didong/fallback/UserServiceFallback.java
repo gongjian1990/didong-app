@@ -49,8 +49,8 @@ public class UserServiceFallback implements UserService {
     }
 
     @Override
-    public String updateUserData(UserInfo userInfo) {
-        return JSON.toJSONString(Response.error(new ResultData(500, "修改资料失败", null)));
+    public ResultData updateUserData(UserInfo userInfo) {
+        return new ResultData(500, "更新个人资料失败", null);
 
     }
 }

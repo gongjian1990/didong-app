@@ -7,6 +7,7 @@ import pojo.Response;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import pojo.ResultData;
 
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public interface UserService {
     @RequestMapping(method = RequestMethod.POST,value = "loginController/getWXAccessToken")
     String getWXAccessToken(Map map);
 
-    @RequestMapping(method = RequestMethod.POST,value = "user/updateUserData")
-    String updateUserData(UserInfo userInfo);
+    @RequestMapping(method = RequestMethod.POST,value = "userController/updateUserData")
+    ResultData updateUserData(UserInfo userInfo);
 
 }
