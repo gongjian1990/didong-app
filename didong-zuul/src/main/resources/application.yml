@@ -22,6 +22,8 @@ zuul:
   routes:
     USER-HTTP:
       path: /user-http/**
+    VEDIO-HTTP:
+      path: /video-http/**
     TEST-CLIENT:
       path: /test-client/**
 
