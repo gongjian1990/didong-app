@@ -12,9 +12,9 @@
         <module>didong-eruka-server</module>
         <module>didong-user-service</module>
         <module>didong-user-http</module>
-        <module>didong-thirdparty-service</module>
-        <module>didong-alibaba-http</module>
         <module>didong-zuul</module>
+        <module>didong-vedio-http</module>
+        <module>didong-vedio-service</module>
     </modules>
 
     <parent>
