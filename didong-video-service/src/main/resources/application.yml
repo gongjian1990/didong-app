@@ -1,0 +1,40 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    instance-id: ${spring.cloud.client.ipAddress}:${spring.application.name}:${server.port}:@project.version@
+    prefer-ip-address: true
+
+server:
+  port: 8803
+
+spring:
+  application:
+    name: video-service
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.0.23:3306/mark?characterEncoding=utf8&useUnicode=true&useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+    initial-size: 10
+    max-active: 400
+    min-idle: 10
+    max-wait: 60000
+    timeBetweenEvictionRunsMillis: 30000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+
+    logging:
+      level:
+        com.mark.user.mapper: debug
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
