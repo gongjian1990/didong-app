@@ -47,10 +47,10 @@ public class UserServiceFallback implements UserService {
     public String getWXAccessToken(Map map) {
         return JSON.toJSONString(Response.error(new ResultData(500, "调用微信登陆失败", null)));
     }
-
     @Override
     public ResultData updateUserData(UserInfo userInfo) {
         return new ResultData(500, "更新个人资料失败", null);
 
     }
+
 }

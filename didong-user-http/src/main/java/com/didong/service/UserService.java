@@ -37,5 +37,4 @@ public interface UserService {
 
     @RequestMapping(method = RequestMethod.POST,value = "userController/updateUserData")
     ResultData updateUserData(UserInfo userInfo);
-
 }

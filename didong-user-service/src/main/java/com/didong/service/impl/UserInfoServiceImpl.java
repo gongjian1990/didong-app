@@ -53,7 +53,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         task.put("url", userInfo.getAvatar());
         task.put("time", new Date());
         httpBody.put("tasks", Arrays.asList(task));
-        JSONArray jsonArray = AliCheckUtils.checkVideo(httpBody);
+        JSONArray jsonArray = AliCheckUtils.checkPicture(httpBody);
         if (jsonArray.size() > 0) {
             for (Object object : jsonArray) {
                 if (((JSONObject) object).get("suggestion").equals("review") || ((JSONObject) object).get("suggestion").equals("block")) {

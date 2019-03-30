@@ -13,7 +13,7 @@ spring:
   application:
     name: vedio-http
 
-# ¿ªÆôÈÛ¶Ï
+# å¼€å¯ç†”æ–­
 feign:
   hystrix:
     enabled: true
