@@ -1,6 +1,7 @@
 package com.didong.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.didong.entity.TbVideo;
 import com.didong.service.VideoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,24 @@ public class VideoController {
             return JSON.toJSONString(Response.error(result));
         }
         return JSON.toJSONString(Response.success(result));
+    }
 
+    @RequestMapping("/hello")
+    public String hello(String s){
+
+        videoService.hello("Sss");
+
+        return null;
+    }
+
+    @RequestMapping("/saveVideo")
+    public Response saveVideo(TbVideo video){
+        try {
+            videoService.saveVideo(video);
+            return Response.success(new ResultData(200,"保存成功",null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.success(new ResultData(500,"保存失败",null));
+        }
     }
 }

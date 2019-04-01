@@ -3,6 +3,8 @@ package com.didong.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.exceptions.ClientException;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.didong.entity.TbVideo;
 import com.didong.mapper.TbVideoMapper;
@@ -44,6 +46,21 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
             return resultData;
         }
         return resultData;
+    }
+
+    @Override
+    public void saveVideo(TbVideo video) {
+        /**
+         * com.didong.mapper.TbVideoMapper.saveVideo
+         */
+        baseMapper.insert(video);
+    }
+
+    @Override
+    public IPage<TbVideo> selectPageVideos(Page page) {
+
+        //Page<TbVideo> pageRequest = new Page(StringUtils.hasText(pageNum) ? Integer.valueOf(pageNum) - 1 : 0, 10);
+        return null;
     }
 
 }
