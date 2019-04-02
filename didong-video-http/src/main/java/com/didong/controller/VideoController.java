@@ -21,13 +21,12 @@ public class VideoController {
     /**
      * 视频上传 app端
      * @param tbVideo
-     * @param taskId
      * @return
      */
     @RequestMapping("/saveVideo")
-    public String saveVideo(TbVideo tbVideo,String taskId){
-        log.info("[视频上传] -- tbVideo:{},taskId:{}", tbVideo,taskId);
-        ResultData result = videoService.saveVideo(tbVideo,taskId);
+    public String saveVideo(TbVideo tbVideo){
+        log.info("[视频上传] -- tbVideo:{}", tbVideo);
+        ResultData result = videoService.saveVideo(tbVideo);
         if(!result.getCode().equals(200)){
             return JSON.toJSONString(Response.error(result));
         }

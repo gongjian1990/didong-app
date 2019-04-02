@@ -11,7 +11,7 @@ import pojo.ResultData;
 @FeignClient(value = "video-service", fallback = VideoServiceFallback.class)
 public interface VideoService {
     @RequestMapping(method = RequestMethod.POST,value = "vedio/saveVideo")
-    ResultData saveVideo(TbVideo tbVideo,String taskId);
+    ResultData saveVideo(TbVideo tbVideo);
 
     @RequestMapping("video/saveVideoback")
     Response saveVideoback(TbVideo video);

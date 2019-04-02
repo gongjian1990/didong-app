@@ -10,7 +10,7 @@ import pojo.ResultData;
 public class VideoServiceFallback implements VideoService {
 
     @Override
-    public ResultData saveVideo(TbVideo tbVideo, String taskId) {
+    public ResultData saveVideo(TbVideo tbVideo) {
         return new ResultData(500, "视频上传失败", null);
 
     }
