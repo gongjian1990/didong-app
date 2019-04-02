@@ -2,6 +2,7 @@ package com.didong.service;
 
 
 import com.aliyuncs.exceptions.ClientException;
+import com.didong.entity.TbVideo;
 import pojo.ResultData;
 
 import java.io.UnsupportedEncodingException;
@@ -16,5 +17,5 @@ import java.io.UnsupportedEncodingException;
  */
 public interface ITbVideoService {
 
-    ResultData checkVideo(String videoUrl) throws UnsupportedEncodingException, ClientException;
+    ResultData saveVideo(TbVideo tbVideo) throws UnsupportedEncodingException, ClientException;
 }

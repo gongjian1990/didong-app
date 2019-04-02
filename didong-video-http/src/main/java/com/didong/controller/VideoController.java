@@ -1,6 +1,7 @@
 package com.didong.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.didong.entity.TbVideo;
 import com.didong.service.VideoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +19,18 @@ public class VideoController {
     VideoService videoService;
 
     /**
-     * 视频内容安全检测
-     * @param videoUrl
+     * 视频上传
+     * @param tbVideo
+     * @param taskId
      * @return
      */
-    @RequestMapping("/checkVideo")
-    public String checkVideo(String videoUrl){
-        log.info("[视频内容安全检测] -- videoUrl:{}", videoUrl);
-        ResultData result = videoService.checkVideo(videoUrl);
+    @RequestMapping("/saveVideo")
+    public String saveVideo(TbVideo tbVideo,String taskId){
+        log.info("[视频上传] -- tbVideo:{},taskId:{}", tbVideo,taskId);
+        ResultData result = videoService.saveVideo(tbVideo,taskId);
         if(!result.getCode().equals(200)){
             return JSON.toJSONString(Response.error(result));
         }
         return JSON.toJSONString(Response.success(result));
-
     }
 }

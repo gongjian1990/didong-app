@@ -1,9 +1,16 @@
 package com.didong.controller;
 
 
+import com.aliyuncs.exceptions.ClientException;
+import com.didong.entity.TbVideo;
+import com.didong.service.ITbVideoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pojo.ResultData;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * <p>
@@ -17,10 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/tbVideo")
 public class TbVideoController {
 
-    @RequestMapping("/hello")
-    public String hello(@RequestBody String s){
-        System.out.println("接收："+s);
-        return "world";
+    @Autowired
+    ITbVideoService iTbVideoService;
+
+    @RequestMapping("/saveVideo")
+    public ResultData saveVideo(@RequestBody TbVideo tbVideo) throws UnsupportedEncodingException, ClientException {
+        return iTbVideoService.saveVideo(tbVideo);
     }
 
 }

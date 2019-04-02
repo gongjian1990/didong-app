@@ -8,10 +8,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableFeignClients
-public class DidongVideoServiceApplication {
+public class DidongVideoHttpApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DidongVideoServiceApplication.class, args);
+        SpringApplication.run(DidongVideoHttpApplication.class, args);
     }
 
 }
