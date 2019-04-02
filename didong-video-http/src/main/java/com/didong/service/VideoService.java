@@ -13,8 +13,8 @@ public interface VideoService {
     @RequestMapping(method = RequestMethod.POST,value = "vedio/saveVideo")
     ResultData saveVideo(TbVideo tbVideo,String taskId);
 
-    @RequestMapping("video/saveVideo")
-    Response saveVideo(TbVideo video);
+    @RequestMapping("video/saveVideoback")
+    Response saveVideoback(TbVideo video);
 
     @RequestMapping("video/hello")
     Response hello(String s1);

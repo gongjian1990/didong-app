@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pojo.Response;
 import pojo.ResultData;
 
 import java.io.UnsupportedEncodingException;
@@ -34,10 +35,10 @@ public class TbVideoController {
     }
 
 
-//    @RequestMapping("/saveVideo")
-//    public Response saveVideo(@RequestBody TbVideo video){
-//        iTbVideoService.saveVideo(video);
-//        return Response.success(null);
-//    }
+    @RequestMapping("/saveVideoback")
+    public Response saveVideoback(@RequestBody TbVideo video){
+        iTbVideoService.saveVideoback(video);
+        return Response.success(null);
+    }
 
 }

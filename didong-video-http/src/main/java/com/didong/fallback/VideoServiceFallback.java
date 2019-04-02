@@ -16,7 +16,7 @@ public class VideoServiceFallback implements VideoService {
     }
 
     @Override
-    public Response saveVideo(TbVideo video) {
+    public Response saveVideoback(TbVideo video) {
         return Response.success(new ResultData(500,"保存视频失败",null));
     }
 

@@ -19,7 +19,7 @@ public class VideoController {
     VideoService videoService;
 
     /**
-     * 视频上传
+     * 视频上传 app端
      * @param tbVideo
      * @param taskId
      * @return
@@ -42,10 +42,15 @@ public class VideoController {
         return null;
     }
 
-    @RequestMapping("/saveVideo")
-    public Response saveVideo(TbVideo video){
+    /**
+     * 保存视频 PC端
+     * @param video
+     * @return
+     */
+    @RequestMapping("/saveVideoback")
+    public Response saveVideoback(TbVideo video){
         try {
-            videoService.saveVideo(video);
+            videoService.saveVideoback(video);
             return Response.success(new ResultData(200,"保存成功",null));
         } catch (Exception e) {
             e.printStackTrace();
