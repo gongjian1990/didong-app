@@ -1,6 +1,8 @@
 package com.didong.service.impl;
 
 import com.aliyuncs.exceptions.ClientException;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.didong.entity.TbChkVideo;
 import com.didong.entity.TbVideo;
@@ -29,6 +31,7 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
     @Autowired
     ITbChkVideoService tbChkVideoService;
 
+
     @Override
     public ResultData saveVideo(TbVideo tbVideo) throws UnsupportedEncodingException, ClientException {
         ResultData resultData=new ResultData();
@@ -56,6 +59,21 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
             resultData.setMessage("视频上传成功,审核异常");
         }
         return resultData;
+    }
+
+    @Override
+    public void saveVideoback(TbVideo video) {
+        /**
+         * com.didong.mapper.TbVideoMapper.saveVideo
+         */
+        baseMapper.insert(video);
+    }
+
+    @Override
+    public IPage<TbVideo> selectPageVideos(Page page) {
+
+        //Page<TbVideo> pageRequest = new Page(StringUtils.hasText(pageNum) ? Integer.valueOf(pageNum) - 1 : 0, 10);
+        return null;
     }
 
 }

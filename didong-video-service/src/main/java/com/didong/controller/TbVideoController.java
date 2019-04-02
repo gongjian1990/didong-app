@@ -12,6 +12,7 @@ import pojo.ResultData;
 
 import java.io.UnsupportedEncodingException;
 
+
 /**
  * <p>
  * 视频表 前端控制器
@@ -21,7 +22,7 @@ import java.io.UnsupportedEncodingException;
  * @since 2019-03-30
  */
 @RestController
-@RequestMapping("/tbVideo")
+@RequestMapping("/video")
 public class TbVideoController {
 
     @Autowired
@@ -31,5 +32,12 @@ public class TbVideoController {
     public ResultData saveVideo(@RequestBody TbVideo tbVideo) throws UnsupportedEncodingException, ClientException {
         return iTbVideoService.saveVideo(tbVideo);
     }
+
+
+//    @RequestMapping("/saveVideo")
+//    public Response saveVideo(@RequestBody TbVideo video){
+//        iTbVideoService.saveVideo(video);
+//        return Response.success(null);
+//    }
 
 }

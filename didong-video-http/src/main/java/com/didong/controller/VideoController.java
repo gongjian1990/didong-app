@@ -33,4 +33,23 @@ public class VideoController {
         }
         return JSON.toJSONString(Response.success(result));
     }
+
+    @RequestMapping("/hello")
+    public String hello(String s){
+
+        videoService.hello("Sss");
+
+        return null;
+    }
+
+    @RequestMapping("/saveVideo")
+    public Response saveVideo(TbVideo video){
+        try {
+            videoService.saveVideo(video);
+            return Response.success(new ResultData(200,"保存成功",null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.success(new ResultData(500,"保存失败",null));
+        }
+    }
 }

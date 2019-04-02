@@ -5,11 +5,18 @@ import com.didong.fallback.VideoServiceFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import pojo.Response;
 import pojo.ResultData;
 
-@FeignClient(value = "vedio-service", fallback = VideoServiceFallback.class)
+@FeignClient(value = "video-service", fallback = VideoServiceFallback.class)
 public interface VideoService {
-    @RequestMapping(method = RequestMethod.POST,value = "vedio/tb-vedio/saveVideo")
+    @RequestMapping(method = RequestMethod.POST,value = "vedio/saveVideo")
     ResultData saveVideo(TbVideo tbVideo,String taskId);
+
+    @RequestMapping("video/saveVideo")
+    Response saveVideo(TbVideo video);
+
+    @RequestMapping("video/hello")
+    Response hello(String s1);
 
 }
