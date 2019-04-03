@@ -1,13 +1,13 @@
 package com.didong.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.didong.entity.PhoneBook;
-import com.didong.entity.UserInfo;
 import com.didong.fallback.UserServiceFallback;
-import pojo.Response;
+import com.didong.httpEntity.PhoneBook;
+import com.didong.httpEntity.UserInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import pojo.Response;
 import pojo.ResultData;
 
 import java.util.List;

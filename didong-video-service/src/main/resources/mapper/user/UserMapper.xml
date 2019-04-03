@@ -6,7 +6,7 @@
         school,udid,access_token,user_level,del_flag, create_time, last_update_time,last_online_time,last_online_ip,user_status
     </sql>
 
-    <select id="selectUserByNickNameLike" parameterType="com.didong.entity.UserInfo" resultType="com.didong.entity.UserInfo">
+    <select id="selectUserByNickNameLike" parameterType="com.didong.serviceEntity.UserInfo" resultType="com.didong.serviceEntity.UserInfo">
         select
         <include refid="Base_Column_List"/>
         from

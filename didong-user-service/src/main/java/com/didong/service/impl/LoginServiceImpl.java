@@ -3,15 +3,15 @@ package com.didong.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.didong.service.LoginService;
-import com.didong.entity.UserInfo;
 import com.didong.mapper.UserInfoMapper;
 import com.didong.redis.RedisUtil;
+import com.didong.service.LoginService;
+import com.didong.serviceEntity.UserInfo;
 import com.didong.util.MobileMessageSend;
-import pojo.Response;
 import com.didong.utils.HttpClientUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import pojo.Response;
 import pojo.ResultData;
 
 import java.io.IOException;

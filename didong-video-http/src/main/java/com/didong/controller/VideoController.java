@@ -1,7 +1,7 @@
 package com.didong.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.didong.entity.TbVideo;
+import com.didong.httpEntity.TbVideo;
 import com.didong.service.VideoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

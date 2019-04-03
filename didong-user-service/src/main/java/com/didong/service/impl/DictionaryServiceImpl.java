@@ -5,14 +5,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.didong.entity.Dictionary;
 import com.didong.mapper.DictionaryMapper;
 import com.didong.service.DictionaryService;
+import com.didong.serviceEntity.Dictionary;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pojo.ResultData;
-
-import java.util.List;
 
 /**
  * PhoneBook 表数据服务层接口实现类
@@ -32,7 +30,7 @@ public class DictionaryServiceImpl extends ServiceImpl<DictionaryMapper, Diction
         if(dictionary!=null){
             resultData.setCode(200);
             resultData.setMessage("success");
-            retJson.put("interset",dictionary.getRecords());
+                retJson.put("intersets",dictionary.getRecords());
             resultData.setResults(retJson);
             log.info("[字典获取响应结果] -- resultData:{}", resultData);
             return resultData;

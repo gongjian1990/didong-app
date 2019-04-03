@@ -2,7 +2,7 @@ package com.didong.service;
 
 
 import com.aliyuncs.exceptions.ClientException;
-import com.didong.entity.UserInfo;
+import com.didong.serviceEntity.UserInfo;
 import pojo.ResultData;
 
 import java.io.UnsupportedEncodingException;

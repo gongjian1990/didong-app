@@ -2,9 +2,7 @@ package com.didong.service;
 
 
 import com.aliyuncs.exceptions.ClientException;
-import com.didong.entity.TbChkVideo;
-import com.didong.entity.TbVideo;
-import pojo.ResultData;
+import com.didong.serviceEntity.TbChkVideo;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;

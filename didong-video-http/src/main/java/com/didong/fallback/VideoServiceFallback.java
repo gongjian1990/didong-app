@@ -1,6 +1,6 @@
 package com.didong.fallback;
 
-import com.didong.entity.TbVideo;
+import com.didong.httpEntity.TbVideo;
 import com.didong.service.VideoService;
 import org.springframework.stereotype.Component;
 import pojo.Response;

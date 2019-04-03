@@ -3,12 +3,11 @@ package com.didong.task;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.exceptions.ClientException;
-import com.didong.entity.TbChkVideo;
 import com.didong.service.ITbChkVideoService;
+import com.didong.serviceEntity.TbChkVideo;
 import com.didong.util.AliCheckUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
@@ -31,7 +30,7 @@ public class queryAliVideoCheckResult {
     /**
      * 定时任务方法，每1分钟查询视频审核进度
      */
-    @Scheduled(fixedDelay = 1000 * 60)
+//    @Scheduled(fixedDelay = 1000 * 60)
     public void getWaitMachineChkVideo() {
         try {
             List<String> taskList = new ArrayList<String>();

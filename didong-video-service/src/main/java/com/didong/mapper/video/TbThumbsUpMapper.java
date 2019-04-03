@@ -1,7 +1,7 @@
 package com.didong.mapper.video;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.didong.entity.TbThumbsUp;
+import com.didong.serviceEntity.TbThumbsUp;
 
 /**
  * <p>

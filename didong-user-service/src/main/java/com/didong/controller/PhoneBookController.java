@@ -1,7 +1,7 @@
 package com.didong.controller;
 
-import com.didong.entity.PhoneBook;
 import com.didong.service.PhoneBookService;
+import com.didong.serviceEntity.PhoneBook;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

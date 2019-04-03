@@ -2,11 +2,11 @@ package com.didong.fallback;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.didong.entity.PhoneBook;
-import com.didong.entity.UserInfo;
+import com.didong.httpEntity.PhoneBook;
+import com.didong.httpEntity.UserInfo;
 import com.didong.service.UserService;
-import pojo.Response;
 import org.springframework.stereotype.Component;
+import pojo.Response;
 import pojo.ResultData;
 
 import java.util.List;

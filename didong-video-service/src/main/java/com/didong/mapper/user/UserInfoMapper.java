@@ -1,7 +1,7 @@
 package com.didong.mapper.user;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.didong.entity.UserInfo;
+import com.didong.serviceEntity.UserInfo;
 
 import java.util.List;
 

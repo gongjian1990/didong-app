@@ -2,7 +2,7 @@ package com.didong.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.didong.entity.PhoneBook;
+import com.didong.serviceEntity.PhoneBook;
 import pojo.ResultData;
 
 import java.util.List;

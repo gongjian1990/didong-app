@@ -1,13 +1,13 @@
 package com.didong.controller;
 
 
+import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.aliyuncs.exceptions.ClientException;
-import com.didong.entity.TbVideo;
-import com.didong.entity.UserInfo;
 import com.didong.service.ITbVideoService;
 import com.didong.service.UserInfoService;
+import com.didong.serviceEntity.TbVideo;
+import com.didong.serviceEntity.UserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import pojo.Response;
 import pojo.ResultData;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
-import java.io.UnsupportedEncodingException;
 
 
 /**

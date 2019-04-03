@@ -1,9 +1,9 @@
 package com.didong.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.didong.entity.TbThumbsUp;
 import com.didong.mapper.video.TbThumbsUpMapper;
 import com.didong.service.ITbThumbsUpService;
+import com.didong.serviceEntity.TbThumbsUp;
 import org.springframework.stereotype.Service;
 
 /**

@@ -1,7 +1,7 @@
 package com.didong.mapper.video;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.didong.entity.TbPersonalMsg;
+import com.didong.serviceEntity.TbPersonalMsg;
 
 /**
  * <p>

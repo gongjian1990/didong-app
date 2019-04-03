@@ -5,19 +5,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.didong.entity.TbChkVideo;
-import com.didong.entity.TbVideo;
 import com.didong.mapper.video.TbVideoMapper;
 import com.didong.service.ITbChkVideoService;
 import com.didong.service.ITbVideoService;
+import com.didong.serviceEntity.TbChkVideo;
+import com.didong.serviceEntity.TbVideo;
 import com.didong.util.IdGeneratorUtil;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import pojo.ResultData;
 
-import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
@@ -91,10 +89,12 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
     }
 
     @Override
-    public IPage<TbVideo> selectAllByPageAndCondition(TbVideo video,Page page) {
-        List<TbVideo>list = baseMapper.selectAllByPageAndCondition(video,page);
+    public IPage<TbVideo> selectAllByPageAndCondition(TbVideo video,Page<TbVideo> page) {
+        Page<TbVideo> pages = new Page(1, 2);
 
-        System.out.println("list:"+list);
+        IPage<TbVideo> dictionary = baseMapper.selectPage(pages,new QueryWrapper<TbVideo>()
+                .eq("user_id", "2"));
+        List<TbVideo> list = baseMapper.selectAllByPageAndCondition(pages,video);
         return null;
     }
 

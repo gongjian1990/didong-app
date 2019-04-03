@@ -5,13 +5,13 @@
         video_id, user_id, url,video_desc, longitude, latitude,address_name,four_fps,one_fps,del_flag,upload_time,title
     </sql>
 
-    <select id="selectPageVideos" parameterType="com.didong.entity.TbVideo" resultType="com.didong.entity.TbVideo">
+    <select id="selectPageVideos" parameterType="com.didong.serviceEntity.TbVideo" resultType="com.didong.serviceEntity.TbVideo">
       select
       <include refid="Base_Column_List"/>
       from tb_video
     </select>
 
-    <select id="selectAllByPageAndCondition" parameterType="com.didong.entity.TbVideo" resultType="com.didong.entity.TbVideo">
+    <select id="selectAllByPageAndCondition" parameterType="com.didong.serviceEntity.TbVideo" resultType="com.didong.serviceEntity.TbVideo">
       select
         <include refid="Base_Column_List"/>
       from tb_video

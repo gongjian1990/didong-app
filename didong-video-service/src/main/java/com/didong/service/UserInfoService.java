@@ -1,6 +1,6 @@
 package com.didong.service;
 
-import com.didong.entity.UserInfo;
+import com.didong.serviceEntity.UserInfo;
 
 import java.util.List;
 

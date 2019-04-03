@@ -32,9 +32,9 @@ spring:
     poolPreparedStatements: true
     maxPoolPreparedStatementPerConnectionSize: 20
 
-    logging:
-      level:
-        com.mark.user.mapper: debug
+logging:
+  level:
+    com.mark.user.mapper: debug
 
 #mybatis-plus:
 #  mapper-locations: classpath:/mapper/*Mapper.xml
