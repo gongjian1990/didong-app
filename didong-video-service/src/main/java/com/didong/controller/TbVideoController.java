@@ -3,6 +3,7 @@ package com.didong.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.aliyuncs.exceptions.ClientException;
 import com.didong.entity.TbVideo;
 import com.didong.entity.UserInfo;
 import com.didong.service.ITbVideoService;
@@ -17,6 +18,8 @@ import pojo.ResultData;
 
 import java.util.List;
 import java.util.Map;
+import java.io.UnsupportedEncodingException;
+
 
 /**
  * <p>
@@ -31,7 +34,7 @@ import java.util.Map;
 public class TbVideoController {
 
     @Autowired
-    private ITbVideoService iTbVideoService;
+    ITbVideoService iTbVideoService;
 
     @Autowired
     private UserInfoService userInfoService;
@@ -43,8 +46,13 @@ public class TbVideoController {
     }
 
     @RequestMapping("/saveVideo")
-    public Response saveVideo(@RequestBody TbVideo video){
-        iTbVideoService.saveVideo(video);
+    public ResultData saveVideo(@RequestBody TbVideo tbVideo) throws UnsupportedEncodingException, ClientException {
+        return iTbVideoService.saveVideo(tbVideo);
+    }
+
+    @RequestMapping("/saveVideoback")
+    public Response saveVideoback(@RequestBody TbVideo video){
+        iTbVideoService.saveVideoback(video);
         return Response.success(null);
     }
 

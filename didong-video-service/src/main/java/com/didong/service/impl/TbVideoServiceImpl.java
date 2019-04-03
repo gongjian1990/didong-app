@@ -1,23 +1,25 @@
 package com.didong.service.impl;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.didong.entity.TbChkVideo;
 import com.didong.entity.TbVideo;
 import com.didong.mapper.video.TbVideoMapper;
+import com.didong.service.ITbChkVideoService;
 import com.didong.service.ITbVideoService;
-import com.didong.util.AliCheckUtils;
+import com.didong.util.IdGeneratorUtil;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import pojo.ResultData;
 
 import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,35 +33,40 @@ import java.util.List;
 @Service
 public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> implements ITbVideoService {
 
-    @Resource
-    public void setSqlSessionFactorOne(SqlSessionFactory sqlSessionFactory) {
-
-    }
+    @Autowired
+    ITbChkVideoService tbChkVideoService;
 
     @Override
-    public ResultData checkVideo(String videoUrl) throws UnsupportedEncodingException, ClientException {
+    public ResultData saveVideo(TbVideo tbVideo) throws UnsupportedEncodingException, ClientException {
         ResultData resultData=new ResultData();
-        JSONObject retJson = new JSONObject();
-        JSONObject jsonObject= AliCheckUtils.checkVideo(new JSONObject());
-        if(200==jsonObject.getInteger("code")){
-            JSONArray jsonArray = jsonObject.getJSONArray("data");
-            for (Object object : jsonArray) {
-                if(200==((JSONObject)object).getIntValue("code")){
-                    resultData.setCode(200);
-                    resultData.setMessage("视频审核成功");
-                    retJson.put("taskId",((JSONObject)object).getString("taskId"));
-                }
-            }
+        //视频内容存储
+        TbChkVideo tbChkVideo=new TbChkVideo();
+        long video_id=IdGeneratorUtil.generateId();
+        tbVideo.setVideoId(video_id);
+        tbVideo.setUploadTime(new Date());
+        baseMapper.insert(tbVideo);
+
+        //视频审核存储
+        tbChkVideo.setUserId(tbVideo.getUserId());
+        tbChkVideo.setVideoId(video_id);
+        tbChkVideo.setCreateTime(new Date());
+        tbChkVideo.setLastUpdateTime(new Date());
+        int i=tbChkVideoService.saveChkVideo(tbChkVideo);
+
+        //视频检测（异步）
+        String result=tbChkVideoService.checkVideo(tbVideo.getUrl(),tbChkVideo);
+        if("success".equals(result)){
+            resultData.setCode(200);
+            resultData.setMessage("视频上传成功");
         }else {
             resultData.setCode(500);
-            resultData.setMessage("视频审核异常");
-            return resultData;
+            resultData.setMessage("视频上传成功,审核异常");
         }
         return resultData;
     }
 
     @Override
-    public void saveVideo(TbVideo video) {
+    public void saveVideoback(TbVideo video) {
         /**
          * com.didong.mapper.video.TbVideoMapper.saveVideo
          */

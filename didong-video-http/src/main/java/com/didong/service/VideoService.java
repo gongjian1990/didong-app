@@ -10,12 +10,11 @@ import pojo.ResultData;
 
 @FeignClient(value = "video-service", fallback = VideoServiceFallback.class)
 public interface VideoService {
+    @RequestMapping(method = RequestMethod.POST,value = "vedio/saveVideo")
+    ResultData saveVideo(TbVideo tbVideo);
 
-    @RequestMapping(method = RequestMethod.POST,value = "vedio/tb-vedio/checkVideo")
-    ResultData checkVideo(String videoUrl);
-
-    @RequestMapping("video/saveVideo")
-    Response saveVideo(TbVideo video);
+    @RequestMapping("video/saveVideoback")
+    Response saveVideoback(TbVideo video);
 
     @RequestMapping("video/hello")
     Response hello(String s1);

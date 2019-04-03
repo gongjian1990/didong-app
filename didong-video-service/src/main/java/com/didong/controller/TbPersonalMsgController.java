@@ -1,15 +1,8 @@
 package com.didong.controller;
 
 
-import com.aliyuncs.exceptions.ClientException;
-import com.didong.service.ITbVideoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pojo.ResultData;
-
-import java.io.UnsupportedEncodingException;
 
 /**
  * <p>
@@ -23,11 +16,4 @@ import java.io.UnsupportedEncodingException;
 @RequestMapping("/tbPersonalMsg")
 public class TbPersonalMsgController {
 
-    @Autowired
-    ITbVideoService iTbVideoService;
-
-    @RequestMapping("/checkVideo")
-    public ResultData checkVideo(@RequestBody String videoUrl) throws UnsupportedEncodingException, ClientException {
-        return iTbVideoService.checkVideo(videoUrl);
-    }
 }

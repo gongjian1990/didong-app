@@ -19,14 +19,14 @@ public class VideoController {
     VideoService videoService;
 
     /**
-     * 视频内容安全检测
-     * @param videoUrl
+     * 视频上传 app端
+     * @param tbVideo
      * @return
      */
-    @RequestMapping("/checkVideo")
-    public String checkVideo(String videoUrl){
-        log.info("[视频内容安全检测] -- videoUrl:{}", videoUrl);
-        ResultData result = videoService.checkVideo(videoUrl);
+    @RequestMapping("/saveVideo")
+    public String saveVideo(TbVideo tbVideo){
+        log.info("[视频上传] -- tbVideo:{}", tbVideo);
+        ResultData result = videoService.saveVideo(tbVideo);
         if(!result.getCode().equals(200)){
             return JSON.toJSONString(Response.error(result));
         }
@@ -41,10 +41,15 @@ public class VideoController {
         return null;
     }
 
-    @RequestMapping("/saveVideo")
-    public Response saveVideo(TbVideo video){
+    /**
+     * 保存视频 PC端
+     * @param video
+     * @return
+     */
+    @RequestMapping("/saveVideoback")
+    public Response saveVideoback(TbVideo video){
         try {
-            videoService.saveVideo(video);
+            videoService.saveVideoback(video);
             return Response.success(new ResultData(200,"保存成功",null));
         } catch (Exception e) {
             e.printStackTrace();
