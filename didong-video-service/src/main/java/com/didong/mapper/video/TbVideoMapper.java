@@ -1,9 +1,11 @@
-package com.didong.mapper;
+package com.didong.mapper.video;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.didong.entity.TbVideo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -18,5 +20,7 @@ public interface TbVideoMapper extends BaseMapper<TbVideo> {
     void saveVideo(TbVideo video);
 
     IPage<TbVideo> selectPageVideos1(Page page);
+
+    List<TbVideo> selectAllByPageAndCondition(TbVideo video,Page page);
 
 }

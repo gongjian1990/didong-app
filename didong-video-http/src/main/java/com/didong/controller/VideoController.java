@@ -56,4 +56,26 @@ public class VideoController {
             return Response.success(new ResultData(500,"保存失败",null));
         }
     }
+
+    @RequestMapping("/selectAllByPage20Videos")
+    public Response selectAllByPage20Videos(String num){
+        try {
+            Response response = videoService.selectAllByPage20Videos(num);
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.success(new ResultData(500,"查询视频失败",null));
+        }
+    }
+
+    @RequestMapping("/selectAllByPage20Videos1")
+    public Response selectAllByPageAndCondition(TbVideo video){
+        try {
+            Response response = videoService.selectAllByPageAndCondition(video);
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.success(new ResultData(500,"查询视频失败",null));
+        }
+    }
 }
