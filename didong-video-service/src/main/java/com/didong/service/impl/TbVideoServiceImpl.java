@@ -90,11 +90,8 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
 
     @Override
     public IPage<TbVideo> selectAllByPageAndCondition(TbVideo video,Page<TbVideo> page) {
-        Page<TbVideo> pages = new Page(1, 2);
 
-        IPage<TbVideo> dictionary = baseMapper.selectPage(pages,new QueryWrapper<TbVideo>()
-                .eq("user_id", "2"));
-        List<TbVideo> list = baseMapper.selectAllByPageAndCondition(pages,video);
+        List<TbVideo> list = baseMapper.selectAllByPageAndCondition(page,video);
         return null;
     }
 

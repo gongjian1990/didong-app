@@ -5,7 +5,7 @@
         id, user_id, nick_name,age, birthday, age,gender,avatar,live_address,constellation,login_type,user_phone,email,
         school,udid,access_token,user_level,del_flag, create_time, last_update_time,last_online_time,last_online_ip,user_status
     </sql>
-    <select id="selectUserInfoByPhoneAndLoginType" parameterType="com.didong.entity.UserInfo" resultType="com.didong.entity.UserInfo">
+    <select id="selectUserInfoByPhoneAndLoginType" parameterType="com.didong.serviceEntity.UserInfo" resultType="com.didong.serviceEntity.UserInfo">
       select
       <include refid="Base_Column_List"/>
       from user_info a
