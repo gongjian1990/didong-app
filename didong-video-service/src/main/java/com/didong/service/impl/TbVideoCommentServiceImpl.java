@@ -2,7 +2,7 @@ package com.didong.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.didong.entity.TbVideoComment;
-import com.didong.mapper.TbVideoCommentMapper;
+import com.didong.mapper.video.TbVideoCommentMapper;
 import com.didong.service.ITbVideoCommentService;
 import org.springframework.stereotype.Service;
 

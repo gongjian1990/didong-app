@@ -23,4 +23,14 @@ public class VideoServiceFallback implements VideoService {
     public Response hello(String s1) {
         return null;
     }
+
+    @Override
+    public Response selectAllByPage20Videos(String pageNum) {
+        return Response.success(new ResultData(500,"加载视频列表失败",null));
+    }
+
+    @Override
+    public Response selectAllByPageAndCondition(TbVideo video) {
+        return null;
+    }
 }

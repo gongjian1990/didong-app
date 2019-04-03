@@ -20,4 +20,10 @@ public interface VideoService {
     @RequestMapping("video/hello")
     Response hello(String s1);
 
+    @RequestMapping("video/selectAllByPage20Videos")
+    Response selectAllByPage20Videos(String pageNum);
+
+    @RequestMapping("video/selectAllByPageAndCondition")
+    Response selectAllByPageAndCondition(TbVideo video);
+
 }

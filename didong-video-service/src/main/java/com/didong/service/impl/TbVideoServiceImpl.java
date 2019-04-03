@@ -3,17 +3,22 @@ package com.didong.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.exceptions.ClientException;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.didong.entity.TbVideo;
-import com.didong.mapper.TbVideoMapper;
+import com.didong.mapper.video.TbVideoMapper;
 import com.didong.service.ITbVideoService;
 import com.didong.util.AliCheckUtils;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import pojo.ResultData;
 
+import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 /**
  * <p>
@@ -25,6 +30,11 @@ import java.io.UnsupportedEncodingException;
  */
 @Service
 public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> implements ITbVideoService {
+
+    @Resource
+    public void setSqlSessionFactorOne(SqlSessionFactory sqlSessionFactory) {
+
+    }
 
     @Override
     public ResultData checkVideo(String videoUrl) throws UnsupportedEncodingException, ClientException {
@@ -51,7 +61,7 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
     @Override
     public void saveVideo(TbVideo video) {
         /**
-         * com.didong.mapper.TbVideoMapper.saveVideo
+         * com.didong.mapper.video.TbVideoMapper.saveVideo
          */
         baseMapper.insert(video);
     }
@@ -62,5 +72,30 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
         //Page<TbVideo> pageRequest = new Page(StringUtils.hasText(pageNum) ? Integer.valueOf(pageNum) - 1 : 0, 10);
         return null;
     }
+
+    @Override
+    public IPage<TbVideo> selectAllByPage20Videos(String pageNum) {
+
+        Page<TbVideo> page = new Page(StringUtils.hasText(pageNum) ? Integer.valueOf(pageNum) - 1 : 0, 5);
+
+        IPage iPage = baseMapper.selectPage(page, new QueryWrapper<TbVideo>());
+
+        return iPage;
+    }
+
+    @Override
+    public IPage<TbVideo> selectAllByPageAndCondition(TbVideo video,Page page) {
+        List<TbVideo>list = baseMapper.selectAllByPageAndCondition(video,page);
+
+        System.out.println("list:"+list);
+        return null;
+    }
+
+//    @Override
+//    public IPage<TbVideo> selectAllByPageAndCondition(TbVideo video, Page page) {
+//        return baseMapper.selectAllByPageAndCondition(video,page);
+//    }
+
+
 
 }

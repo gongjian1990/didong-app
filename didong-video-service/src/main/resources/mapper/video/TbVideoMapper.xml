@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.didong.mapper.video.TbVideoMapper">
+    <sql id="Base_Column_List">
+        video_id, user_id, url,video_desc, longitude, latitude,address_name,four_fps,one_fps,del_flag,upload_time,title
+    </sql>
+
+    <select id="selectPageVideos" parameterType="com.didong.entity.TbVideo" resultType="com.didong.entity.TbVideo">
+      select
+      <include refid="Base_Column_List"/>
+      from tb_video
+    </select>
+
+    <select id="selectAllByPageAndCondition" parameterType="com.didong.entity.TbVideo" resultType="com.didong.entity.TbVideo">
+      select
+        <include refid="Base_Column_List"/>
+      from tb_video
+      <!--where-->
+     <!--<if test="userId != null ">-->
+          <!--user_id=#{userId}-->
+      <!--</if>-->
+      <!--<if test="videoId!= null and videoId != '' ">-->
+        <!--and videoId=#{videoId}-->
+      <!--</if>-->
+
+    </select>
+
+</mapper>
