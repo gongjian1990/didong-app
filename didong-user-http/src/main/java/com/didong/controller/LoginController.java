@@ -49,7 +49,9 @@ public class LoginController {
 
     /**
      * qq登录
-     * @param userInfo
+     * @param request
+     * @param access_token
+     * @param openid
      * @return
      */
     @RequestMapping("/qqLogin")
