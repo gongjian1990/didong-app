@@ -1,7 +1,7 @@
 package com.didong.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.didong.mapper.video.TbVideoShareMapper;
+import com.didong.mapper.TbVideoShareMapper;
 import com.didong.service.ITbVideoShareService;
 import com.didong.serviceEntity.TbVideoShare;
 import org.springframework.stereotype.Service;

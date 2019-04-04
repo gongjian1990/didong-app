@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.didong.mapper.video.TbVideoMapper;
+import com.didong.mapper.TbVideoMapper;
 import com.didong.service.ITbChkVideoService;
 import com.didong.service.ITbVideoService;
 import com.didong.serviceEntity.TbChkVideo;
@@ -66,7 +66,7 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
     @Override
     public void saveVideoback(TbVideo video) {
         /**
-         * com.didong.mapper.video.TbVideoMapper.saveVideo
+         * TbVideoMapper.saveVideo
          */
         baseMapper.insert(video);
     }

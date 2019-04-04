@@ -5,7 +5,6 @@ import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.didong.service.ITbVideoService;
-import com.didong.service.UserInfoService;
 import com.didong.serviceEntity.TbVideo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,8 +34,6 @@ public class TbVideoController {
     ITbVideoService iTbVideoService;
     @Autowired
     RestTemplate restTemplate;
-    @Autowired
-    private UserInfoService userInfoService;
 
     @RequestMapping("/hello")
     public String hello(@RequestBody String s){
@@ -77,8 +74,8 @@ public class TbVideoController {
 //            List<UserInfo> userInfos = userInfoService.selectUserByNickNameLike(nickName);
 //        }
 
-        String aa = restTemplate.postForObject("http://localhost:8801/testController/test?s=ss", "", String.class);
-        System.out.println("result:"+aa);
+//        String aa = restTemplate.postForObject("http://localhost:8801/testController/test?s=ss", "", String.class);
+//        System.out.println("result:"+aa);
 
 
         Page<TbVideo> page = new Page(1, 2);

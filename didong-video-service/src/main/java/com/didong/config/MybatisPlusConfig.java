@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author moonLiker
  * @since 2019-03-20
  */
-@EnableTransactionManagement
 @Configuration
 @MapperScan("com.didong.mapper")
 public class MybatisPlusConfig {

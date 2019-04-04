@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pojo.ResultData;
 
+import java.util.List;
+
 /**
  * PhoneBook 表数据服务层接口实现类
  */
@@ -25,6 +27,8 @@ public class DictionaryServiceImpl extends ServiceImpl<DictionaryMapper, Diction
         ResultData resultData=new ResultData();
         JSONObject retJson=new JSONObject();
         Page<Dictionary> page=new Page(1,2);
+//        List<Dictionary> list=baseMapper.selectDictionary(page,new Dictionary());
+
         IPage<Dictionary> dictionary = baseMapper.selectPage(page,new QueryWrapper<Dictionary>()
                 .eq("opt_group", optGroup));
         if(dictionary!=null){

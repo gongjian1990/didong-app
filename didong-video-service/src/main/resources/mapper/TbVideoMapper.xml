@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.didong.mapper.video.TbVideoMapper">
+<mapper namespace="com.didong.mapper.TbVideoMapper">
     <sql id="Base_Column_List">
         video_id, user_id, url,video_desc, longitude, latitude,address_name,four_fps,one_fps,del_flag,upload_time,title
     </sql>
@@ -19,7 +19,7 @@
      <!--<if test="userId != null ">-->
           <!--user_id=#{userId}-->
       <!--</if>-->
-      <!--<if test="videoId!= null and videoId != '' ">-->
+      <!--<if test="videoId!= null a    nd videoId != '' ">-->
         <!--and videoId=#{videoId}-->
       <!--</if>-->
 

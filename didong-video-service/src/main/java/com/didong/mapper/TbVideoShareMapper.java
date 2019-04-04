@@ -1,4 +1,4 @@
-package com.didong.mapper.video;
+package com.didong.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.didong.serviceEntity.TbVideoShare;

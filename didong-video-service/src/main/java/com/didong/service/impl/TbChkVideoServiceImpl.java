@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.didong.mapper.video.TbChkVideoMapper;
+import com.didong.mapper.TbChkVideoMapper;
 import com.didong.service.ITbChkVideoService;
 import com.didong.serviceEntity.TbChkVideo;
 import com.didong.util.AliCheckUtils;

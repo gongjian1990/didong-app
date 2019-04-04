@@ -1,7 +1,7 @@
 package com.didong.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.didong.mapper.video.TbPersonalMsgMapper;
+import com.didong.mapper.TbPersonalMsgMapper;
 import com.didong.service.ITbPersonalMsgService;
 import com.didong.serviceEntity.TbPersonalMsg;
 import org.springframework.stereotype.Service;
