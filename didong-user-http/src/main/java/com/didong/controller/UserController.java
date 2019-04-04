@@ -3,6 +3,7 @@ package com.didong.controller;
 import com.alibaba.fastjson.JSON;
 import com.didong.httpEntity.PhoneBook;
 import com.didong.httpEntity.UserInfo;
+import com.didong.httpEntity.UserInterest;
 import com.didong.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,7 @@ public class UserController {
      *保存用户兴趣
      */
     @RequestMapping("/saveUserInterest")
-    public String saveUserInterest(@RequestBody List<String> interestList){
+    public String saveUserInterest(@RequestBody List<UserInterest> interestList){
         log.info("[用户兴趣保存] -- interestList:{}", interestList.toString());
         ResultData result = userService.saveUserInterest(interestList);
         if(!result.getCode().equals(200)){

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.didong.httpEntity.PhoneBook;
 import com.didong.httpEntity.UserInfo;
+import com.didong.httpEntity.UserInterest;
 import com.didong.service.UserService;
 import org.springframework.stereotype.Component;
 import pojo.Response;
@@ -54,7 +55,7 @@ public class UserServiceFallback implements UserService {
     }
 
     @Override
-    public ResultData saveUserInterest(List<String> list) {
+    public ResultData saveUserInterest(List<UserInterest> list) {
         return new ResultData(500, "保存用户兴趣失败", null);
     }
 

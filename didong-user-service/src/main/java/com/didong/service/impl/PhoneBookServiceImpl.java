@@ -19,9 +19,6 @@ import java.util.List;
 @Slf4j
 public class PhoneBookServiceImpl extends ServiceImpl<PhoneBookMapper, PhoneBook> implements PhoneBookService {
 
-    @Autowired
-    PhoneBookService phoneBookService;
-
     @Override
     public ResultData savePhoneBook(List<PhoneBook> list) {
         ResultData resultData=new ResultData();
@@ -30,7 +27,7 @@ public class PhoneBookServiceImpl extends ServiceImpl<PhoneBookMapper, PhoneBook
             phoneBook.setCreateTime(date);
             phoneBook.setLastUpdateTime(date);
         }
-        boolean result=phoneBookService.saveBatch(list);
+        boolean result=saveBatch(list);
         if(true==result){
             resultData.setCode(200);
             resultData.setMessage("通讯录导入成功");

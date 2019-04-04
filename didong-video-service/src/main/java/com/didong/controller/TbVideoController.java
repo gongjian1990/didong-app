@@ -7,8 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.didong.service.ITbVideoService;
 import com.didong.service.UserInfoService;
 import com.didong.serviceEntity.TbVideo;
-import com.didong.serviceEntity.UserInfo;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +15,6 @@ import pojo.Response;
 import pojo.ResultData;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 import java.util.Map;
 
 
@@ -73,15 +70,10 @@ public class TbVideoController {
         String pageNum = (String) map.get("pageNum");
         String pageSize = (String) map.get("pageSize");
 
-        nickName = "哈";
-        if(!StringUtils.isBlank(nickName)){
-            List<UserInfo> userInfos = userInfoService.selectUserByNickNameLike(nickName);
-
-            for (int i = 0; i < userInfos.size(); i++) {
-                System.out.println(userInfos.get(i));
-            }
-
-        }
+//        nickName = "哈";
+//        if(!StringUtils.isBlank(nickName)){
+//            List<UserInfo> userInfos = userInfoService.selectUserByNickNameLike(nickName);
+//        }
 
         Page<TbVideo> page = new Page(1, 2);
 
