@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import pojo.Response;
 import pojo.ResultData;
 
@@ -32,7 +33,8 @@ public class TbVideoController {
 
     @Autowired
     ITbVideoService iTbVideoService;
-
+    @Autowired
+    RestTemplate restTemplate;
     @Autowired
     private UserInfoService userInfoService;
 
@@ -74,6 +76,10 @@ public class TbVideoController {
 //        if(!StringUtils.isBlank(nickName)){
 //            List<UserInfo> userInfos = userInfoService.selectUserByNickNameLike(nickName);
 //        }
+
+        String aa = restTemplate.postForObject("http://localhost:8801/testController/test?s=ss", "", String.class);
+        System.out.println("result:"+aa);
+
 
         Page<TbVideo> page = new Page(1, 2);
 
