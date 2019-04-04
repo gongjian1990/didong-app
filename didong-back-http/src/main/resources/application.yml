@@ -7,11 +7,11 @@ eureka:
     prefer-ip-address: true
 
 server:
-  port: 8802
+  port: 8806
 
 spring:
   application:
-    name: user-http
+    name: back-http
 
 # 开启熔断
 feign:

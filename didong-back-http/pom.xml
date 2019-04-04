@@ -10,9 +10,9 @@
     </parent>
 
     <groupId>com.didong</groupId>
-    <artifactId>didong-user-http</artifactId>
+    <artifactId>didong-back-http</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>didong-user-http</name>
+    <name>didong-back-http</name>
 
     <dependencies>
 

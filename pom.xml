@@ -15,6 +15,7 @@
         <module>didong-zuul</module>
         <module>didong-video-http</module>
         <module>didong-video-service</module>
+        <module>didong-back-http</module>
     </modules>
 
     <parent>
