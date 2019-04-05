@@ -4,17 +4,20 @@ package com.didong.controller;
 import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.didong.dto.VideoInfoDTO;
 import com.didong.service.ITbVideoService;
 import com.didong.serviceEntity.TbVideo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import pojo.Response;
 import pojo.ResultData;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Map;
 
 
@@ -39,6 +42,12 @@ public class TbVideoController {
     public String hello(@RequestBody String s){
         System.out.println("接收："+s);
         return "world";
+    }
+
+    @RequestMapping("/getVideoInfo")
+    public List<VideoInfoDTO> getVideoInfo(@RequestBody VideoInfoDTO videoInfoDTO)  {
+        Page<VideoInfoDTO> page=new Page(1,2);
+        return iTbVideoService.getVideoInfo(videoInfoDTO,page);
     }
 
     @RequestMapping("/saveVideo")

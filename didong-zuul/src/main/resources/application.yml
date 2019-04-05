@@ -31,8 +31,11 @@ zuul:
       path: /user-http/**
     VIDEO-HTTP:
       path: /video-http/**
+    BACK-HTTP:
+      path: /back-http/**
     TEST-CLIENT:
       path: /test-client/**
+
 
 hystrix:
   command:

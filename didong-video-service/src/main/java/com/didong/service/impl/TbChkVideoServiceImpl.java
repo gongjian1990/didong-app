@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.didong.mapper.TbChkVideoMapper;
 import com.didong.service.ITbChkVideoService;
 import com.didong.serviceEntity.TbChkVideo;
+import com.didong.serviceEntity.UserInfo;
 import com.didong.util.AliCheckUtils;
 import org.springframework.stereotype.Service;
 import pojo.ResultData;
@@ -86,5 +87,10 @@ public class TbChkVideoServiceImpl extends ServiceImpl<TbChkVideoMapper, TbChkVi
     @Override
     public int updateChkVideo(TbChkVideo tbChkVideo) {
         return baseMapper.update(tbChkVideo,new QueryWrapper<TbChkVideo>().eq("video_id", tbChkVideo.getVideoId()));
+    }
+
+    @Override
+    public TbChkVideo getChkVideoInfoByVideoId(String videoId) {
+        return baseMapper.selectOne(new QueryWrapper<TbChkVideo>().eq("video_id",videoId));
     }
 }
