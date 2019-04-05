@@ -24,4 +24,6 @@ public interface ITbChkVideoService {
     List<TbChkVideo> getWaitMachineChkVideoList();
 
     int updateChkVideo(TbChkVideo tbChkVideo);
+
+    TbChkVideo getChkVideoInfoByVideoId(String videoId);
 }

@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.didong.mapper.TbVideoMapper">
     <sql id="Base_Column_List">
-        video_id, user_id, url,video_desc, longitude, latitude,address_name,four_fps,one_fps,del_flag,upload_time,title
+        id,video_id, user_id, video_url,video_title,video_desc, longitude, latitude,address_name,
+        four_fps,one_fps,del_flag,upload_time,create_time,last_update_time
     </sql>
 
     <select id="selectPageVideos" parameterType="com.didong.serviceEntity.TbVideo" resultType="com.didong.serviceEntity.TbVideo">
@@ -23,6 +24,12 @@
         <!--and videoId=#{videoId}-->
       <!--</if>-->
 
+    </select>
+
+    <select id="selectByVideoInfoDTO" parameterType="com.didong.dto.VideoInfoDTO" resultType="com.didong.dto.VideoInfoDTO">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_video
     </select>
 
 </mapper>

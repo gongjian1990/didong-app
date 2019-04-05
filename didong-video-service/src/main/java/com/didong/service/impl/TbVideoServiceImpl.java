@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.didong.dto.VideoInfoDTO;
+import com.didong.enums.VideoCheckStatusEnum;
 import com.didong.mapper.TbVideoMapper;
 import com.didong.service.ITbChkVideoService;
 import com.didong.service.ITbVideoService;
@@ -52,7 +54,7 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
         int i=tbChkVideoService.saveChkVideo(tbChkVideo);
 
         //视频检测（异步）
-        String result=tbChkVideoService.checkVideo(tbVideo.getUrl(),tbChkVideo);
+        String result=tbChkVideoService.checkVideo(tbVideo.getVideoUrl(),tbChkVideo);
         if("success".equals(result)){
             resultData.setCode(200);
             resultData.setMessage("视频上传成功");
@@ -69,6 +71,33 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
          * TbVideoMapper.saveVideo
          */
         baseMapper.insert(video);
+    }
+
+    /**
+     * 获取视频信息
+     * @param videoInfoDTO
+     * @param page
+     * @return
+     */
+    @Override
+    public List<VideoInfoDTO> getVideoInfo(VideoInfoDTO videoInfoDTO, Page<VideoInfoDTO> page) {
+        List<VideoInfoDTO> list=baseMapper.selectByVideoInfoDTO(page,videoInfoDTO);
+        for(VideoInfoDTO infoDTO:list){
+            TbChkVideo tbChkVideo=tbChkVideoService.getChkVideoInfoByVideoId(infoDTO.getVideoId());
+            infoDTO.setUpDownStatus(tbChkVideo.getVedioUpDownStatus());
+            if(0==tbChkVideo.getMachineChkStatus()){
+                infoDTO.setCheckStatus(0);
+            }else {
+                infoDTO.setCheckStatus(1);
+            }
+            if(1==tbChkVideo.getMachineChkStatus()&&1==tbChkVideo.getPersonChkStatus()){
+                infoDTO.setCheckStatus(2);
+            }else if(1==tbChkVideo.getMachineChkStatus()&&2==tbChkVideo.getPersonChkStatus()){
+                infoDTO.setCheckStatus(3);
+            }
+
+        }
+        return list;
     }
 
     @Override
