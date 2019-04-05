@@ -13,6 +13,13 @@ server:
 spring:
   application:
     name: ZUUL-SERVICE
+  servlet:
+    multipart:
+      enabled: true   # 启用http上传处理
+      max-file-size: 100MB # 设置单个文件的最大长度
+      max-request-size: 100MB # 设置最大的请求文件的大小
+      file-size-threshold: 100MB  # 当上传文件达到1MB的时候进行磁盘写入
+      location: D:/
 
 zuul:
   host:
@@ -40,3 +47,5 @@ ribbon:
   ReadTimeout: 160000
   # 请求连接超时时间
   ConnectTimeout: 60000
+
+
