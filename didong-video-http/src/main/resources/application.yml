@@ -12,7 +12,20 @@ server:
 spring:
   application:
     name: video-http
+  mvc:
+    view:
+      prefix: /WEB-INF/
+      suffix: .jsp
+  servlet:
+    multipart:
+      enabled: true   # 启用http上传处理
+      max-file-size: 100MB # 设置单个文件的最大长度
+      max-request-size: 100MB # 设置最大的请求文件的大小
+      file-size-threshold: 100MB  # 当上传文件达到1MB的时候进行磁盘写入
+      location: D:/
 
 feign:
   hystrix:
     enabled: true
+
+upload-folder: d:/a/
