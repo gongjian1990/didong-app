@@ -14,6 +14,7 @@ import com.didong.serviceEntity.TbVideo;
 import com.didong.serviceEntity.TbVideoChk;
 import com.didong.serviceEntity.TbVideoReport;
 import com.didong.util.IdGeneratorUtil;
+import com.didong.util.VodUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -42,7 +43,7 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
     ITbVideoReportService iTbVideoReportService;
 
     @Override
-    public ResultData saveVideo(TbVideo tbVideo) throws UnsupportedEncodingException, ClientException {
+    public ResultData saveVideo(TbVideo tbVideo){
         ResultData resultData=new ResultData();
         //视频内容存储
         TbVideoChk tbChkVideo=new TbVideoChk();
@@ -58,8 +59,20 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
         tbChkVideo.setLastUpdateTime(new Date());
         int i=tbVideoChkService.saveChkVideo(tbChkVideo);
 
+        //获取视频url
+        String videoUrl=VodUploadUtil.getVideoUrlByVideoId(tbVideo.getThirdVideoId());
+
         //视频检测（异步）
-        String result=tbVideoChkService.checkVideo(tbVideo.getVideoUrl(),tbChkVideo);
+        String result= null;
+        try {
+            result = tbVideoChkService.checkVideo(videoUrl,tbChkVideo);
+        } catch (UnsupportedEncodingException e) {
+            resultData.setCode(500);
+            resultData.setMessage("编码格式不支持");
+        } catch (ClientException e) {
+            resultData.setCode(500);
+            resultData.setMessage("通讯异常");
+        }
         if("success".equals(result)){
             resultData.setCode(200);
             resultData.setMessage("视频上传成功");
@@ -139,7 +152,6 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
             }else {
                 infoDTO.setHandelStatus(0);
             }
-
         }
         return list;
     }

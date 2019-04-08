@@ -1,6 +1,5 @@
 package com.didong.fallback;
 
-import com.alibaba.fastjson.JSONObject;
 import com.didong.dto.VideoInfoDTO;
 import com.didong.service.BackVideoService;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,7 @@ public class BackVideoServiceFallback implements BackVideoService {
 
 
     @Override
-    public JSONObject getVideoInfo(VideoInfoDTO videoInfoDTO) {
+    public String getVideoInfo(VideoInfoDTO videoInfoDTO) {
         return null;
     }
 }

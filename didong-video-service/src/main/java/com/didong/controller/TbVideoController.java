@@ -1,8 +1,6 @@
 package com.didong.controller;
 
 
-import com.alibaba.fastjson.JSONObject;
-import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.didong.dto.VideoInfoDTO;
@@ -17,7 +15,6 @@ import org.springframework.web.client.RestTemplate;
 import pojo.Response;
 import pojo.ResultData;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -48,19 +45,14 @@ public class TbVideoController {
     }
 
     @RequestMapping("/getVideoInfo")
-    public JSONObject getVideoInfo(@RequestBody VideoInfoDTO videoInfoDTO) {
-        Page<VideoInfoDTO> page = new Page(1, 2);
-        IPage<VideoInfoDTO> ipage=iTbVideoService.getVideoInfo(videoInfoDTO, page);
-
-        JSONObject jsonObject = new JSONObject();
-
-        jsonObject.put("result", ipage);
-        jsonObject.put("test", "1");
-        return jsonObject;
+    public IPage<VideoInfoDTO> getVideoInfo(@RequestBody VideoInfoDTO videoInfoDTO) {
+        Page<VideoInfoDTO> page = new Page(videoInfoDTO.getPageIndex(), videoInfoDTO.getPageSize());
+        IPage<VideoInfoDTO>  ipage=iTbVideoService.getVideoInfo(videoInfoDTO, page);
+        return ipage;
     }
 
     @RequestMapping("/saveVideo")
-    public ResultData saveVideo(@RequestBody TbVideo tbVideo) throws UnsupportedEncodingException, ClientException {
+    public ResultData saveVideo(@RequestBody TbVideo tbVideo)  {
         return iTbVideoService.saveVideo(tbVideo);
     }
 

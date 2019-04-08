@@ -1,14 +1,11 @@
 package com.didong.service;
 
-import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.didong.dto.VideoInfoDTO;
 import com.didong.serviceEntity.TbVideo;
 import pojo.Response;
 import pojo.ResultData;
-
-import java.io.UnsupportedEncodingException;
 
 /**
  * <p>
@@ -24,7 +21,7 @@ public interface ITbVideoService {
 
     Response saveVideoback(TbVideo video, Integer personChkStatus, Integer videoUpDownStatus, String nickName);
 
-    IPage<VideoInfoDTO> getVideoInfo(VideoInfoDTO videoInfoDTO, Page<VideoInfoDTO> page);
+    IPage<VideoInfoDTO>  getVideoInfo(VideoInfoDTO videoInfoDTO, Page<VideoInfoDTO> page);
 
     IPage<TbVideo> selectPageVideos(Page page);
 
@@ -32,6 +29,5 @@ public interface ITbVideoService {
 
     IPage<TbVideo> selectAllByPageAndCondition(TbVideo video,Page<TbVideo> page);
 
-    ResultData saveVideo(TbVideo tbVideo) throws UnsupportedEncodingException, ClientException;
-
+    ResultData saveVideo(TbVideo tbVideo) ;
 }
