@@ -1,5 +1,6 @@
 package com.didong.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -24,7 +25,7 @@ public interface ITbVideoService {
 
     void saveVideoback(TbVideo video) ;
 
-    IPage<VideoInfoDTO> getVideoInfo(VideoInfoDTO videoInfoDTO, Page<VideoInfoDTO> page);
+    IPage<VideoInfoDTO>  getVideoInfo(VideoInfoDTO videoInfoDTO, Page<VideoInfoDTO> page);
 
     IPage<TbVideo> selectPageVideos(Page page);
 

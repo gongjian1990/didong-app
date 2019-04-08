@@ -1,5 +1,6 @@
 package com.didong.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -14,12 +15,14 @@ import com.didong.serviceEntity.TbVideo;
 import com.didong.serviceEntity.TbVideoChk;
 import com.didong.serviceEntity.TbVideoReport;
 import com.didong.util.IdGeneratorUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import pojo.ResultData;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -106,7 +109,6 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
             }else {
                 infoDTO.setHandelStatus(0);
             }
-
         }
         return list;
     }
