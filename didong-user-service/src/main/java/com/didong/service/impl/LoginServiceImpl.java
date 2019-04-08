@@ -3,7 +3,7 @@ package com.didong.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.didong.mapper.UserInfoMapper;
+import com.didong.mapper.TbUserInfoMapper;
 import com.didong.redis.RedisUtil;
 import com.didong.service.LoginService;
 import com.didong.serviceEntity.TbUserInfo;
@@ -22,7 +22,7 @@ import java.util.UUID;
 
 @Service("loginService")
 @Slf4j
-public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, TbUserInfo> implements LoginService {
+public class LoginServiceImpl extends ServiceImpl<TbUserInfoMapper, TbUserInfo> implements LoginService {
 
     /**
      * 获取短信验证码

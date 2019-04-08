@@ -7,7 +7,7 @@ import pojo.ResultData;
 
 import java.util.List;
 
-public interface UserInterestService extends IService<TbUserInterest> {
+public interface TbUserInterestService extends IService<TbUserInterest> {
 
     ResultData saveUserInterest(List<TbUserInterest> interestList);
 }

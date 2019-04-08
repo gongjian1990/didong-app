@@ -8,7 +8,7 @@ import pojo.ResultData;
 
 import java.io.UnsupportedEncodingException;
 
-public interface UserInfoService {
+public interface TbUserInfoService {
 
     ResultData updateUserData(TbUserInfo userInfo) throws UnsupportedEncodingException, ClientException;
 

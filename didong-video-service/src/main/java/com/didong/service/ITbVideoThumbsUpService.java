@@ -9,6 +9,6 @@ package com.didong.service;
  * @author jobob
  * @since 2019-03-30
  */
-public interface ITbThumbsUpService {
+public interface ITbVideoThumbsUpService {
 
 }

@@ -5,10 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.didong.mapper.TbChkVideoMapper;
-import com.didong.service.ITbChkVideoService;
-import com.didong.serviceEntity.TbChkVideo;
-import com.didong.serviceEntity.UserInfo;
+import com.didong.mapper.TbVideoChkMapper;
+import com.didong.service.ITbVideoChkService;
+import com.didong.serviceEntity.TbVideoChk;
 import com.didong.util.AliCheckUtils;
 import org.springframework.stereotype.Service;
 import pojo.ResultData;
@@ -25,10 +24,10 @@ import java.util.*;
  * @since 2019-03-30
  */
 @Service
-public class TbChkVideoServiceImpl extends ServiceImpl<TbChkVideoMapper, TbChkVideo> implements ITbChkVideoService {
+public class TbChkVideoServiceImpl extends ServiceImpl<TbVideoChkMapper, TbVideoChk> implements ITbVideoChkService {
 
     @Override
-    public int saveChkVideo(TbChkVideo tbChkVideo) {
+    public int saveChkVideo(TbVideoChk tbChkVideo) {
         return baseMapper.insert(tbChkVideo);
     }
 
@@ -42,7 +41,7 @@ public class TbChkVideoServiceImpl extends ServiceImpl<TbChkVideoMapper, TbChkVi
      * @throws ClientException
      */
     @Override
-    public String checkVideo(String url, TbChkVideo tbChkVideo) throws UnsupportedEncodingException, ClientException {
+    public String checkVideo(String url, TbVideoChk tbChkVideo) throws UnsupportedEncodingException, ClientException {
         ResultData resultData = new ResultData();
         List<Map<String, Object>> tasks = new ArrayList<Map<String, Object>>();
         Map<String, Object> task = new LinkedHashMap<String, Object>();
@@ -75,22 +74,22 @@ public class TbChkVideoServiceImpl extends ServiceImpl<TbChkVideoMapper, TbChkVi
         } else {
             return "false";
         }
-        baseMapper.update(tbChkVideo, new QueryWrapper<TbChkVideo>().eq("vedio_id", tbChkVideo.getVideoId()));
+        baseMapper.update(tbChkVideo, new QueryWrapper<TbVideoChk>().eq("vedio_id", tbChkVideo.getVideoId()));
         return "success";
     }
 
     @Override
-    public List<TbChkVideo> getWaitMachineChkVideoList() {
-        return baseMapper.selectList(new QueryWrapper<TbChkVideo>().eq("machine_chk_status", 0));
+    public List<TbVideoChk> getWaitMachineChkVideoList() {
+        return baseMapper.selectList(new QueryWrapper<TbVideoChk>().eq("machine_chk_status", 0));
     }
 
     @Override
-    public int updateChkVideo(TbChkVideo tbChkVideo) {
-        return baseMapper.update(tbChkVideo,new QueryWrapper<TbChkVideo>().eq("video_id", tbChkVideo.getVideoId()));
+    public int updateChkVideo(TbVideoChk tbChkVideo) {
+        return baseMapper.update(tbChkVideo,new QueryWrapper<TbVideoChk>().eq("video_id", tbChkVideo.getVideoId()));
     }
 
     @Override
-    public TbChkVideo getChkVideoInfoByVideoId(String videoId) {
-        return baseMapper.selectOne(new QueryWrapper<TbChkVideo>().eq("video_id",videoId));
+    public TbVideoChk getChkVideoInfoByVideoId(String videoId) {
+        return baseMapper.selectOne(new QueryWrapper<TbVideoChk>().eq("video_id",videoId));
     }
 }

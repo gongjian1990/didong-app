@@ -7,11 +7,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.didong.dto.VideoInfoDTO;
 import com.didong.mapper.TbVideoMapper;
-import com.didong.service.ITbChkVideoService;
+import com.didong.service.ITbVideoChkService;
 import com.didong.service.ITbVideoReportService;
 import com.didong.service.ITbVideoService;
-import com.didong.serviceEntity.TbChkVideo;
 import com.didong.serviceEntity.TbVideo;
+import com.didong.serviceEntity.TbVideoChk;
 import com.didong.serviceEntity.TbVideoReport;
 import com.didong.util.IdGeneratorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ import java.util.List;
 public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> implements ITbVideoService {
 
     @Autowired
-    ITbChkVideoService tbChkVideoService;
+    ITbVideoChkService tbChkVideoService;
 
     @Autowired
     ITbVideoReportService iTbVideoReportService;
@@ -44,7 +44,7 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
     public ResultData saveVideo(TbVideo tbVideo) throws UnsupportedEncodingException, ClientException {
         ResultData resultData=new ResultData();
         //视频内容存储
-        TbChkVideo tbChkVideo=new TbChkVideo();
+        TbVideoChk tbChkVideo=new TbVideoChk();
         long video_id=IdGeneratorUtil.generateId();
         tbVideo.setVideoId(video_id);
         tbVideo.setUploadTime(new Date());

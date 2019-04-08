@@ -7,6 +7,6 @@ import com.didong.serviceEntity.TbPhoneBook;
 /**
  * PhoneBook 表数据库控制层接口
  */
-public interface PhoneBookMapper extends BaseMapper<TbPhoneBook> {
+public interface TbPhoneBookMapper extends BaseMapper<TbPhoneBook> {
 
 }

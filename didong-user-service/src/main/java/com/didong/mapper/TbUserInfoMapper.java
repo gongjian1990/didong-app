@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Param;
 /**
  * User 表数据库控制层接口
  */
-public interface UserInfoMapper extends BaseMapper<TbUserInfo> {
+public interface TbUserInfoMapper extends BaseMapper<TbUserInfo> {
 
     TbUserInfo selectUserInfoByPhoneAndLoginType(String phone,String loginType);
 

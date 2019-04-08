@@ -1,6 +1,6 @@
 package com.didong.controller;
 
-import com.didong.service.DictionaryService;
+import com.didong.service.TbDictionaryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,9 +17,9 @@ import pojo.ResultData;
 @RestController
 @RequestMapping("/dictionaryController")
 @Slf4j
-public class DictionaryController {
+public class TbDictionaryController {
     @Autowired
-    public DictionaryService dictionaryService;
+    public TbDictionaryService dictionaryService;
 
 
     @RequestMapping("/getDictionaryList")

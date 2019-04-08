@@ -7,5 +7,5 @@ import com.didong.serviceEntity.TbUserInterest;
 /**
  * UserInterest 表数据库控制层接口
  */
-public interface UserInterestMapper extends BaseMapper<TbUserInterest> {
+public interface TbUserInterestMapper extends BaseMapper<TbUserInterest> {
 }

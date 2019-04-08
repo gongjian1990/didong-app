@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 视频审核表 前端控制器
+ * 视频点赞表 前端控制器
  * </p>
  *
  * @author jobob
  * @since 2019-03-30
  */
 @RestController
-@RequestMapping("/tbChkVideo")
-public class TbChkVideoController {
+@RequestMapping("/tbThumbsUp")
+public class TbVideoThumbsUpController {
 
 }

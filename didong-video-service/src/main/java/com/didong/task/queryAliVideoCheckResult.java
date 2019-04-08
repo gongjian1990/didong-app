@@ -3,8 +3,8 @@ package com.didong.task;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.exceptions.ClientException;
-import com.didong.service.ITbChkVideoService;
-import com.didong.serviceEntity.TbChkVideo;
+import com.didong.service.ITbVideoChkService;
+import com.didong.serviceEntity.TbVideoChk;
 import com.didong.util.AliCheckUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import java.util.List;
 @Slf4j
 public class queryAliVideoCheckResult {
     @Autowired
-    ITbChkVideoService iTbChkVideoService;
+    ITbVideoChkService iTbChkVideoService;
 
     /**
      * 定时任务方法，每1分钟查询视频审核进度
@@ -34,9 +34,9 @@ public class queryAliVideoCheckResult {
     public void getWaitMachineChkVideo() {
         try {
             List<String> taskList = new ArrayList<String>();
-            List<TbChkVideo> tbChkVideoList = iTbChkVideoService.getWaitMachineChkVideoList();
+            List<TbVideoChk> tbChkVideoList = iTbChkVideoService.getWaitMachineChkVideoList();
             if (tbChkVideoList.size() > 0) {
-                for (TbChkVideo tbChkVideo : tbChkVideoList) {
+                for (TbVideoChk tbChkVideo : tbChkVideoList) {
 //                    taskList.add(tbChkVideo.getTaskId());
                     queryVideo(tbChkVideo.getTaskId(), tbChkVideo);
 
@@ -53,7 +53,7 @@ public class queryAliVideoCheckResult {
      * @param task
      * @param tbChkVideo
      */
-    public void queryVideo(String task, TbChkVideo tbChkVideo) {
+    public void queryVideo(String task, TbVideoChk tbChkVideo) {
         try {
             List<String> list = new ArrayList<String>();
             list.add(task);

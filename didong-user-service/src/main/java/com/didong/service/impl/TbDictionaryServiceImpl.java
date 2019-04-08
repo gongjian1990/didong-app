@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.didong.mapper.DictionaryMapper;
-import com.didong.service.DictionaryService;
+import com.didong.mapper.TbDictionaryMapper;
+import com.didong.service.TbDictionaryService;
 import com.didong.serviceEntity.TbDictionary;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import pojo.ResultData;
  */
 @Service
 @Slf4j
-public class DictionaryServiceImpl extends ServiceImpl<DictionaryMapper, TbDictionary> implements DictionaryService {
+public class TbDictionaryServiceImpl extends ServiceImpl<TbDictionaryMapper, TbDictionary> implements TbDictionaryService {
 
 
     @Override

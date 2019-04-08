@@ -1,8 +1,8 @@
 package com.didong.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.didong.mapper.UserInterestMapper;
-import com.didong.service.UserInterestService;
+import com.didong.mapper.TbUserInterestMapper;
+import com.didong.service.TbUserInterestService;
 import com.didong.serviceEntity.TbUserInterest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class UserInterestServiceImpl extends ServiceImpl<UserInterestMapper, TbUserInterest> implements UserInterestService {
+public class TbUserInterestServiceImpl extends ServiceImpl<TbUserInterestMapper, TbUserInterest> implements TbUserInterestService {
 
 
 

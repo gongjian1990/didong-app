@@ -1,7 +1,7 @@
 package com.didong.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.didong.serviceEntity.TbThumbsUp;
+import com.didong.serviceEntity.TbVideoThumbsUp;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.didong.serviceEntity.TbThumbsUp;
  * @author jobob
  * @since 2019-03-30
  */
-public interface TbThumbsUpMapper extends BaseMapper<TbThumbsUp> {
+public interface TbVideoThumbsUpMapper extends BaseMapper<TbVideoThumbsUp> {
 
 }

@@ -1,8 +1,8 @@
 package com.didong.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.didong.mapper.PhoneBookMapper;
-import com.didong.service.PhoneBookService;
+import com.didong.mapper.TbPhoneBookMapper;
+import com.didong.service.TbPhoneBookService;
 import com.didong.serviceEntity.TbPhoneBook;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class PhoneBookServiceImpl extends ServiceImpl<PhoneBookMapper, TbPhoneBook> implements PhoneBookService {
+public class TbPhoneBookServiceImpl extends ServiceImpl<TbPhoneBookMapper, TbPhoneBook> implements TbPhoneBookService {
 
     @Override
     public ResultData savePhoneBook(List<TbPhoneBook> list) {

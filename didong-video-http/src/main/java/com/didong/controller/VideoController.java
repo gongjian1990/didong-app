@@ -21,7 +21,7 @@ import java.nio.file.Paths;
 @RestController
 @RequestMapping("/video")
 @Slf4j
-@CrossOrigin(origins = "*",maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class VideoController {
 
     @Autowired
@@ -32,21 +32,22 @@ public class VideoController {
 
     /**
      * 视频上传 app端
+     *
      * @param tbVideo
      * @return
      */
     @RequestMapping("/saveVideo")
-    public String saveVideo(TbVideo tbVideo){
+    public String saveVideo(TbVideo tbVideo) {
         log.info("[视频上传] -- tbVideo:{}", tbVideo);
         ResultData result = videoService.saveVideo(tbVideo);
-        if(!result.getCode().equals(200)){
+        if (!result.getCode().equals(200)) {
             return JSON.toJSONString(Response.error(result));
         }
         return JSON.toJSONString(Response.success(result));
     }
 
     @RequestMapping("/hello")
-    public String hello(String s){
+    public String hello(String s) {
 
         videoService.hello("Sss");
 
@@ -55,45 +56,46 @@ public class VideoController {
 
     /**
      * 保存视频 PC端
+     *
      * @param video
      * @return
      */
     @RequestMapping("/saveVideoback")
-    public Response saveVideoback(TbVideo video){
+    public Response saveVideoback(TbVideo video) {
         try {
             videoService.saveVideoback(video);
-            return Response.success(new ResultData(200,"保存成功",null));
+            return Response.success(new ResultData(200, "保存成功", null));
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.success(new ResultData(500,"保存失败",null));
+            return Response.success(new ResultData(500, "保存失败", null));
         }
     }
 
     @RequestMapping("/selectAllByPage20Videos")
-    public Response selectAllByPage20Videos(String num){
+    public Response selectAllByPage20Videos(String num) {
         try {
             Response response = videoService.selectAllByPage20Videos(num);
             return response;
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.success(new ResultData(500,"查询视频失败",null));
+            return Response.success(new ResultData(500, "查询视频失败", null));
         }
     }
 
     @RequestMapping("/selectAllByPage20Videos1")
-    public Response selectAllByPageAndCondition(TbVideo video){
+    public Response selectAllByPageAndCondition(TbVideo video) {
         try {
             Response response = videoService.selectAllByPageAndCondition(video);
             return response;
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.success(new ResultData(500,"查询视频失败",null));
+            return Response.success(new ResultData(500, "查询视频失败", null));
         }
     }
 
     @RequestMapping("/getAliStsResponse")
-    public Response getAliStsResponse(){
-        return Response.success(new ResultData(200,"",AliStsUtil.getStsResponse()));
+    public Response getAliStsResponse() {
+        return Response.success(new ResultData(200, "", AliStsUtil.getStsResponse()));
     }
 
 //    @RequestMapping("/uploadVideo")
@@ -132,9 +134,9 @@ public class VideoController {
 //        return null;
 //    }
 
-    @RequestMapping(value = "/uploadVideo",method = RequestMethod.POST)
-    public Response uploadVide(@RequestParam("file")MultipartFile file){
-        if(file!= null){
+    @RequestMapping(value = "/uploadVideo", method = RequestMethod.POST)
+    public Response uploadVide(@RequestParam("file") MultipartFile file) {
+        if (file != null) {
             try {
                 String originalFilename = file.getOriginalFilename();
                 byte[] bytes = file.getBytes();
@@ -147,23 +149,23 @@ public class VideoController {
                 Files.write(path, bytes);
                 String url = VodUploadUtil.uploadVideo("test01", UPLOAD_FOLDER + originalFilename);
 
-                return Response.success(new ResultData(200,"success",url));
+                return Response.success(new ResultData(200, "success", url));
             } catch (IOException e) {
                 e.printStackTrace();
-                return Response.error(new ResultData(500,"服务器异常",null));
+                return Response.error(new ResultData(500, "服务器异常", null));
             }
         }
         return null;
     }
 
 
-    public Response saveVideo(){
-
+    public Response saveVideo() {
+        return null;
     }
 
-    @RequestMapping(value = "/hello1",method = RequestMethod.GET)
-    public String hello1(@RequestParam("hello") String hello){
-        System.out.println("hello:"+hello);
+    @RequestMapping(value = "/hello1", method = RequestMethod.GET)
+    public String hello1(@RequestParam("hello") String hello) {
+        System.out.println("hello:" + hello);
         return "world";
     }
 

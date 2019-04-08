@@ -1,6 +1,6 @@
 package com.didong.controller;
 
-import com.didong.service.UserInterestService;
+import com.didong.service.TbUserInterestService;
 import com.didong.serviceEntity.TbUserInterest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +15,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/userInterestController")
 @Slf4j
-public class UserInterestController {
+public class TbUserInterestController {
 
     @Autowired
-    public UserInterestService userInterestService;
+    public TbUserInterestService userInterestService;
 
 
     @RequestMapping("/saveUserInterest")

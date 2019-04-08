@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.didong.mapper.UserInfoMapper">
+<mapper namespace="com.didong.mapper.TbUserInfoMapper">
     <sql id="Base_Column_List">
         id, user_id, nick_name,age, birthday, age,gender,avatar,live_address,constellation,login_type,user_phone,email,
         school,udid,access_token,user_level,last_online_ip,third_union_id,user_status,del_flag, create_time, last_update_time,last_online_time
     </sql>
-    <select id="selectUserInfoByPhoneAndLoginType" parameterType="com.didong.serviceEntity.UserInfo" resultType="com.didong.serviceEntity.UserInfo">
+    <select id="selectUserInfoByPhoneAndLoginType" parameterType="com.didong.serviceEntity.TbUserInfo" resultType="com.didong.serviceEntity.TbUserInfo">
       select
       <include refid="Base_Column_List"/>
       from tb_user_info a

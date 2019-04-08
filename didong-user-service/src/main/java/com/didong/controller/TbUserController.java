@@ -2,7 +2,7 @@ package com.didong.controller;
 
 import com.aliyuncs.exceptions.ClientException;
 import com.didong.dto.VideoInfoDTO;
-import com.didong.service.UserInfoService;
+import com.didong.service.TbUserInfoService;
 import com.didong.serviceEntity.TbUserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +17,10 @@ import java.io.UnsupportedEncodingException;
 @RestController
 @RequestMapping("/userController")
 @Slf4j
-public class UserController {
+public class TbUserController {
 
     @Autowired
-    public UserInfoService userinfoService;
+    public TbUserInfoService userinfoService;
 
     @RequestMapping("/getUserInfo")
     public VideoInfoDTO getVideoInfoDTOInfo(@RequestBody VideoInfoDTO videoInfoDTO) {

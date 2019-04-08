@@ -7,7 +7,7 @@ import pojo.ResultData;
 
 import java.util.List;
 
-public interface PhoneBookService  extends IService<TbPhoneBook> {
+public interface TbPhoneBookService extends IService<TbPhoneBook> {
 
     ResultData savePhoneBook(List<TbPhoneBook> list);
 }

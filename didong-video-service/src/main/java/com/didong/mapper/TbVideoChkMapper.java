@@ -1,7 +1,7 @@
 package com.didong.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.didong.serviceEntity.TbChkVideo;
+import com.didong.serviceEntity.TbVideoChk;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.didong.serviceEntity.TbChkVideo;
  * @author jobob
  * @since 2019-03-30
  */
-public interface TbChkVideoMapper extends BaseMapper<TbChkVideo> {
+public interface TbVideoChkMapper extends BaseMapper<TbVideoChk> {
 
 }

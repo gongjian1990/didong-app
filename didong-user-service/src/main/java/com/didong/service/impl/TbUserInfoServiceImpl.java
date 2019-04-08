@@ -7,8 +7,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.didong.dto.VideoInfoDTO;
 import com.didong.enums.AliTextLabelEnum;
-import com.didong.mapper.UserInfoMapper;
-import com.didong.service.UserInfoService;
+import com.didong.mapper.TbUserInfoMapper;
+import com.didong.service.TbUserInfoService;
 import com.didong.serviceEntity.TbUserInfo;
 import com.didong.util.AliCheckUtils;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import java.util.*;
  * User 表数据服务层接口实现类
  */
 @Service
-public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, TbUserInfo> implements UserInfoService {
+public class TbUserInfoServiceImpl extends ServiceImpl<TbUserInfoMapper, TbUserInfo> implements TbUserInfoService {
 
 
 

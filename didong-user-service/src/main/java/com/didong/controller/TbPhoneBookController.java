@@ -1,6 +1,6 @@
 package com.didong.controller;
 
-import com.didong.service.PhoneBookService;
+import com.didong.service.TbPhoneBookService;
 import com.didong.serviceEntity.TbPhoneBook;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +15,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/phoneBookController")
 @Slf4j
-public class PhoneBookController {
+public class TbPhoneBookController {
 
     @Autowired
-    public PhoneBookService phoneBookService;
+    public TbPhoneBookService phoneBookService;
 
 
     @RequestMapping("/savePhoneBook")
