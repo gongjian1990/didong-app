@@ -33,8 +33,8 @@ import java.util.*;
  */
 @RestController
 @Slf4j
-@RequestMapping(value = "/back", produces = "application/json;charset=UTF-8")
-public class BackController {
+@RequestMapping(value = "/video", produces = "application/json;charset=UTF-8")
+public class VideoController {
 
     @Autowired
     BackVideoService backVideoService;
