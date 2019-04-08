@@ -4,19 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.didong.httpEntity.TbVideo;
 import com.didong.service.VideoService;
 import com.didong.util.AliStsUtil;
-import com.didong.util.VodUploadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import pojo.Response;
 import pojo.ResultData;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/video")
@@ -134,34 +127,7 @@ public class VideoController {
 //        return null;
 //    }
 
-    @RequestMapping(value = "/uploadVideo", method = RequestMethod.POST)
-    public Response uploadVide(@RequestParam("file") MultipartFile file) {
-        if (file != null) {
-            try {
-                String originalFilename = file.getOriginalFilename();
-                byte[] bytes = file.getBytes();
-                Path path = Paths.get(UPLOAD_FOLDER + file.getOriginalFilename());
-                //如果没有files文件夹，则创建
-                if (!Files.isWritable(path)) {
-                    Files.createDirectories(Paths.get(UPLOAD_FOLDER));
-                }
-                //文件写入指定路径
-                Files.write(path, bytes);
-                String url = VodUploadUtil.uploadVideo("test01", UPLOAD_FOLDER + originalFilename);
 
-                return Response.success(new ResultData(200, "success", url));
-            } catch (IOException e) {
-                e.printStackTrace();
-                return Response.error(new ResultData(500, "服务器异常", null));
-            }
-        }
-        return null;
-    }
-
-
-    public Response saveVideo() {
-        return null;
-    }
 
     @RequestMapping(value = "/hello1", method = RequestMethod.GET)
     public String hello1(@RequestParam("hello") String hello) {
