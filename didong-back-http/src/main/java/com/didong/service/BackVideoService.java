@@ -1,12 +1,13 @@
 package com.didong.service;
 
-import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.didong.dto.VideoInfoDTO;
 import com.didong.fallback.BackVideoServiceFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import pojo.Response;
+
+import java.util.Map;
 
 /**
  * @program: didong-app
@@ -19,5 +20,8 @@ public interface BackVideoService {
 
     @RequestMapping(method = RequestMethod.POST,value = "video/getVideoInfo")
     String getVideoInfo(VideoInfoDTO videoInfoDTO);
+
+    @RequestMapping(method = RequestMethod.POST,value = "video/saveVideoback")
+    Response backSaveVideo(Map map);
 
 }
