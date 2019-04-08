@@ -52,7 +52,7 @@ public class TbVideoController {
     }
 
     @RequestMapping("/saveVideo")
-    public ResultData saveVideo(@RequestBody TbVideo tbVideo) throws UnsupportedEncodingException, ClientException {
+    public ResultData saveVideo(@RequestBody TbVideo tbVideo)  {
         return iTbVideoService.saveVideo(tbVideo);
     }
 

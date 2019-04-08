@@ -74,7 +74,7 @@ public class TbChkVideoServiceImpl extends ServiceImpl<TbVideoChkMapper, TbVideo
         } else {
             return "false";
         }
-        baseMapper.update(tbChkVideo, new QueryWrapper<TbVideoChk>().eq("vedio_id", tbChkVideo.getVideoId()));
+        baseMapper.update(tbChkVideo, new QueryWrapper<TbVideoChk>().eq("video", tbChkVideo.getVideoId()));
         return "success";
     }
 
