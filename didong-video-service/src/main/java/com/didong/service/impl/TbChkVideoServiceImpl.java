@@ -64,7 +64,7 @@ public class TbChkVideoServiceImpl extends ServiceImpl<TbVideoChkMapper, TbVideo
          */
 //        data.put("audioScenes", Arrays.asList("antispam"));
         JSONObject jsonObject = AliCheckUtils.checkVideo(data);
-        if (200 == jsonObject.getInteger("code ")) {
+        if (200 == jsonObject.getInteger("code")) {
             JSONArray jsonArray = jsonObject.getJSONArray("data");
             for (Object object : jsonArray) {
                 if (200 == ((JSONObject) object).getIntValue("code")) {
@@ -74,7 +74,7 @@ public class TbChkVideoServiceImpl extends ServiceImpl<TbVideoChkMapper, TbVideo
         } else {
             return "false";
         }
-        baseMapper.update(tbChkVideo, new QueryWrapper<TbVideoChk>().eq("video", tbChkVideo.getVideoId()));
+        baseMapper.update(tbChkVideo, new QueryWrapper<TbVideoChk>().eq("video_id", tbChkVideo.getVideoId()));
         return "success";
     }
 
