@@ -53,7 +53,7 @@ public class TbChkVideoServiceImpl extends ServiceImpl<TbVideoChkMapper, TbVideo
          * 设置要检测的场景, 计费是按照该处传递的场景进行
          * 视频默认1秒截取一帧，您可以自行控制截帧频率，收费按照视频的截帧数量以及每一帧的检测场景进行计费
          * 举例：1分钟的视频截帧60张，检测色情和暴恐涉政2个场景，收费按照60张暴恐+60张暴恐涉政进行计费
-         * porn: porn表示色情场景检测,terrorism表示暴恐涉政场景检测
+         * porn: porn表示色情场景检测,terrorism表示暴恐涉政场景检测，live表示不良场景
          */
         JSONObject data = new JSONObject();
         data.put("scenes", Arrays.asList("porn", "terrorism", "live"));
@@ -62,7 +62,7 @@ public class TbChkVideoServiceImpl extends ServiceImpl<TbVideoChkMapper, TbVideo
          * 若检测视频画面的同时需要检测语音是否有风险内容，传递下面的参数
          * 注意语音的计费是按照时长进行，即该视频的时长*语音反垃圾的单价
          */
-        data.put("audioScenes", Arrays.asList("antispam"));
+//        data.put("audioScenes", Arrays.asList("antispam"));
         JSONObject jsonObject = AliCheckUtils.checkVideo(data);
         if (200 == jsonObject.getInteger("code ")) {
             JSONArray jsonArray = jsonObject.getJSONArray("data");
