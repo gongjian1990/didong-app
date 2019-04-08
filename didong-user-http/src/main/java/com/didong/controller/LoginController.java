@@ -2,7 +2,7 @@ package com.didong.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.didong.httpEntity.UserInfo;
+import com.didong.httpEntity.TbUserInfo;
 import com.didong.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +75,7 @@ public class LoginController {
      * @return
      */
     @RequestMapping("/wbLogin")
-    public String wbLogin(UserInfo userInfo, HttpServletRequest request){
+    public String wbLogin(TbUserInfo userInfo, HttpServletRequest request){
         userInfo.setLastOnlineIp(request.getHeader("x-forwarded-for"));
         String result=userService.wbLogin(userInfo);
         if(!result.equals("success")){

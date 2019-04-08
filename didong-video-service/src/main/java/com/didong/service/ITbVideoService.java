@@ -24,7 +24,7 @@ public interface ITbVideoService {
 
     void saveVideoback(TbVideo video) ;
 
-    List<VideoInfoDTO> getVideoInfo(VideoInfoDTO videoInfoDTO, Page<VideoInfoDTO> page);
+    IPage<VideoInfoDTO> getVideoInfo(VideoInfoDTO videoInfoDTO, Page<VideoInfoDTO> page);
 
     IPage<TbVideo> selectPageVideos(Page page);
 

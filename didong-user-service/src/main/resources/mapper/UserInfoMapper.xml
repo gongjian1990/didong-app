@@ -1,17 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.didong.mapper.user.UserInfoMapper">
+<mapper namespace="com.didong.mapper.UserInfoMapper">
     <sql id="Base_Column_List">
         id, user_id, nick_name,age, birthday, age,gender,avatar,live_address,constellation,login_type,user_phone,email,
-        school,udid,access_token,user_level,del_flag, create_time, last_update_time,last_online_time,last_online_ip,user_status
+        school,udid,access_token,user_level,last_online_ip,third_union_id,user_status,del_flag, create_time, last_update_time,last_online_time
     </sql>
     <select id="selectUserInfoByPhoneAndLoginType" parameterType="com.didong.serviceEntity.UserInfo" resultType="com.didong.serviceEntity.UserInfo">
       select
       <include refid="Base_Column_List"/>
-      from user_info a
+      from tb_user_info a
       <where>
           a.login_type=#{loginType} and a.user_phone=#{phone}
       </where>
+    </select>
+
+    <select id="getVideoInfoDTOInfo" parameterType="com.didong.dto.VideoInfoDTO" resultType="com.didong.dto.VideoInfoDTO">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user_info a
+        <where>
+            a.del_flag=0
+            <if test="infoDto.userId != null and infoDto.userId != '' ">
+                AND a.user_id = #{infoDto.userId}
+            </if>
+            <if test="infoDto.nickName != null and infoDto.nickName != '' ">
+                AND a.nick_name = #{infoDto.nickName}
+            </if>
+            <if test="infoDto.userPhone != null and infoDto.userPhone != '' ">
+                AND a.user_phone = #{infoDto.userPhone}
+            </if>
+        </where>
     </select>
 
 </mapper>

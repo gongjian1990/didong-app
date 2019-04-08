@@ -6,7 +6,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.didong.mapper.UserInfoMapper;
 import com.didong.redis.RedisUtil;
 import com.didong.service.LoginService;
-import com.didong.serviceEntity.UserInfo;
+import com.didong.serviceEntity.TbUserInfo;
+import com.didong.util.IdGeneratorUtil;
 import com.didong.util.MobileMessageSend;
 import com.didong.utils.HttpClientUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,7 @@ import java.util.UUID;
 
 @Service("loginService")
 @Slf4j
-public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> implements LoginService {
+public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, TbUserInfo> implements LoginService {
 
     /**
      * 获取短信验证码
@@ -32,7 +33,7 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
     @Override
     public JSONObject getSmsCode(Map<String, String> map) {
         JSONObject jsonObject = new JSONObject();
-        UserInfo user = baseMapper.selectOne(new QueryWrapper<UserInfo>()
+        TbUserInfo user = baseMapper.selectOne(new QueryWrapper<TbUserInfo>()
                 .eq("user_phone", map.get("userPhone"))
                 .eq("login_type", map.get("loginType")));
         if (user != null) {
@@ -45,9 +46,10 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
         }
 //        jsonObject.put("smsCode","1234");
 //        jsonObject.put("code","200");
-        String userId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 15);
+        Long userId= IdGeneratorUtil.generateId();
+//        String userId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 15);
         jsonObject.put("userId", userId);
-        UserInfo userInfo = new UserInfo();
+        TbUserInfo userInfo = new TbUserInfo();
         userInfo.setUserId(userId);
         userInfo.setUserPhone(map.get("userPhone"));
         userInfo.setUdid(map.get("udid"));
@@ -98,16 +100,16 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
                         if (null == result.get("errcode")) {
                             //微信用户统一标识
                             String unionid = (String) result.get("unionid");
-                            UserInfo userInfo = baseMapper.selectOne(new QueryWrapper<UserInfo>().eq("unionid", unionid));
+                            TbUserInfo userInfo = baseMapper.selectOne(new QueryWrapper<TbUserInfo>().eq("unionid", unionid));
                             if (userInfo != null) {
                                 userInfo.setLastOnlineTime(new Date());
                                 userInfo.setLastOnlineIp(ip);
                                 baseMapper.updateById(userInfo);
                             } else {
-                                userInfo = new UserInfo();
+                                userInfo = new TbUserInfo();
                                 userInfo.setUdid(UUID.randomUUID().toString());
                                 userInfo.setLoginType("wx");
-                                userInfo.setUnionid(unionid);
+                                userInfo.setThirdUnionId(unionid);
                                 userInfo.setLastOnlineTime(new Date());
                                 userInfo.setLastOnlineIp(ip);
                                 baseMapper.insert(userInfo);
@@ -147,7 +149,7 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
 //        if(user!=null){
 //            return "false";
 //        }
-        UserInfo userInfo = new UserInfo();
+        TbUserInfo userInfo = new TbUserInfo();
         String access_token = map.get("access_token");
         String openid = map.get("openid");
         String ip = map.get("ip");
@@ -160,7 +162,9 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
         if (result.get("ret").equals("0")) {
             log.info("qq登录,获取用户信息:{}", result.toJSONString());
 
-            String userId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 15);
+            Long userId= IdGeneratorUtil.generateId();
+
+//            String userId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 15);
             userInfo.setNickName(result.get("nickname").toString());
             userInfo.setAvatar(result.get("figureurl_qq_1").toString());
             userInfo.setGender(result.get("gender").toString().equals("男")?1:2);
@@ -168,7 +172,7 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
             userInfo.setUserId(userId);
             userInfo.setLastOnlineIp(ip);
             userInfo.setAccessToken(access_token);
-            userInfo.setUnionid(openid);
+            userInfo.setThirdUnionId(openid);
             userInfo.setCreateTime(new Date());
             userInfo.setLastUpdateTime(new Date());
             userInfo.setLastOnlineTime(new Date());
@@ -180,7 +184,7 @@ public class LoginServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> impl
 
     @Override
     public String wbLogin(Map<String, String> map) {
-        UserInfo userInfo = new UserInfo();
+        TbUserInfo userInfo = new TbUserInfo();
         String access_token = map.get("access_token");
         String uid = map.get("uid");
         String ip = map.get("ip");

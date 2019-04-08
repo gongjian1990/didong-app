@@ -5,10 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.didong.dto.VideoInfoDTO;
 import com.didong.enums.AliTextLabelEnum;
 import com.didong.mapper.UserInfoMapper;
 import com.didong.service.UserInfoService;
-import com.didong.serviceEntity.UserInfo;
+import com.didong.serviceEntity.TbUserInfo;
 import com.didong.util.AliCheckUtils;
 import org.springframework.stereotype.Service;
 import pojo.ResultData;
@@ -20,12 +21,12 @@ import java.util.*;
  * User 表数据服务层接口实现类
  */
 @Service
-public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> implements UserInfoService {
+public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, TbUserInfo> implements UserInfoService {
 
 
 
     @Override
-    public ResultData updateUserData(UserInfo userInfo) throws UnsupportedEncodingException, ClientException {
+    public ResultData updateUserData(TbUserInfo userInfo) throws UnsupportedEncodingException, ClientException {
         ResultData resultData = new ResultData();
         JSONObject retJson = new JSONObject();
 
@@ -97,7 +98,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
                 } else {
                     resultData.setCode(200);
                     resultData.setMessage("修改资料成功");
-                    baseMapper.update(userInfo, new QueryWrapper<UserInfo>().eq("user_id", userInfo.getUserId()));
+                    baseMapper.update(userInfo, new QueryWrapper<TbUserInfo>().eq("user_id", userInfo.getUserId()));
                 }
             }
             return resultData;
@@ -106,5 +107,11 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
             resultData.setMessage("文本审核异常");
             return resultData;
         }
+    }
+
+    @Override
+    public VideoInfoDTO getVideoInfoDTOInfo(VideoInfoDTO videoInfoDTO) {
+        return baseMapper.getVideoInfoDTOInfo(videoInfoDTO);
+//        return baseMapper.selectOne(new QueryWrapper<UserInfo>().eq("user_id", userId));
     }
 }

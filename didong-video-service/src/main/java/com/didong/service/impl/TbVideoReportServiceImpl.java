@@ -17,4 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class TbVideoReportServiceImpl extends ServiceImpl<TbVideoReportMapper, TbVideoReport> implements ITbVideoReportService {
 
+    @Override
+    public TbVideoReport getVideoReportByVideoId(String video_id) {
+        return null;
+    }
 }

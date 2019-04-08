@@ -7,29 +7,27 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.didong.mapper.DictionaryMapper;
 import com.didong.service.DictionaryService;
-import com.didong.serviceEntity.Dictionary;
+import com.didong.serviceEntity.TbDictionary;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pojo.ResultData;
-
-import java.util.List;
 
 /**
  * PhoneBook 表数据服务层接口实现类
  */
 @Service
 @Slf4j
-public class DictionaryServiceImpl extends ServiceImpl<DictionaryMapper, Dictionary> implements DictionaryService {
+public class DictionaryServiceImpl extends ServiceImpl<DictionaryMapper, TbDictionary> implements DictionaryService {
 
 
     @Override
     public ResultData getDictionaryList(String optGroup) {
         ResultData resultData=new ResultData();
         JSONObject retJson=new JSONObject();
-        Page<Dictionary> page=new Page(1,2);
+        Page<TbDictionary> page=new Page(1,2);
 //        List<Dictionary> list=baseMapper.selectDictionary(page,new Dictionary());
 
-        IPage<Dictionary> dictionary = baseMapper.selectPage(page,new QueryWrapper<Dictionary>()
+        IPage<TbDictionary> dictionary = baseMapper.selectPage(page,new QueryWrapper<TbDictionary>()
                 .eq("opt_group", optGroup));
         if(dictionary!=null){
             resultData.setCode(200);

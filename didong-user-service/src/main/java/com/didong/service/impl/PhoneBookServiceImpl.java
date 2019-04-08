@@ -3,9 +3,8 @@ package com.didong.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.didong.mapper.PhoneBookMapper;
 import com.didong.service.PhoneBookService;
-import com.didong.serviceEntity.PhoneBook;
+import com.didong.serviceEntity.TbPhoneBook;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pojo.ResultData;
 
@@ -17,13 +16,13 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class PhoneBookServiceImpl extends ServiceImpl<PhoneBookMapper, PhoneBook> implements PhoneBookService {
+public class PhoneBookServiceImpl extends ServiceImpl<PhoneBookMapper, TbPhoneBook> implements PhoneBookService {
 
     @Override
-    public ResultData savePhoneBook(List<PhoneBook> list) {
+    public ResultData savePhoneBook(List<TbPhoneBook> list) {
         ResultData resultData=new ResultData();
         Date date=new Date();
-        for(PhoneBook phoneBook:list){
+        for(TbPhoneBook phoneBook:list){
             phoneBook.setCreateTime(date);
             phoneBook.setLastUpdateTime(date);
         }

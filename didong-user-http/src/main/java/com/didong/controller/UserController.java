@@ -1,9 +1,9 @@
 package com.didong.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.didong.httpEntity.PhoneBook;
-import com.didong.httpEntity.UserInfo;
-import com.didong.httpEntity.UserInterest;
+import com.didong.httpEntity.TbPhoneBook;
+import com.didong.httpEntity.TbUserInfo;
+import com.didong.httpEntity.TbUserInterest;
 import com.didong.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class UserController {
      * @return
      */
     @RequestMapping("/savePhoneBook")
-    public String savePhoneBook(@RequestBody List<PhoneBook> list){
+    public String savePhoneBook(@RequestBody List<TbPhoneBook> list){
         log.info("[通讯录保存] -- list:{}", list.toString());
         ResultData result = userService.savePhoneBook(list);
         if(!result.getCode().equals(200)){
@@ -62,7 +62,7 @@ public class UserController {
      *保存用户兴趣
      */
     @RequestMapping("/saveUserInterest")
-    public String saveUserInterest(@RequestBody List<UserInterest> interestList){
+    public String saveUserInterest(@RequestBody List<TbUserInterest> interestList){
         log.info("[用户兴趣保存] -- interestList:{}", interestList.toString());
         ResultData result = userService.saveUserInterest(interestList);
         if(!result.getCode().equals(200)){
@@ -78,7 +78,7 @@ public class UserController {
      * @return
      */
     @RequestMapping("/updateUserData")
-    public String updateUserData(UserInfo userInfo){
+    public String updateUserData(TbUserInfo userInfo){
         log.info("[新用户个人资料完善] -- userInfo:{}", userInfo);
         ResultData result = userService.updateUserData(userInfo);
         if(!result.getCode().equals(200)){

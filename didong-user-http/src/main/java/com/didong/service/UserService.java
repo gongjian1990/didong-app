@@ -2,9 +2,9 @@ package com.didong.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.didong.fallback.UserServiceFallback;
-import com.didong.httpEntity.PhoneBook;
-import com.didong.httpEntity.UserInfo;
-import com.didong.httpEntity.UserInterest;
+import com.didong.httpEntity.TbPhoneBook;
+import com.didong.httpEntity.TbUserInfo;
+import com.didong.httpEntity.TbUserInterest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,7 +27,7 @@ public interface UserService {
     JSONObject getSmsCode(Map map);
 
     @RequestMapping(method = RequestMethod.POST,value = "loginController/wbLogin")
-    String wbLogin(UserInfo userInfo);
+    String wbLogin(TbUserInfo userInfo);
 
     @RequestMapping(method = RequestMethod.POST,value = "loginController/qqLogin")
     String qqLogin(Map<String,String> map);
@@ -36,13 +36,13 @@ public interface UserService {
     String getWXAccessToken(Map map);
 
     @RequestMapping(method = RequestMethod.POST,value = "userController/updateUserData")
-    ResultData updateUserData(UserInfo userInfo);
+    ResultData updateUserData(TbUserInfo userInfo);
 
     @RequestMapping(method = RequestMethod.POST,value = "phoneBookController/savePhoneBook")
-    ResultData savePhoneBook(List<PhoneBook> list);
+    ResultData savePhoneBook(List<TbPhoneBook> list);
 
     @RequestMapping(method = RequestMethod.POST,value = "userInterestController/saveUserInterest")
-    ResultData saveUserInterest(List<UserInterest> list);
+    ResultData saveUserInterest(List<TbUserInterest> list);
 
     @RequestMapping(method = RequestMethod.POST,value = "dictionaryController/getDictionaryList")
     ResultData getDictionaryList(String optGroup);

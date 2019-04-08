@@ -1,12 +1,12 @@
 package com.didong.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.didong.serviceEntity.PhoneBook;
+import com.didong.serviceEntity.TbPhoneBook;
 
 
 /**
  * PhoneBook 表数据库控制层接口
  */
-public interface PhoneBookMapper extends BaseMapper<PhoneBook> {
+public interface PhoneBookMapper extends BaseMapper<TbPhoneBook> {
 
 }

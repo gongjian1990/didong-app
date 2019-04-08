@@ -3,10 +3,8 @@ package com.didong.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.didong.mapper.UserInterestMapper;
 import com.didong.service.UserInterestService;
-import com.didong.serviceEntity.PhoneBook;
-import com.didong.serviceEntity.UserInterest;
+import com.didong.serviceEntity.TbUserInterest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pojo.ResultData;
 
@@ -18,16 +16,16 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class UserInterestServiceImpl extends ServiceImpl<UserInterestMapper, UserInterest> implements UserInterestService {
+public class UserInterestServiceImpl extends ServiceImpl<UserInterestMapper, TbUserInterest> implements UserInterestService {
 
 
 
     @Override
-    public ResultData saveUserInterest(List<UserInterest> interestList) {
+    public ResultData saveUserInterest(List<TbUserInterest> interestList) {
 
         ResultData resultData=new ResultData();
         Date date=new Date();
-        for(UserInterest UserInterest:interestList){
+        for(TbUserInterest UserInterest:interestList){
             UserInterest.setCreateTime(date);
             UserInterest.setLastUpdateTime(date);
         }

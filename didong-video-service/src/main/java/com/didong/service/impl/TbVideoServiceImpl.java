@@ -6,12 +6,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.didong.dto.VideoInfoDTO;
-import com.didong.enums.VideoCheckStatusEnum;
 import com.didong.mapper.TbVideoMapper;
 import com.didong.service.ITbChkVideoService;
+import com.didong.service.ITbVideoReportService;
 import com.didong.service.ITbVideoService;
 import com.didong.serviceEntity.TbChkVideo;
 import com.didong.serviceEntity.TbVideo;
+import com.didong.serviceEntity.TbVideoReport;
 import com.didong.util.IdGeneratorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,9 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
 
     @Autowired
     ITbChkVideoService tbChkVideoService;
+
+    @Autowired
+    ITbVideoReportService iTbVideoReportService;
 
     @Override
     public ResultData saveVideo(TbVideo tbVideo) throws UnsupportedEncodingException, ClientException {
@@ -80,20 +84,27 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
      * @return
      */
     @Override
-    public List<VideoInfoDTO> getVideoInfo(VideoInfoDTO videoInfoDTO, Page<VideoInfoDTO> page) {
-        List<VideoInfoDTO> list=baseMapper.selectByVideoInfoDTO(page,videoInfoDTO);
-        for(VideoInfoDTO infoDTO:list){
-            TbChkVideo tbChkVideo=tbChkVideoService.getChkVideoInfoByVideoId(infoDTO.getVideoId());
-            infoDTO.setUpDownStatus(tbChkVideo.getVedioUpDownStatus());
-            if(0==tbChkVideo.getMachineChkStatus()){
+    public IPage<VideoInfoDTO> getVideoInfo(VideoInfoDTO videoInfoDTO, Page<VideoInfoDTO> page) {
+        //视频详细信息获取
+        IPage<VideoInfoDTO> list=baseMapper.selectByVideoInfoDTO(page,videoInfoDTO);
+        for(VideoInfoDTO infoDTO:list.getRecords()){
+            //视频审核信息获取
+            if(0==infoDTO.getMachineChkStatus()){
                 infoDTO.setCheckStatus(0);
             }else {
                 infoDTO.setCheckStatus(1);
             }
-            if(1==tbChkVideo.getMachineChkStatus()&&1==tbChkVideo.getPersonChkStatus()){
+            if(1==infoDTO.getMachineChkStatus()&&1==infoDTO.getPersonChkStatus()){
                 infoDTO.setCheckStatus(2);
-            }else if(1==tbChkVideo.getMachineChkStatus()&&2==tbChkVideo.getPersonChkStatus()){
+            }else if(1==infoDTO.getMachineChkStatus()&&2==infoDTO.getPersonChkStatus()){
                 infoDTO.setCheckStatus(3);
+            }
+            //视频举报信息获取
+            TbVideoReport tbVideoReport=iTbVideoReportService.getVideoReportByVideoId(infoDTO.getVideoId());
+            if(tbVideoReport!=null){
+                infoDTO.setHandelStatus(tbVideoReport.getReportStatus());
+            }else {
+                infoDTO.setHandelStatus(0);
             }
 
         }

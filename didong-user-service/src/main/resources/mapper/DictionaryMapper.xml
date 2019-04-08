@@ -7,7 +7,7 @@
     <select id="selectDictionary" parameterType="com.didong.serviceEntity.Dictionary" resultType="com.didong.serviceEntity.Dictionary">
       select
       <include refid="Base_Column_List"/>
-      from dictionary
+      from tb_dictionary
     </select>
 
 </mapper>

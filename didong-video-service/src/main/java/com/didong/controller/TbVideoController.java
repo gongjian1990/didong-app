@@ -1,6 +1,7 @@
 package com.didong.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -10,14 +11,12 @@ import com.didong.serviceEntity.TbVideo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import pojo.Response;
 import pojo.ResultData;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 import java.util.Map;
 
 
@@ -39,15 +38,21 @@ public class TbVideoController {
     RestTemplate restTemplate;
 
     @RequestMapping("/hello")
-    public String hello(@RequestBody String s){
-        System.out.println("接收："+s);
+    public String hello(@RequestBody String s) {
+        System.out.println("接收：" + s);
         return "world";
     }
 
     @RequestMapping("/getVideoInfo")
-    public List<VideoInfoDTO> getVideoInfo(@RequestBody VideoInfoDTO videoInfoDTO)  {
-        Page<VideoInfoDTO> page=new Page(1,2);
-        return iTbVideoService.getVideoInfo(videoInfoDTO,page);
+    public JSONObject getVideoInfo(@RequestBody VideoInfoDTO videoInfoDTO) {
+        Page<VideoInfoDTO> page = new Page(1, 2);
+        IPage<VideoInfoDTO> ipage=iTbVideoService.getVideoInfo(videoInfoDTO, page);
+
+        JSONObject jsonObject = new JSONObject();
+
+        jsonObject.put("result", ipage);
+        jsonObject.put("test", "1");
+        return jsonObject;
     }
 
     @RequestMapping("/saveVideo")
@@ -56,7 +61,7 @@ public class TbVideoController {
     }
 
     @RequestMapping("/saveVideoback")
-    public Response saveVideoback(@RequestBody TbVideo video){
+    public Response saveVideoback(@RequestBody TbVideo video) {
         iTbVideoService.saveVideoback(video);
         return Response.success(null);
     }
@@ -64,8 +69,8 @@ public class TbVideoController {
     @RequestMapping("/selectAllByPage20Videos")
     public Response selectAllByPage20Videos(@RequestBody String pageNum) {
         IPage<TbVideo> page = iTbVideoService.selectAllByPage20Videos(pageNum);
-        if(page!= null){
-            return Response.success(new ResultData(200,"",page.getRecords()));
+        if (page != null) {
+            return Response.success(new ResultData(200, "", page.getRecords()));
         }
         return null;
     }
@@ -91,15 +96,15 @@ public class TbVideoController {
 
         TbVideo tbVideo = new TbVideo();
         tbVideo.setUserId(2L);
-        IPage<TbVideo> page1 = iTbVideoService.selectAllByPageAndCondition(tbVideo,page);
+        IPage<TbVideo> page1 = iTbVideoService.selectAllByPageAndCondition(tbVideo, page);
 
-        System.out.println("page: "+page1);
+        System.out.println("page: " + page1);
 
         //
         //IPage<TbVideo> page = iTbVideoService.selectAllByPageAndCondition(null);
         //if(page!= null){
-         //   return Response.success(new ResultData(200,"",page.getRecords()));
-       // }
+        //   return Response.success(new ResultData(200,"",page.getRecords()));
+        // }
         return null;
     }
 

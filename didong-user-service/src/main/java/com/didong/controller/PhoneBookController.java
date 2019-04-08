@@ -1,7 +1,7 @@
 package com.didong.controller;
 
 import com.didong.service.PhoneBookService;
-import com.didong.serviceEntity.PhoneBook;
+import com.didong.serviceEntity.TbPhoneBook;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +22,7 @@ public class PhoneBookController {
 
 
     @RequestMapping("/savePhoneBook")
-    public ResultData savePhoneBook(@RequestBody List<PhoneBook> list) {
+    public ResultData savePhoneBook(@RequestBody List<TbPhoneBook> list) {
         return phoneBookService.savePhoneBook(list);
     }
 }

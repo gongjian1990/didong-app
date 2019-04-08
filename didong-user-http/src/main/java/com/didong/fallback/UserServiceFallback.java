@@ -2,9 +2,9 @@ package com.didong.fallback;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.didong.httpEntity.PhoneBook;
-import com.didong.httpEntity.UserInfo;
-import com.didong.httpEntity.UserInterest;
+import com.didong.httpEntity.TbPhoneBook;
+import com.didong.httpEntity.TbUserInfo;
+import com.didong.httpEntity.TbUserInterest;
 import com.didong.service.UserService;
 import org.springframework.stereotype.Component;
 import pojo.Response;
@@ -31,7 +31,7 @@ public class UserServiceFallback implements UserService {
     }
 
     @Override
-    public String wbLogin(UserInfo userInfo) {
+    public String wbLogin(TbUserInfo userInfo) {
         return JSON.toJSONString(Response.error(new ResultData(500, "调用微博登陆失败", null)));
     }
 
@@ -45,17 +45,17 @@ public class UserServiceFallback implements UserService {
         return JSON.toJSONString(Response.error(new ResultData(500, "调用微信登陆失败", null)));
     }
     @Override
-    public ResultData updateUserData(UserInfo userInfo) {
+    public ResultData updateUserData(TbUserInfo userInfo) {
         return new ResultData(500, "更新个人资料失败", null);
 
     }
     @Override
-    public ResultData savePhoneBook(List<PhoneBook> list) {
+    public ResultData savePhoneBook(List<TbPhoneBook> list) {
         return new ResultData(500, "上传用户目录失败", null);
     }
 
     @Override
-    public ResultData saveUserInterest(List<UserInterest> list) {
+    public ResultData saveUserInterest(List<TbUserInterest> list) {
         return new ResultData(500, "保存用户兴趣失败", null);
     }
 
