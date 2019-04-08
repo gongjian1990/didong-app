@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.didong.dto.VideoInfoDTO;
 import com.didong.service.ITbVideoService;
 import com.didong.serviceEntity.TbVideo;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,10 @@ import pojo.Response;
 import pojo.ResultData;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -61,9 +65,34 @@ public class TbVideoController {
     }
 
     @RequestMapping("/saveVideoback")
-    public Response saveVideoback(@RequestBody TbVideo video) {
-        iTbVideoService.saveVideoback(video);
-        return Response.success(null);
+    public Response saveVideoback(@RequestBody LinkedHashMap map) {
+
+        ObjectMapper mapper = new ObjectMapper();
+        TbVideo video = mapper.convertValue(map.get("tbVideo"), TbVideo.class);
+
+        Set<Map.Entry<String, Object>> entries = map.entrySet();
+        Integer personChkStatus = null;
+        Integer videoUpDownStatus = null;
+        String nickName = null;
+        Integer videoType = null;
+
+        Iterator<Map.Entry<String, Object>> iterator = entries.iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> next = iterator.next();
+            String key = next.getKey();
+            Object value = next.getValue();
+            if ("personChkStatus".equals(key)) {
+                //personChkStatus = Integer.parseInt(value.toString());
+            } else if ("videoUpDownStatus".equals(key)) {
+                videoUpDownStatus = Integer.parseInt(value.toString());
+            } else if ("nickName".equals(key)) {
+                nickName = value.toString();
+            }
+        }
+
+        Response response= iTbVideoService.saveVideoback(video, personChkStatus, videoUpDownStatus, nickName);
+        return response;
     }
 
     @RequestMapping("/selectAllByPage20Videos")
@@ -107,6 +136,5 @@ public class TbVideoController {
         // }
         return null;
     }
-
 
 }

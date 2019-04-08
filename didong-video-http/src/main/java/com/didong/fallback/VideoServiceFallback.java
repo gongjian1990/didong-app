@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import pojo.Response;
 import pojo.ResultData;
 
+import java.util.Map;
+
 @Component
 public class VideoServiceFallback implements VideoService {
 
@@ -33,5 +35,10 @@ public class VideoServiceFallback implements VideoService {
     @Override
     public Response selectAllByPageAndCondition(TbVideo video) {
         return null;
+    }
+
+    @Override
+    public Response backSaveVideo(Map map) {
+        return Response.success(new ResultData(500,"上传视频失败",null));
     }
 }

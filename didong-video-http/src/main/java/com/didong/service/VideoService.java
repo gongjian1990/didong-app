@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import pojo.Response;
 import pojo.ResultData;
 
+import java.util.Map;
+
 @FeignClient(value = "video-service", fallback = VideoServiceFallback.class)
 public interface VideoService {
     @RequestMapping(method = RequestMethod.POST,value = "vedio/saveVideo")
@@ -24,5 +26,8 @@ public interface VideoService {
 
     @RequestMapping("video/selectAllByPageAndCondition")
     Response selectAllByPageAndCondition(TbVideo video);
+
+    @RequestMapping("video/saveVideoback")
+    Response backSaveVideo(Map map);
 
 }

@@ -17,6 +17,7 @@ import com.didong.util.IdGeneratorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import pojo.Response;
 import pojo.ResultData;
 
 import java.io.UnsupportedEncodingException;
@@ -35,7 +36,7 @@ import java.util.List;
 public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> implements ITbVideoService {
 
     @Autowired
-    ITbVideoChkService tbChkVideoService;
+    ITbVideoChkService tbVideoChkService;
 
     @Autowired
     ITbVideoReportService iTbVideoReportService;
@@ -55,10 +56,10 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
         tbChkVideo.setVideoId(video_id);
         tbChkVideo.setCreateTime(new Date());
         tbChkVideo.setLastUpdateTime(new Date());
-        int i=tbChkVideoService.saveChkVideo(tbChkVideo);
+        int i=tbVideoChkService.saveChkVideo(tbChkVideo);
 
         //视频检测（异步）
-        String result=tbChkVideoService.checkVideo(tbVideo.getVideoUrl(),tbChkVideo);
+        String result=tbVideoChkService.checkVideo(tbVideo.getVideoUrl(),tbChkVideo);
         if("success".equals(result)){
             resultData.setCode(200);
             resultData.setMessage("视频上传成功");
@@ -69,12 +70,44 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
         return resultData;
     }
 
+
     @Override
-    public void saveVideoback(TbVideo video) {
-        /**
-         * TbVideoMapper.saveVideo
-         */
-        baseMapper.insert(video);
+    public Response saveVideoback(TbVideo video, Integer personChkStatus, Integer videoUpDownStatus, String nickName) {
+        ResultData resultData=new ResultData();
+        //视频检测（异步）
+        String result= "success";
+        try {
+
+            // 保存视频
+            long videoId=IdGeneratorUtil.generateId();
+            video.setVideoId(videoId);
+            video.setUploadTime(new Date());
+            baseMapper.insert(video);
+
+            //视频审核存储
+            TbVideoChk tbChkVideo=new TbVideoChk();
+            tbChkVideo.setUserId(video.getUserId());
+            tbChkVideo.setVideoId(videoId);
+            tbChkVideo.setCreateTime(new Date());
+            tbChkVideo.setLastUpdateTime(new Date());
+            tbChkVideo.setPersonChkStatus(personChkStatus);
+            tbChkVideo.setVideoUpDownStatus(videoUpDownStatus);
+            tbVideoChkService.saveChkVideo(tbChkVideo);
+
+            result = tbVideoChkService.checkVideo(video.getVideoUrl(),tbChkVideo);
+
+            if("success".equals(result)){
+                resultData.setCode(200);
+                resultData.setMessage("视频上传成功");
+            }else {
+                resultData.setCode(500);
+                resultData.setMessage("视频上传成功,审核异常");
+            }
+            return Response.success(resultData);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.error(resultData);
+        }
     }
 
     /**

@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.*;
 
 @RestController
 @RequestMapping("/video")
@@ -147,9 +148,25 @@ public class VideoController {
                 }
                 //文件写入指定路径
                 Files.write(path, bytes);
-                String url = VodUploadUtil.uploadVideo("test01", UPLOAD_FOLDER + originalFilename);
+
+                int type = chkFileType(originalFilename);
+
+                String url = null;
+
+                if(type==1){
+                    url= VodUploadUtil.uploadImageLocalFile(UPLOAD_FOLDER + originalFilename,"cover");
+                }else {
+                    url = VodUploadUtil.uploadVideo(System.currentTimeMillis()+"", UPLOAD_FOLDER + originalFilename);
+                }
+
+                if(url==null){
+                    return Response.error(new ResultData(500, "服务器异常", null));
+                }
+
+                System.out.println("url:"+url);
 
                 return Response.success(new ResultData(200, "success", url));
+
             } catch (IOException e) {
                 e.printStackTrace();
                 return Response.error(new ResultData(500, "服务器异常", null));
@@ -158,9 +175,68 @@ public class VideoController {
         return null;
     }
 
+    /**
+     * 检查文件类型
+     * @param fileName
+     * @return 0：视频，1：图片
+     */
+    public int chkFileType(String fileName){
 
-    public Response saveVideo() {
-        return null;
+        String suffix = fileName.substring(fileName.lastIndexOf(".")+1, fileName.length());
+
+        if("bmp dib rle emf gif jpg jpeg jpe jif pcx dcx pic png tga tif tiffxif wmf jfif".contains(suffix)){
+            return 1;
+        }
+        return 0;
+    }
+
+    /**
+     * 后台上传视频保存
+     */
+    @RequestMapping("/backSaveVideo")
+    public Response backSaveVideo(@RequestBody LinkedHashMap<String,Object> data){
+
+        Set<Map.Entry<String, Object>> entries = data.entrySet();
+        Iterator<Map.Entry<String, Object>> iterator = entries.iterator();
+        TbVideo video = new TbVideo();
+        Integer personChkStatus = null;
+        Integer videoUpDownStatus = null;
+        Integer videoType = null;
+        String nickName = null;
+
+        while (iterator.hasNext()){
+            Map.Entry<String, Object> next  = iterator.next();
+            String key = next.getKey();
+            Object value = next.getValue();
+            if("personChkStatus".equals(key)){
+                personChkStatus = Integer.parseInt(value.toString());
+            }else if("videoUpDownStatus".equals(key)){
+                videoUpDownStatus = Integer.parseInt(value.toString());
+            }else if("owner".equals(key)){
+                video.setOwner(Integer.parseInt(value.toString()));
+            }else if("nickName".equals(key)){
+                nickName = value.toString();
+            }else if("oneFps".equals(key)){
+                video.setOneFps(value.toString());
+            }else if("videoUrl".equals(key)){
+                video.setVideoUrl(value.toString());
+            }else if("longitude".equals(key)){
+                video.setLongitude(Double.parseDouble(value.toString()));
+            }else if("latitude".equals(key)){
+                video.setLatitude(Double.parseDouble(value.toString()));
+            }else if("videoType".equals(key)){
+                video.setVideoType(value.toString());
+            }
+        }
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("tbVideo",video);
+        map.put("personChkStatus",personChkStatus);
+        map.put("videoUpDownStatus",videoUpDownStatus);
+        map.put("nickName",nickName);
+        map.put("videoType",videoType);
+        Response response = videoService.backSaveVideo(map);
+        return response;
     }
 
     @RequestMapping(value = "/hello1", method = RequestMethod.GET)
