@@ -29,3 +29,4 @@ feign:
     enabled: true
 
 upload-folder: d:/a/
+

@@ -10,6 +10,7 @@ import com.didong.service.ITbVideoChkService;
 import com.didong.serviceEntity.TbVideoChk;
 import com.didong.util.AliCheckUtils;
 import org.springframework.stereotype.Service;
+import pojo.Response;
 import pojo.ResultData;
 
 import java.io.UnsupportedEncodingException;
@@ -91,5 +92,29 @@ public class TbChkVideoServiceImpl extends ServiceImpl<TbVideoChkMapper, TbVideo
     @Override
     public TbVideoChk getChkVideoInfoByVideoId(String videoId) {
         return baseMapper.selectOne(new QueryWrapper<TbVideoChk>().eq("video_id",videoId));
+    }
+
+    @Override
+    public Response chkVideo(long videoId, Integer chkVal) {
+
+        try {
+            TbVideoChk tbVideoChk = baseMapper.selectOne(new QueryWrapper<TbVideoChk>().eq("video_id", videoId));
+
+            if(tbVideoChk== null){
+                tbVideoChk = new TbVideoChk();
+                tbVideoChk.setCreateTime(new Date());
+                tbVideoChk.setLastUpdateTime(new Date());
+                tbVideoChk.setVideoId(videoId);
+                tbVideoChk.setVideoUpDownStatus(chkVal);
+                tbVideoChk.setPersonChkTime(new Date());
+                baseMapper.insert(tbVideoChk);
+            }
+
+            baseMapper.updateVideoUpDownStatus(videoId, chkVal);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.error(new ResultData(500,"审核出错",null));
+        }
+        return Response.success(new ResultData(200,"审核成功",null));
     }
 }

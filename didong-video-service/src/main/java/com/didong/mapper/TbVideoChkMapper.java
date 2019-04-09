@@ -13,4 +13,6 @@ import com.didong.serviceEntity.TbVideoChk;
  */
 public interface TbVideoChkMapper extends BaseMapper<TbVideoChk> {
 
+    void updateVideoUpDownStatus(long videoId,Integer chkVal);
+
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.didong.mapper.TbVideoChkMapper">
+    <sql id="Base_Column_List">
+        id,video_id, user_id, machine_chk_status,machine_chk_time,machine_refuse_reason, chk_person, person_chk_status,person_refuse_reason,
+        person_chk_time,video_up_down_status,task_id,create_time,last_update_time
+    </sql>
+
+    <update id="updateVideoUpDownStatus">
+        update tb_video_chk
+        set video_up_down_status =#{chkVal}
+        where video_id=#{videoId}
+    </update>
+
+</mapper>
