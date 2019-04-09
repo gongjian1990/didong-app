@@ -12,4 +12,40 @@
         where video_id=#{videoId}
     </update>
 
+    <select id="selectByPage" parameterType="com.didong.serviceEntity.TbVideoChk"
+            resultType="com.didong.serviceEntity.TbVideoChk">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_video_chk a
+        <where>
+            <if test="tbVideoChk.userId != null ">
+                AND a.user_id = #{tbVideoChk.userId}
+            </if>
+            <if test="tbVideoChk.videoId != null ">
+                AND a.video_id = #{tbVideoChk.videoId}
+            </if>
+            <if test="tbVideoChk.machineChkStatus != null ">
+                AND a.machine_chk_status = #{tbVideoChk.machineChkStatus}
+            </if>
+            <if test="tbVideoChk.machineRefuseReason != null and tbVideoChk.machineRefuseReason !=''">
+                AND a.machine_refuse_reason = #{tbVideoChk.machineRefuseReason}
+            </if>
+            <if test="tbVideoChk.chkPerson != null ">
+                AND a.chk_person = #{tbVideoChk.chkPerson}
+            </if>
+            <if test="tbVideoChk.personChkStatus != null ">
+                AND a.person_chk_status = #{tbVideoChk.personChkStatus}
+            </if>
+            <if test="tbVideoChk.personRefuseReason != null and tbVideoChk.personRefuseReason !=''">
+                AND a.person_refuse_reason = #{tbVideoChk.personRefuseReason}
+            </if>
+            <if test="tbVideoChk.videoUpDownStatus != null ">
+                AND a.video_up_down_status = #{tbVideoChk.videoUpDownStatus}
+            </if>
+            <if test="tbVideoChk.taskId != null and tbVideoChk.taskId !=''">
+                AND a.task_id = #{tbVideoChk.taskId}
+            </if>
+        </where>
+    </select>
+
 </mapper>

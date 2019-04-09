@@ -32,6 +32,17 @@ public class VideoController {
     private String UPLOAD_FOLDER;
 
     /**
+     * 获取视频信息
+     * @param userId
+     * @return
+     */
+    @RequestMapping("/getVideoInfo")
+    public String getVideoInfo(String userId,String method) {
+
+        return null;
+    }
+
+    /**
      * 视频上传 app端
      *
      * @param tbVideo
@@ -54,6 +65,7 @@ public class VideoController {
 
         return null;
     }
+
 
     /**
      * 保存视频 PC端
@@ -99,41 +111,6 @@ public class VideoController {
         return Response.success(new ResultData(200, "", AliStsUtil.getStsResponse()));
     }
 
-//    @RequestMapping("/uploadVideo")
-//    public Response uploadVide(@RequestParam("video") MultipartFile video,@RequestParam("photo") MultipartFile photo){
-//
-//        out.println("video:"+video);
-//        out.println("photo:"+photo);
-//
-//
-//
-//        if (!video.isEmpty()) {
-//            // 上传文件路径
-//            // 上传文件名
-//            String oldname = video.getOriginalFilename();
-//            String filetype=video.getContentType();
-//            String filesize=(video.getSize()/1024)+"KB";
-//            try {
-//
-//
-//                out.println("file:"+video);
-//
-//                String path = video.getResource().getFile().getAbsolutePath();
-//
-//                out.println("path:"+path);
-//
-//                String[] filenames = oldname.split("\\.");
-//                String filename ="";
-//                OssUploadUtil.upload("aaa",path);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//        return null;
-//    }
-//
-//        return null;
-//    }
 
     @RequestMapping(value = "/uploadVideo", method = RequestMethod.POST)
     public Response uploadVide(@RequestParam("file") MultipartFile file) {

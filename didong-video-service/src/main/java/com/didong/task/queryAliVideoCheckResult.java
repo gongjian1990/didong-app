@@ -3,11 +3,13 @@ package com.didong.task;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.exceptions.ClientException;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.didong.service.ITbVideoChkService;
 import com.didong.serviceEntity.TbVideoChk;
 import com.didong.util.AliCheckUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
@@ -33,13 +35,15 @@ public class queryAliVideoCheckResult {
 //    @Scheduled(fixedDelay = 1000 * 60)
     public void getWaitMachineChkVideo() {
         try {
+            TbVideoChk query = new TbVideoChk();
+            query.setMachineChkStatus(0);
+            Page<TbVideoChk> page = new Page(1, 60);
             List<String> taskList = new ArrayList<String>();
-            List<TbVideoChk> tbChkVideoList = iTbChkVideoService.getWaitMachineChkVideoList();
+            List<TbVideoChk> tbChkVideoList = iTbChkVideoService.selectByPage(query,page);
             if (tbChkVideoList.size() > 0) {
                 for (TbVideoChk tbChkVideo : tbChkVideoList) {
-//                    taskList.add(tbChkVideo.getTaskId());
+                    taskList.add(tbChkVideo.getTaskId());
                     queryVideo(tbChkVideo.getTaskId(), tbChkVideo);
-
                 }
             }
         } catch (Exception e) {
@@ -93,14 +97,13 @@ public class queryAliVideoCheckResult {
                             tbChkVideo.setMachineChkStatus(1);
                             tbChkVideo.setLastUpdateTime(new Date());
                             for (Object object : jsonArray) {
-                                if (!"normal".equals(((JSONObject) object).getString("suggestion"))) {
+                                if ("block".equals(((JSONObject) object).getString("suggestion"))) {
                                     tbChkVideo.setMachineChkStatus(2);
                                     tbChkVideo.setMachineRefuseReason(((JSONObject) object).getString("label"));
                                     break;
                                 }
                             }
                             iTbChkVideoService.updateChkVideo(tbChkVideo);
-
                         }
                     } else {
                         log.info("task process fail:{}", ((JSONObject) taskResult).getInteger("code"));
@@ -108,9 +111,9 @@ public class queryAliVideoCheckResult {
                 }
             }
         } catch (ClientException e) {
-            e.printStackTrace();
+            log.info("通讯异常",e);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            log.info("编码格式不正常",e);
         }
 
     }

@@ -52,7 +52,7 @@ public class VideoController {
      * @param videoInfoDTO
      * @return
      */
-    @RequestMapping("/getVideoInfo")
+    @RequestMapping(value="/getVideoInfo", method = RequestMethod.POST)
     public String getVideoInfo(@RequestBody VideoInfoDTO videoInfoDTO) {
         if(videoInfoDTO.getPageIndex()==null){
             videoInfoDTO.setPageIndex(1);
