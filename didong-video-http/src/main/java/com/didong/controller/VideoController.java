@@ -24,6 +24,17 @@ public class VideoController {
     private String UPLOAD_FOLDER;
 
     /**
+     * 获取视频信息
+     * @param userId
+     * @return
+     */
+    @RequestMapping("/getVideoInfo")
+    public String getVideoInfo(String userId,String method) {
+
+        return null;
+    }
+
+    /**
      * 视频上传 app端
      *
      * @param tbVideo
@@ -46,6 +57,7 @@ public class VideoController {
 
         return null;
     }
+
 
     /**
      * 保存视频 PC端
@@ -126,7 +138,6 @@ public class VideoController {
 //
 //        return null;
 //    }
-
 
 
     @RequestMapping(value = "/hello1", method = RequestMethod.GET)

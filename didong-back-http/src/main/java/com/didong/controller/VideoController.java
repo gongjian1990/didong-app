@@ -34,6 +34,7 @@ import java.util.*;
 @RestController
 @Slf4j
 @RequestMapping(value = "/video", produces = "application/json;charset=UTF-8")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class VideoController {
 
     @Autowired
@@ -51,7 +52,7 @@ public class VideoController {
      * @param videoInfoDTO
      * @return
      */
-    @RequestMapping("/getVideoInfo")
+    @RequestMapping(value="/getVideoInfo", method = RequestMethod.POST)
     public String getVideoInfo(@RequestBody VideoInfoDTO videoInfoDTO) {
         if(videoInfoDTO.getPageIndex()==null){
             videoInfoDTO.setPageIndex(1);

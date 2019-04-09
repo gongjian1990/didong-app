@@ -1,7 +1,11 @@
 package com.didong.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.didong.serviceEntity.TbVideoChk;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +16,7 @@ import com.didong.serviceEntity.TbVideoChk;
  * @since 2019-03-30
  */
 public interface TbVideoChkMapper extends BaseMapper<TbVideoChk> {
+
+    List<TbVideoChk> selectByPage(Page<TbVideoChk> page,  @Param(value = "tbVideoChk")TbVideoChk tbVideoChk);
 
 }

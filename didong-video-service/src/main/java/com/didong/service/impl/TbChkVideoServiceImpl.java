@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.didong.mapper.TbVideoChkMapper;
 import com.didong.service.ITbVideoChkService;
@@ -79,8 +80,8 @@ public class TbChkVideoServiceImpl extends ServiceImpl<TbVideoChkMapper, TbVideo
     }
 
     @Override
-    public List<TbVideoChk> getWaitMachineChkVideoList() {
-        return baseMapper.selectList(new QueryWrapper<TbVideoChk>().eq("machine_chk_status", 0));
+    public List<TbVideoChk> selectByPage(TbVideoChk tbVideoChk, Page<TbVideoChk> page) {
+        return baseMapper.selectByPage(page,tbVideoChk);
     }
 
     @Override
