@@ -27,4 +27,9 @@ public class BackVideoServiceFallback implements BackVideoService {
     public Response backSaveVideo(Map map) {
         return Response.success(new ResultData(500,"上传视频失败",null));
     }
+
+    @Override
+    public Response backChkVideo(Map map) {
+        return Response.success(new ResultData(500,"视频审核失败",null));
+    }
 }

@@ -24,4 +24,7 @@ public interface BackVideoService {
     @RequestMapping(method = RequestMethod.POST,value = "video/saveVideoback")
     Response backSaveVideo(Map map);
 
+    @RequestMapping(method = RequestMethod.POST,value = "video/backChkVideo")
+    Response backChkVideo(Map map);
+
 }

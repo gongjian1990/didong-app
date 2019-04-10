@@ -43,11 +43,11 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 10000
+            timeoutInMilliseconds: 600000
 
 ribbon:
   # 请求处理超时时间
-  ReadTimeout: 160000
+  ReadTimeout: 60000
   # 请求连接超时时间
   ConnectTimeout: 60000
 

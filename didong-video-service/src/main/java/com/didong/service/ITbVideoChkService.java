@@ -4,6 +4,7 @@ package com.didong.service;
 import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.didong.serviceEntity.TbVideoChk;
+import pojo.Response;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface ITbVideoChkService {
     int updateChkVideo(TbVideoChk tbChkVideo);
 
     TbVideoChk getChkVideoInfoByVideoId(String videoId);
+
+    Response chkVideo(long videoId, Integer chkVal);
 }

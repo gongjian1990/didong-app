@@ -30,4 +30,5 @@ public interface ITbVideoService {
     IPage<TbVideo> selectAllByPageAndCondition(TbVideo video,Page<TbVideo> page);
 
     ResultData saveVideo(TbVideo tbVideo) ;
+
 }

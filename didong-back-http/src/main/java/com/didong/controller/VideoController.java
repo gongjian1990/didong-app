@@ -33,7 +33,7 @@ import java.util.*;
  */
 @RestController
 @Slf4j
-@RequestMapping(value = "/video", produces = "application/json;charset=UTF-8")
+@RequestMapping("/video")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class VideoController {
 
@@ -210,6 +210,20 @@ public class VideoController {
         map.put("videoType",videoType);
         Response response = backVideoService.backSaveVideo(map);
         return response;
+    }
+
+    /**
+     * 视频审核
+     * @param videoId
+     * @param chkVal
+     * @return
+     */
+    @RequestMapping("/chkVideo")
+    public Response chkVideo(String videoId,Integer chkVal){
+        Map map = new HashMap();
+        map.put("vidoeId",videoId);
+        map.put("chkVal",chkVal);
+        return backVideoService.backChkVideo(map);
     }
 
 }

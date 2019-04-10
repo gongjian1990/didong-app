@@ -17,6 +17,8 @@ import java.util.List;
  */
 public interface TbVideoChkMapper extends BaseMapper<TbVideoChk> {
 
+    void updateVideoUpDownStatus(long videoId,Integer chkVal);
+
     List<TbVideoChk> selectByPage(Page<TbVideoChk> page,  @Param(value = "tbVideoChk")TbVideoChk tbVideoChk);
 
 }
