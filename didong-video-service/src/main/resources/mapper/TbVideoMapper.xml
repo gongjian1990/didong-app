@@ -50,4 +50,52 @@
         </where>
     </select>
 
+    <select id="getDownVideoInfo" parameterType="com.didong.dto.VideoInfoDTO"
+            resultType="com.didong.dto.VideoInfoDTO">
+        select
+        a.user_id,a.video_title,a.video_id,a.video_url,a.one_fps,a.upload_time,
+        b.machine_chk_status,b.person_chk_status,b.video_up_down_status upDownStatus
+        from tb_video a,tb_video_chk b
+        <where>
+            a.del_flag= 0
+            AND b.video_id=a.video_id
+            AND b.video_up_down_status = 1
+            <if test="infoDto.userId != null ">
+                AND a.user_id = #{infoDto.userId}
+            </if>
+            <if test="infoDto.startTime != null ">
+                AND a.upload_time &gt;= #{infoDto.startTime}
+            </if>
+            <if test="infoDto.endTime != null ">
+                AND a.upload_time &lt;= #{infoDto.endTime}
+            </if>
+            ORDER BY a.create_time DESC
+        </where>
+    </select>
+
+
+    <select id="getPersonChkVideoPage" parameterType="com.didong.dto.VideoInfoDTO"
+            resultType="com.didong.dto.VideoInfoDTO">
+        select
+        a.user_id,a.video_title,a.video_id,a.video_url,a.one_fps,a.upload_time,
+        b.machine_chk_status,b.person_chk_status,b.video_up_down_status upDownStatus
+        from tb_video a,tb_video_chk b
+        <where>
+            a.del_flag= 0
+            AND b.video_id=a.video_id
+            AND b.person_chk_status!= null
+            <if test="infoDto.userId != null ">
+                AND a.user_id = #{infoDto.userId}
+            </if>
+            <if test="infoDto.startTime != null ">
+                AND a.upload_time &gt;= #{infoDto.startTime}
+            </if>
+            <if test="infoDto.endTime != null ">
+                AND a.upload_time &lt;= #{infoDto.endTime}
+            </if>
+            ORDER BY a.create_time DESC
+        </where>
+
+    </select>
+
 </mapper>

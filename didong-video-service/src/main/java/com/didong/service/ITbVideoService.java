@@ -21,7 +21,7 @@ public interface ITbVideoService {
 
     Response saveVideoback(TbVideo video, Integer personChkStatus, Integer videoUpDownStatus, String nickName);
 
-    IPage<VideoInfoDTO>  getVideoInfo(VideoInfoDTO videoInfoDTO, Page<VideoInfoDTO> page);
+    IPage<VideoInfoDTO> getVideoInfo(VideoInfoDTO videoInfoDTO, Page<VideoInfoDTO> page);
 
     IPage<TbVideo> selectPageVideos(Page page);
 
@@ -30,5 +30,9 @@ public interface ITbVideoService {
     IPage<TbVideo> selectAllByPageAndCondition(TbVideo video,Page<TbVideo> page);
 
     ResultData saveVideo(TbVideo tbVideo) ;
+
+    IPage<VideoInfoDTO> getDownVideoInfo(VideoInfoDTO videoInfoDTO, Page<VideoInfoDTO> page);
+
+    IPage<VideoInfoDTO> getPersonChkVideoPage(VideoInfoDTO videoInfoDTO, Page<VideoInfoDTO> page);
 
 }

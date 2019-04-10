@@ -29,5 +29,5 @@ public interface ITbVideoChkService {
 
     TbVideoChk getChkVideoInfoByVideoId(String videoId);
 
-    Response chkVideo(long videoId, Integer chkVal);
+    Response chkVideo(long videoId, Integer chkVal,long backUserId);
 }

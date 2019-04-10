@@ -129,4 +129,18 @@ public class TbVideoController {
         return null;
     }
 
+    @RequestMapping("/getDownVideoInfo")
+    public IPage<VideoInfoDTO> getDownVideoInfo(@RequestBody VideoInfoDTO videoInfoDTO){
+        Page<VideoInfoDTO> page = new Page(videoInfoDTO.getPageIndex(), videoInfoDTO.getPageSize());
+        IPage<VideoInfoDTO>  ipage=iTbVideoService.getDownVideoInfo(videoInfoDTO, page);
+        return ipage;
+    }
+
+    @RequestMapping("/getPersonChkVideoPage")
+    public IPage<VideoInfoDTO> getPersonChkVideoPage(@RequestBody VideoInfoDTO videoInfoDTO){
+        Page<VideoInfoDTO> page = new Page(videoInfoDTO.getPageIndex(), videoInfoDTO.getPageSize());
+        IPage<VideoInfoDTO>  ipage=iTbVideoService.getPersonChkVideoPage(videoInfoDTO, page);
+        return ipage;
+    }
+
 }

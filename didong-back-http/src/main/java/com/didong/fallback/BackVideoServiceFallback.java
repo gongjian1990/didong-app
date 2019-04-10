@@ -1,5 +1,6 @@
 package com.didong.fallback;
 
+import com.alibaba.fastjson.JSONObject;
 import com.didong.dto.VideoInfoDTO;
 import com.didong.service.BackVideoService;
 import org.springframework.stereotype.Component;
@@ -31,5 +32,16 @@ public class BackVideoServiceFallback implements BackVideoService {
     @Override
     public Response backChkVideo(Map map) {
         return Response.success(new ResultData(500,"视频审核失败",null));
+    }
+
+    @Override
+    public String getDownVideoInfo(VideoInfoDTO videoInfoDTO) {
+        return JSONObject.toJSONString(Response.success(new ResultData(500,"获取视频失败",null)));
+    }
+
+    @Override
+    public String getPersonChkVideoPage(VideoInfoDTO videoInfoDTO) {
+        return JSONObject.toJSONString(Response.success(new ResultData(500,"获取人工审核视频列表失败",null)));
+
     }
 }

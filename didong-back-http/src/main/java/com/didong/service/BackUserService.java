@@ -6,6 +6,9 @@ import com.didong.httpEntity.TbUserInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import pojo.Response;
+
+import java.util.Map;
 
 /**
  * @program: didong-app
@@ -18,5 +21,8 @@ public interface BackUserService {
 
     @RequestMapping(method = RequestMethod.POST,value = "userController/getUserInfo")
     TbUserInfo getUserInfo(VideoInfoDTO videoInfoDTO);
+
+    @RequestMapping(value = "/userController/backLogin",method = RequestMethod.POST)
+    Response backLogin(Map map);
 
 }

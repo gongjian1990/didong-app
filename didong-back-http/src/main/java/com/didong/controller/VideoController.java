@@ -199,6 +199,10 @@ public class VideoController {
                 video.setLatitude(Double.parseDouble(value.toString()));
             }else if("videoType".equals(key)){
                 video.setVideoType(value.toString());
+            }else if("userId".equals(key)){
+                video.setUserId(Long.getLong(value.toString()));
+            }else if("owner".equals(key)){
+                video.setOwner(Integer.parseInt(value.toString()));
             }
         }
 
@@ -219,11 +223,137 @@ public class VideoController {
      * @return
      */
     @RequestMapping("/chkVideo")
-    public Response chkVideo(String videoId,Integer chkVal){
+    public Response chkVideo(Long backUserId, String videoId,Integer chkVal){
         Map map = new HashMap();
         map.put("vidoeId",videoId);
         map.put("chkVal",chkVal);
+        map.put("backUserId",backUserId);
         return backVideoService.backChkVideo(map);
+    }
+
+
+    /**
+     * 获取下架视频列表
+     * @param videoInfoDTO
+     * @return
+     */
+    @RequestMapping("/getDownVideoByPage")
+    public String getDownVideoByPage(@RequestBody VideoInfoDTO videoInfoDTO){
+        if(videoInfoDTO.getPageIndex()==null){
+            videoInfoDTO.setPageIndex(1);
+        }
+        if(videoInfoDTO.getPageSize()==null){
+            videoInfoDTO.setPageSize(10);
+        }
+
+        // 有客户信息
+        if (StringUtils.hasText(videoInfoDTO.getNickName())
+                || null != videoInfoDTO.getUserId()
+                || StringUtils.hasText(videoInfoDTO.getUserPhone())){
+            //传用户属性
+            TbUserInfo userInfo = backUserService.getUserInfo(videoInfoDTO);
+            videoInfoDTO.setUserId(userInfo.getUserId());
+
+            //获取用户视频信息
+            String result = backVideoService.getDownVideoInfo(videoInfoDTO);
+            JSONObject jsonObject=JSONObject.parseObject(result);
+            IPage<VideoInfoDTO> VideoInfoDTOiPage=JSONObject.toJavaObject(jsonObject,IPage.class);
+            List<VideoInfoDTO> list = JSON.parseArray(jsonObject.getString("records"), VideoInfoDTO.class);
+            for (VideoInfoDTO infoDTO : list) {
+                infoDTO.setNickName(userInfo.getNickName());
+                infoDTO.setAvatar(userInfo.getAvatar());
+                infoDTO.setUserPhone(userInfo.getUserPhone());
+            }
+            JSONObject resultJson = new JSONObject();
+            resultJson.put("totalPages", VideoInfoDTOiPage.getPages());
+            resultJson.put("totalElements", VideoInfoDTOiPage.getTotal());
+            resultJson.put("list", JSONArray.toJSON(list));
+            resultJson.put("pageIndex", videoInfoDTO.getPageIndex());
+            resultJson.put("pageSize", videoInfoDTO.getPageSize());
+            return JSON.toJSONString(Response.success(new ResultData(200, "查询成功", resultJson)));
+
+        } else {
+            //不传用户属性
+            String result = backVideoService.getDownVideoInfo(videoInfoDTO);
+            JSONObject jsonObject=JSONObject.parseObject(result);
+            IPage<VideoInfoDTO> VideoInfoDTOiPage=JSONObject.toJavaObject(jsonObject,IPage.class);
+            List<VideoInfoDTO> list = JSON.parseArray(jsonObject.getString("records"), VideoInfoDTO.class);
+            for (VideoInfoDTO infoDTO : list) {
+                TbUserInfo userInfo = backUserService.getUserInfo(infoDTO);
+                infoDTO.setNickName(userInfo.getNickName());
+                infoDTO.setAvatar(userInfo.getAvatar());
+                infoDTO.setUserPhone(userInfo.getUserPhone());
+            }
+            JSONObject resultJson = new JSONObject();
+            resultJson.put("totalPages", VideoInfoDTOiPage.getPages());
+            resultJson.put("totalElements", VideoInfoDTOiPage.getTotal());
+            resultJson.put("list", JSONArray.toJSON(list));
+            resultJson.put("pageIndex", videoInfoDTO.getPageIndex());
+            resultJson.put("pageSize", videoInfoDTO.getPageSize());
+            return JSON.toJSONString(Response.success(new ResultData(200, "查询成功", resultJson)));
+        }
+    }
+
+    /**
+     * 获取人工审核列表
+     * @param videoInfoDTO
+     * @return
+     */
+    @RequestMapping("/getPersonChkVideoPage")
+    public String getPersonChkVideoPage(@RequestBody VideoInfoDTO videoInfoDTO){
+        if(videoInfoDTO.getPageIndex()==null){
+            videoInfoDTO.setPageIndex(1);
+        }
+        if(videoInfoDTO.getPageSize()==null){
+            videoInfoDTO.setPageSize(10);
+        }
+
+        // 有客户信息
+        if (StringUtils.hasText(videoInfoDTO.getNickName())
+                || null != videoInfoDTO.getUserId()
+                || StringUtils.hasText(videoInfoDTO.getUserPhone())){
+            //传用户属性
+            TbUserInfo userInfo = backUserService.getUserInfo(videoInfoDTO);
+            videoInfoDTO.setUserId(userInfo.getUserId());
+
+            //获取用户视频信息
+            String result = backVideoService.getPersonChkVideoPage(videoInfoDTO);
+            JSONObject jsonObject=JSONObject.parseObject(result);
+            IPage<VideoInfoDTO> VideoInfoDTOiPage=JSONObject.toJavaObject(jsonObject,IPage.class);
+            List<VideoInfoDTO> list = JSON.parseArray(jsonObject.getString("records"), VideoInfoDTO.class);
+            for (VideoInfoDTO infoDTO : list) {
+                infoDTO.setNickName(userInfo.getNickName());
+                infoDTO.setAvatar(userInfo.getAvatar());
+                infoDTO.setUserPhone(userInfo.getUserPhone());
+            }
+            JSONObject resultJson = new JSONObject();
+            resultJson.put("totalPages", VideoInfoDTOiPage.getPages());
+            resultJson.put("totalElements", VideoInfoDTOiPage.getTotal());
+            resultJson.put("list", JSONArray.toJSON(list));
+            resultJson.put("pageIndex", videoInfoDTO.getPageIndex());
+            resultJson.put("pageSize", videoInfoDTO.getPageSize());
+            return JSON.toJSONString(Response.success(new ResultData(200, "查询成功", resultJson)));
+
+        } else {
+            //不传用户属性
+            String result = backVideoService.getPersonChkVideoPage(videoInfoDTO);
+            JSONObject jsonObject=JSONObject.parseObject(result);
+            IPage<VideoInfoDTO> VideoInfoDTOiPage=JSONObject.toJavaObject(jsonObject,IPage.class);
+            List<VideoInfoDTO> list = JSON.parseArray(jsonObject.getString("records"), VideoInfoDTO.class);
+            for (VideoInfoDTO infoDTO : list) {
+                TbUserInfo userInfo = backUserService.getUserInfo(infoDTO);
+                infoDTO.setNickName(userInfo.getNickName());
+                infoDTO.setAvatar(userInfo.getAvatar());
+                infoDTO.setUserPhone(userInfo.getUserPhone());
+            }
+            JSONObject resultJson = new JSONObject();
+            resultJson.put("totalPages", VideoInfoDTOiPage.getPages());
+            resultJson.put("totalElements", VideoInfoDTOiPage.getTotal());
+            resultJson.put("list", JSONArray.toJSON(list));
+            resultJson.put("pageIndex", videoInfoDTO.getPageIndex());
+            resultJson.put("pageSize", videoInfoDTO.getPageSize());
+            return JSON.toJSONString(Response.success(new ResultData(200, "查询成功", resultJson)));
+        }
     }
 
 }

@@ -27,4 +27,8 @@ public interface TbVideoMapper extends BaseMapper<TbVideo> {
 
     IPage<VideoInfoDTO> selectByVideoInfoDTO(Page<VideoInfoDTO> page, @Param(value = "infoDto")VideoInfoDTO videoInfoDTO);
 
+    IPage<VideoInfoDTO> getDownVideoInfo(Page<VideoInfoDTO> page, @Param(value = "infoDto")VideoInfoDTO videoInfoDTO);
+
+    IPage<VideoInfoDTO> getPersonChkVideoPage(Page<VideoInfoDTO> page, @Param(value = "infoDto")VideoInfoDTO videoInfoDTO);
+
 }
