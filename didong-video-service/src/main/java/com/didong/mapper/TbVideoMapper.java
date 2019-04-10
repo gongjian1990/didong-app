@@ -3,10 +3,12 @@ package com.didong.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.didong.dto.VideoInfoAppDTO;
 import com.didong.dto.VideoInfoDTO;
 import com.didong.serviceEntity.TbVideo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,5 +32,7 @@ public interface TbVideoMapper extends BaseMapper<TbVideo> {
     IPage<VideoInfoDTO> getDownVideoInfo(Page<VideoInfoDTO> page, @Param(value = "infoDto")VideoInfoDTO videoInfoDTO);
 
     IPage<VideoInfoDTO> getPersonChkVideoPage(Page<VideoInfoDTO> page, @Param(value = "infoDto")VideoInfoDTO videoInfoDTO);
+
+    IPage<VideoInfoAppDTO> getNewestVideo(Page<VideoInfoAppDTO> page, @Param(value="queryTime")Date queryTime);
 
 }

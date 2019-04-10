@@ -2,10 +2,13 @@ package com.didong.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.didong.dto.VideoInfoAppDTO;
 import com.didong.dto.VideoInfoDTO;
 import com.didong.serviceEntity.TbVideo;
 import pojo.Response;
 import pojo.ResultData;
+
+import java.util.Date;
 
 /**
  * <p>
@@ -34,5 +37,7 @@ public interface ITbVideoService {
     IPage<VideoInfoDTO> getDownVideoInfo(VideoInfoDTO videoInfoDTO, Page<VideoInfoDTO> page);
 
     IPage<VideoInfoDTO> getPersonChkVideoPage(VideoInfoDTO videoInfoDTO, Page<VideoInfoDTO> page);
+
+    IPage<VideoInfoAppDTO> getNewestVideo(Long userId, Page<VideoInfoAppDTO> page, Date queryTime) ;
 
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import pojo.Response;
 import pojo.ResultData;
 
+import java.util.Date;
 import java.util.Map;
 
 @Component
@@ -19,7 +20,7 @@ public class VideoServiceFallback implements VideoService {
 
     @Override
     public Response saveVideoback(TbVideo video) {
-        return Response.success(new ResultData(500,"保存视频失败",null));
+        return Response.success(new ResultData(500, "保存视频失败", null));
     }
 
     @Override
@@ -29,7 +30,7 @@ public class VideoServiceFallback implements VideoService {
 
     @Override
     public Response selectAllByPage20Videos(String pageNum) {
-        return Response.success(new ResultData(500,"加载视频列表失败",null));
+        return Response.success(new ResultData(500, "加载视频列表失败", null));
     }
 
     @Override
@@ -39,6 +40,13 @@ public class VideoServiceFallback implements VideoService {
 
     @Override
     public Response backSaveVideo(Map map) {
-        return Response.success(new ResultData(500,"上传视频失败",null));
+        return Response.success(new ResultData(500, "上传视频失败", null));
     }
+
+    @Override
+    public String getNewestVideo(Long userId, Integer pageIndex, Integer pageSize, Date queryTime) {
+        return null;
+    }
+
+
 }
