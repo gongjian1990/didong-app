@@ -30,4 +30,7 @@ public interface VideoService {
     @RequestMapping("video/saveVideoback")
     Response backSaveVideo(Map map);
 
+    @RequestMapping("video/selectAllByPageAndCondition")
+    Response getNewestVideo(TbVideo video);
+
 }

@@ -1,6 +1,7 @@
 package com.didong.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.didong.enums.UnifiedApiMethod;
 import com.didong.httpEntity.TbVideo;
 import com.didong.service.VideoService;
 import com.didong.util.AliStsUtil;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import pojo.Response;
 import pojo.ResultData;
+
+import javax.validation.constraints.NotBlank;
 
 @RestController
 @RequestMapping("/video")
@@ -29,10 +32,39 @@ public class VideoController {
      * @return
      */
     @RequestMapping("/getVideoInfo")
-    public String getVideoInfo(String userId,String method) {
+    public String getVideoInfo(@NotBlank(message = "用户ID") @RequestParam("userPhone") Long userId,
+                               @NotBlank(message = "视频类型") @RequestParam("userPhone") String method,
+                               @NotBlank(message = "当前页码") @RequestParam("userPhone") Integer pageIndex,
+                               @NotBlank(message = "分页页数") @RequestParam("userPhone") Integer pageSize) {
+        if (UnifiedApiMethod.RECOMMEND.equals(method)) {
+            return recommend(userId,pageIndex,pageSize);
+        } else if (UnifiedApiMethod.FOLLOW.equals(method)) {
+            return follow(userId,pageIndex,pageSize);
+        } else if (UnifiedApiMethod.NEARBY.equals(method)) {
+            return nearby(userId,pageIndex,pageSize);
+        } else if (UnifiedApiMethod.NEWEST.equals(method)) {
+            return newest(userId,pageIndex,pageSize);
+        } else {
+            return JSON.toJSONString(Response.success(new ResultData(500, "暂不支持的类型", null)));
+        }
+    }
 
+    public String recommend(Long userId,Integer pageIndex,Integer pageSize){
         return null;
     }
+
+    public String follow(Long userId,Integer pageIndex,Integer pageSize){
+        return null;
+    }
+
+    public String nearby(Long userId,Integer pageIndex,Integer pageSize){
+        return null;
+    }
+
+    public String newest(Long userId,Integer pageIndex,Integer pageSize){
+        return null;
+    }
+
 
     /**
      * 视频上传 app端
