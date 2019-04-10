@@ -52,7 +52,7 @@ public class queryAliVideoCheckResult {
     }
 
     /**
-     * 查询视频审核结果
+     * 查询音频审核结果
      *
      * @param task
      * @param tbChkVideo
@@ -84,15 +84,17 @@ public class queryAliVideoCheckResult {
                                 jsonArray.add(sceneObject);
                             }
                             //获取音频检测结果
-                            for (Object audioResult : audioResults) {
-                                JSONObject audioObject = new JSONObject();
-                                String scene = ((JSONObject) audioResult).getString("scene");
-                                String suggestion = ((JSONObject) audioResult).getString("suggestion");
-                                String label = ((JSONObject) audioResult).getString("label");
-                                audioObject.put("scene", scene);
-                                audioObject.put("suggestion", suggestion);
-                                audioObject.put("label", label);
-                                jsonArray.add(audioObject);
+                            if(null!=audioResults){
+                                for (Object audioResult : audioResults) {
+                                    JSONObject audioObject = new JSONObject();
+                                    String scene = ((JSONObject) audioResult).getString("scene");
+                                    String suggestion = ((JSONObject) audioResult).getString("suggestion");
+                                    String label = ((JSONObject) audioResult).getString("label");
+                                    audioObject.put("scene", scene);
+                                    audioObject.put("suggestion", suggestion);
+                                    audioObject.put("label", label);
+                                    jsonArray.add(audioObject);
+                                }
                             }
                             tbChkVideo.setMachineChkStatus(1);
                             tbChkVideo.setLastUpdateTime(new Date());
