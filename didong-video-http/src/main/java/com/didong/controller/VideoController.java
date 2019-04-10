@@ -1,6 +1,9 @@
 package com.didong.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.didong.dto.VideoInfoAppDTO;
+import com.didong.dto.VideoInfoDTO;
 import com.didong.enums.UnifiedApiMethod;
 import com.didong.httpEntity.TbVideo;
 import com.didong.service.VideoService;
@@ -14,12 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 import pojo.Response;
 import pojo.ResultData;
 
-import javax.validation.constraints.NotBlank;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -34,43 +37,64 @@ public class VideoController {
     @Value("${upload-folder}")
     private String UPLOAD_FOLDER;
 
+    public static void main(String[] args) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = format.parse("2019-04-01 17:16:12");
+        System.out.println(date);
+
+    }
+
     /**
      * 获取视频信息
+     *
      * @param userId
      * @return
      */
     @RequestMapping("/getVideoInfo")
-    public String getVideoInfo(@NotBlank(message = "用户ID") @RequestParam("userPhone") Long userId,
-                               @NotBlank(message = "视频类型") @RequestParam("userPhone") String method,
-                               @NotBlank(message = "当前页码") @RequestParam("userPhone") Integer pageIndex,
-                               @NotBlank(message = "分页页数") @RequestParam("userPhone") Integer pageSize) {
-        if (UnifiedApiMethod.RECOMMEND.equals(method)) {
-            return recommend(userId,pageIndex,pageSize);
-        } else if (UnifiedApiMethod.FOLLOW.equals(method)) {
-            return follow(userId,pageIndex,pageSize);
-        } else if (UnifiedApiMethod.NEARBY.equals(method)) {
-            return nearby(userId,pageIndex,pageSize);
-        } else if (UnifiedApiMethod.NEWEST.equals(method)) {
-            return newest(userId,pageIndex,pageSize);
+    public String getVideoInfo(@RequestParam(name = "userId", required = false) Long userId,
+                               @RequestParam(name = "method", required = false) String method,
+                               @RequestParam(name = "queryTime", required = false) String queryTime,
+                               @RequestParam(name = "pageIndex", required = false, defaultValue = "1") Integer pageIndex,
+                               @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        Date time = null;
+        try {
+            time = format.parse(queryTime);
+        } catch (ParseException e) {
+            log.error("[获取视频信息]--时间格式转换异常,e{}", e);
+            return JSON.toJSONString(Response.Tx400error("时间格式转换异常"));
+        }
+        UnifiedApiMethod apiMethod = UnifiedApiMethod.valueOf(method);
+        if (UnifiedApiMethod.RECOMMEND.equals(apiMethod)) {
+            return recommend(userId, pageIndex, pageSize, time);
+        } else if (UnifiedApiMethod.FOLLOW.equals(apiMethod)) {
+            return follow(userId, pageIndex, pageSize, time);
+        } else if (UnifiedApiMethod.NEARBY.equals(apiMethod)) {
+            return nearby(userId, pageIndex, pageSize, time);
+        } else if (UnifiedApiMethod.NEWEST.equals(apiMethod)) {
+            return newest(userId, pageIndex, pageSize, time);
         } else {
             return JSON.toJSONString(Response.success(new ResultData(500, "暂不支持的类型", null)));
         }
     }
 
-    public String recommend(Long userId,Integer pageIndex,Integer pageSize){
+    public String recommend(Long userId, Integer pageIndex, Integer pageSize, Date queryTime) {
         return null;
     }
 
-    public String follow(Long userId,Integer pageIndex,Integer pageSize){
+    public String follow(Long userId, Integer pageIndex, Integer pageSize, Date queryTime) {
         return null;
     }
 
-    public String nearby(Long userId,Integer pageIndex,Integer pageSize){
+    public String nearby(Long userId, Integer pageIndex, Integer pageSize, Date queryTime) {
         return null;
     }
 
-    public String newest(Long userId,Integer pageIndex,Integer pageSize){
-        return null;
+    public String newest(Long userId, Integer pageIndex, Integer pageSize, Date queryTime) {
+
+        return videoService.getNewestVideo(userId, pageIndex, pageSize, queryTime);
     }
 
 
@@ -162,17 +186,17 @@ public class VideoController {
 
                 String url = null;
 
-                if(type==1){
-                    url= VodUploadUtil.uploadImageLocalFile(UPLOAD_FOLDER + originalFilename,"cover");
-                }else {
-                    url = VodUploadUtil.uploadVideo(System.currentTimeMillis()+"", UPLOAD_FOLDER + originalFilename);
+                if (type == 1) {
+                    url = VodUploadUtil.uploadImageLocalFile(UPLOAD_FOLDER + originalFilename, "cover");
+                } else {
+                    url = VodUploadUtil.uploadVideo(System.currentTimeMillis() + "", UPLOAD_FOLDER + originalFilename);
                 }
 
-                if(url==null){
+                if (url == null) {
                     return Response.error(new ResultData(500, "服务器异常", null));
                 }
 
-                System.out.println("url:"+url);
+                System.out.println("url:" + url);
 
                 return Response.success(new ResultData(200, "success", url));
 
@@ -186,14 +210,15 @@ public class VideoController {
 
     /**
      * 检查文件类型
+     *
      * @param fileName
      * @return 0：视频，1：图片
      */
-    public int chkFileType(String fileName){
+    public int chkFileType(String fileName) {
 
-        String suffix = fileName.substring(fileName.lastIndexOf(".")+1, fileName.length());
+        String suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
 
-        if("bmp dib rle emf gif jpg jpeg jpe jif pcx dcx pic png tga tif tiffxif wmf jfif".contains(suffix)){
+        if ("bmp dib rle emf gif jpg jpeg jpe jif pcx dcx pic png tga tif tiffxif wmf jfif".contains(suffix)) {
             return 1;
         }
         return 0;
@@ -203,7 +228,7 @@ public class VideoController {
      * 后台上传视频保存
      */
     @RequestMapping("/backSaveVideo")
-    public Response backSaveVideo(@RequestBody LinkedHashMap<String,Object> data){
+    public Response backSaveVideo(@RequestBody LinkedHashMap<String, Object> data) {
 
         Set<Map.Entry<String, Object>> entries = data.entrySet();
         Iterator<Map.Entry<String, Object>> iterator = entries.iterator();
@@ -213,37 +238,37 @@ public class VideoController {
         Integer videoType = null;
         String nickName = null;
 
-        while (iterator.hasNext()){
-            Map.Entry<String, Object> next  = iterator.next();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> next = iterator.next();
             String key = next.getKey();
-            String value = (String)next.getValue();
-            if("personChkStatus".equals(key)){
+            String value = (String) next.getValue();
+            if ("personChkStatus".equals(key)) {
                 personChkStatus = Integer.parseInt(value);
-            }else if("videoUpDownStatus".equals(key)){
+            } else if ("videoUpDownStatus".equals(key)) {
                 videoUpDownStatus = Integer.parseInt(value);
-            }else if("owner".equals(key)){
+            } else if ("owner".equals(key)) {
                 video.setOwner(Integer.parseInt(value));
-            }else if("nickName".equals(key)){
+            } else if ("nickName".equals(key)) {
                 nickName = value;
-            }else if("oneFps".equals(key)){
+            } else if ("oneFps".equals(key)) {
                 video.setOneFps(value);
-            }else if("videoUrl".equals(key)){
+            } else if ("videoUrl".equals(key)) {
                 video.setVideoUrl(value);
-            }else if("longitude".equals(key)){
+            } else if ("longitude".equals(key)) {
                 video.setLongitude(Double.parseDouble(value));
-            }else if("latitude".equals(key)){
+            } else if ("latitude".equals(key)) {
                 video.setLatitude(Double.parseDouble(value));
-            }else if("videoType".equals(key)){
+            } else if ("videoType".equals(key)) {
                 video.setVideoType(value);
             }
         }
 
-        Map<String,Object> map = new HashMap<>();
-        map.put("tbVideo",video);
-        map.put("personChkStatus",personChkStatus);
-        map.put("videoUpDownStatus",videoUpDownStatus);
-        map.put("nickName",nickName);
-        map.put("videoType",videoType);
+        Map<String, Object> map = new HashMap<>();
+        map.put("tbVideo", video);
+        map.put("personChkStatus", personChkStatus);
+        map.put("videoUpDownStatus", videoUpDownStatus);
+        map.put("nickName", nickName);
+        map.put("videoType", videoType);
         Response response = videoService.backSaveVideo(map);
         return response;
     }

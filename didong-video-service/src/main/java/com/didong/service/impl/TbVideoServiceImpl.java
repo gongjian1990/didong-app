@@ -5,11 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.didong.dto.VideoInfoAppDTO;
 import com.didong.dto.VideoInfoDTO;
 import com.didong.mapper.TbVideoMapper;
-import com.didong.service.ITbVideoChkService;
-import com.didong.service.ITbVideoReportService;
-import com.didong.service.ITbVideoService;
+import com.didong.service.*;
 import com.didong.serviceEntity.TbVideo;
 import com.didong.serviceEntity.TbVideoChk;
 import com.didong.serviceEntity.TbVideoReport;
@@ -42,12 +41,21 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
     @Autowired
     ITbVideoReportService iTbVideoReportService;
 
+    @Autowired
+    ITbVideoCommentService iTbVideoCommentService;
+
+    @Autowired
+    ITbVideoThumbsUpService iTbVideoThumbsUpService;
+
+    @Autowired
+    ITbVideoShareService iTbVideoShareService;
+
     @Override
-    public ResultData saveVideo(TbVideo tbVideo){
-        ResultData resultData=new ResultData();
+    public ResultData saveVideo(TbVideo tbVideo) {
+        ResultData resultData = new ResultData();
         //视频内容存储
-        TbVideoChk tbChkVideo=new TbVideoChk();
-        long video_id=IdGeneratorUtil.generateId();
+        TbVideoChk tbChkVideo = new TbVideoChk();
+        long video_id = IdGeneratorUtil.generateId();
         tbVideo.setVideoId(video_id);
         tbVideo.setUploadTime(new Date());
         baseMapper.insert(tbVideo);
@@ -57,15 +65,15 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
         tbChkVideo.setVideoId(video_id);
         tbChkVideo.setCreateTime(new Date());
         tbChkVideo.setLastUpdateTime(new Date());
-        int i=tbVideoChkService.saveChkVideo(tbChkVideo);
+        int i = tbVideoChkService.saveChkVideo(tbChkVideo);
 
         //获取视频url
-        String videoUrl=VodUploadUtil.getVideoUrlByVideoId(tbVideo.getThirdVideoId());
+        String videoUrl = VodUploadUtil.getVideoUrlByVideoId(tbVideo.getThirdVideoId());
 
         //视频检测（异步）
-        String result= null;
+        String result = null;
         try {
-            result = tbVideoChkService.checkVideo(videoUrl,tbChkVideo);
+            result = tbVideoChkService.checkVideo(videoUrl, tbChkVideo);
         } catch (UnsupportedEncodingException e) {
             resultData.setCode(500);
             resultData.setMessage("编码格式不支持");
@@ -73,32 +81,41 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
             resultData.setCode(500);
             resultData.setMessage("通讯异常");
         }
-        if("success".equals(result)){
+        if ("success".equals(result)) {
             resultData.setCode(200);
             resultData.setMessage("视频上传成功");
-        }else {
+        } else {
             resultData.setCode(500);
             resultData.setMessage("视频上传成功,审核异常");
         }
         return resultData;
     }
 
+    @Override
+    public IPage<VideoInfoAppDTO> getNewestVideo(Long userId, Page<VideoInfoAppDTO> page, Date queryTime) {
+        IPage<VideoInfoAppDTO> iPage= baseMapper.getNewestVideo(page,queryTime);
+        for(VideoInfoAppDTO videoInfoAppDTO:iPage.getRecords()){
+            iTbVideoCommentService.getVideoCommentNumByVideoId(videoInfoAppDTO.getVideoId());
+        }
+        return iPage;
+    }
+
 
     @Override
     public Response saveVideoback(TbVideo video, Integer personChkStatus, Integer videoUpDownStatus, String nickName) {
-        ResultData resultData=new ResultData();
+        ResultData resultData = new ResultData();
         //视频检测（异步）
-        String result= "success";
+        String result = "success";
         try {
 
             // 保存视频
-            long videoId=IdGeneratorUtil.generateId();
+            long videoId = IdGeneratorUtil.generateId();
             video.setVideoId(videoId);
             video.setUploadTime(new Date());
             baseMapper.insert(video);
 
             //视频审核存储
-            TbVideoChk tbChkVideo=new TbVideoChk();
+            TbVideoChk tbChkVideo = new TbVideoChk();
             tbChkVideo.setUserId(video.getUserId());
             tbChkVideo.setVideoId(videoId);
             tbChkVideo.setCreateTime(new Date());
@@ -107,12 +124,12 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
             tbChkVideo.setVideoUpDownStatus(videoUpDownStatus);
             tbVideoChkService.saveChkVideo(tbChkVideo);
 
-            result = tbVideoChkService.checkVideo(video.getVideoUrl(),tbChkVideo);
+            result = tbVideoChkService.checkVideo(video.getVideoUrl(), tbChkVideo);
 
-            if("success".equals(result)){
+            if ("success".equals(result)) {
                 resultData.setCode(200);
                 resultData.setMessage("视频上传成功");
-            }else {
+            } else {
                 resultData.setCode(500);
                 resultData.setMessage("视频上传成功,审核异常");
             }
@@ -125,6 +142,7 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
 
     /**
      * 获取视频信息
+     *
      * @param videoInfoDTO
      * @param page
      * @return
@@ -132,24 +150,24 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
     @Override
     public IPage<VideoInfoDTO> getVideoInfo(VideoInfoDTO videoInfoDTO, Page<VideoInfoDTO> page) {
         //视频详细信息获取
-        IPage<VideoInfoDTO> list=baseMapper.selectByVideoInfoDTO(page,videoInfoDTO);
-        for(VideoInfoDTO infoDTO:list.getRecords()){
+        IPage<VideoInfoDTO> list = baseMapper.selectByVideoInfoDTO(page, videoInfoDTO);
+        for (VideoInfoDTO infoDTO : list.getRecords()) {
             //视频审核信息获取
-            if(0==infoDTO.getMachineChkStatus()){
+            if (0 == infoDTO.getMachineChkStatus()) {
                 infoDTO.setCheckStatus(0);
-            }else {
+            } else {
                 infoDTO.setCheckStatus(1);
             }
-            if(1==infoDTO.getMachineChkStatus()&&1==infoDTO.getPersonChkStatus()){
+            if (1 == infoDTO.getMachineChkStatus() && 1 == infoDTO.getPersonChkStatus()) {
                 infoDTO.setCheckStatus(2);
-            }else if(1==infoDTO.getMachineChkStatus()&&2==infoDTO.getPersonChkStatus()){
+            } else if (1 == infoDTO.getMachineChkStatus() && 2 == infoDTO.getPersonChkStatus()) {
                 infoDTO.setCheckStatus(3);
             }
             //视频举报信息获取
-            TbVideoReport tbVideoReport=iTbVideoReportService.getVideoReportByVideoId(infoDTO.getVideoId());
-            if(tbVideoReport!=null){
+            TbVideoReport tbVideoReport = iTbVideoReportService.getVideoReportByVideoId(infoDTO.getVideoId());
+            if (tbVideoReport != null) {
                 infoDTO.setHandelStatus(tbVideoReport.getReportStatus());
-            }else {
+            } else {
                 infoDTO.setHandelStatus(0);
             }
         }
@@ -174,9 +192,9 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
     }
 
     @Override
-    public IPage<TbVideo> selectAllByPageAndCondition(TbVideo video,Page<TbVideo> page) {
+    public IPage<TbVideo> selectAllByPageAndCondition(TbVideo video, Page<TbVideo> page) {
 
-        List<TbVideo> list = baseMapper.selectAllByPageAndCondition(page,video);
+        List<TbVideo> list = baseMapper.selectAllByPageAndCondition(page, video);
         return null;
     }
 
@@ -184,7 +202,6 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
 //    public IPage<TbVideo> selectAllByPageAndCondition(TbVideo video, Page page) {
 //        return baseMapper.selectAllByPageAndCondition(video,page);
 //    }
-
 
 
 }

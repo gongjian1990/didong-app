@@ -50,4 +50,15 @@
         </where>
     </select>
 
+    <select id="getNewestVideo" parameterType="java.util.Date"
+            resultType="com.didong.dto.VideoInfoAppDTO">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_video a
+        <where>
+            a.del_flag= 0 and a.create_time>= #{queryTime}
+            ORDER BY a.create_time DESC
+        </where>
+    </select>
+
 </mapper>

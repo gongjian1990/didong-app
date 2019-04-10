@@ -2,10 +2,14 @@ package com.didong.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.didong.dto.VideoInfoAppDTO;
 import com.didong.dto.VideoInfoDTO;
 import com.didong.serviceEntity.TbVideo;
+import org.springframework.web.bind.annotation.RequestBody;
 import pojo.Response;
 import pojo.ResultData;
+
+import java.util.Date;
 
 /**
  * <p>
@@ -30,5 +34,7 @@ public interface ITbVideoService {
     IPage<TbVideo> selectAllByPageAndCondition(TbVideo video,Page<TbVideo> page);
 
     ResultData saveVideo(TbVideo tbVideo) ;
+
+    IPage<VideoInfoAppDTO> getNewestVideo(Long userId, Page<VideoInfoAppDTO> page, Date queryTime) ;
 
 }

@@ -3,6 +3,7 @@ package com.didong.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.didong.dto.VideoInfoAppDTO;
 import com.didong.dto.VideoInfoDTO;
 import com.didong.service.ITbVideoService;
 import com.didong.serviceEntity.TbVideo;
@@ -10,15 +11,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import pojo.Response;
 import pojo.ResultData;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -44,15 +43,35 @@ public class TbVideoController {
         return "world";
     }
 
+    /**
+     * 获取最新视频
+     *
+     * @param userId
+     * @param pageIndex
+     * @param pageSize
+     * @param queryTime
+     * @return
+     */
+    @RequestMapping("/getNewestVideo")
+    public IPage<VideoInfoAppDTO> getNewestVideo(@RequestParam Long userId,
+                                 @RequestParam Integer pageIndex,
+                                 @RequestParam Integer pageSize,
+                                 @RequestParam Date queryTime) {
+        Page<VideoInfoAppDTO> page = new Page(pageIndex, pageSize);
+        iTbVideoService.getNewestVideo(userId, page, queryTime);
+        return null;
+    }
+
+
     @RequestMapping("/getVideoInfo")
     public IPage<VideoInfoDTO> getVideoInfo(@RequestBody VideoInfoDTO videoInfoDTO) {
         Page<VideoInfoDTO> page = new Page(videoInfoDTO.getPageIndex(), videoInfoDTO.getPageSize());
-        IPage<VideoInfoDTO>  ipage=iTbVideoService.getVideoInfo(videoInfoDTO, page);
+        IPage<VideoInfoDTO> ipage = iTbVideoService.getVideoInfo(videoInfoDTO, page);
         return ipage;
     }
 
     @RequestMapping("/saveVideo")
-    public ResultData saveVideo(@RequestBody TbVideo tbVideo)  {
+    public ResultData saveVideo(@RequestBody TbVideo tbVideo) {
         return iTbVideoService.saveVideo(tbVideo);
     }
 
@@ -83,7 +102,7 @@ public class TbVideoController {
             }
         }
 
-        Response response= iTbVideoService.saveVideoback(video, personChkStatus, videoUpDownStatus, nickName);
+        Response response = iTbVideoService.saveVideoback(video, personChkStatus, videoUpDownStatus, nickName);
         return response;
     }
 
