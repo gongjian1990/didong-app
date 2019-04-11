@@ -12,5 +12,8 @@ import com.didong.serviceEntity.TbVideoReport;
  * @since 2019-03-30
  */
 public interface ITbVideoReportService {
+
     TbVideoReport getVideoReportByVideoId(String video_id);
+
+
 }

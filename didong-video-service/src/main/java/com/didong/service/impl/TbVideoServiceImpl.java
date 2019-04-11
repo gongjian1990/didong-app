@@ -115,7 +115,6 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
         return iPage;
     }
 
-
     @Override
     public Response saveVideoback(TbVideo video, Integer personChkStatus, Integer videoUpDownStatus, String nickName) {
         ResultData resultData = new ResultData();
@@ -190,6 +189,67 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
     }
 
     @Override
+    public IPage<VideoInfoDTO> getDownVideoInfo(VideoInfoDTO videoInfoDTO, Page<VideoInfoDTO> page) {
+
+        IPage<VideoInfoDTO> list= baseMapper.getDownVideoInfo(page, videoInfoDTO);
+        for(VideoInfoDTO infoDTO:list.getRecords()){
+            //视频审核信息获取
+            if(0==infoDTO.getMachineChkStatus()){
+                infoDTO.setCheckStatus(0);
+            }else {
+                infoDTO.setCheckStatus(1);
+            }
+            if(1==infoDTO.getMachineChkStatus()&&1==infoDTO.getPersonChkStatus()){
+                infoDTO.setCheckStatus(2);
+            }else if(1==infoDTO.getMachineChkStatus()&&2==infoDTO.getPersonChkStatus()){
+                infoDTO.setCheckStatus(3);
+            }
+            //视频举报信息获取
+            TbVideoReport tbVideoReport=iTbVideoReportService.getVideoReportByVideoId(infoDTO.getVideoId());
+            if(tbVideoReport!=null){
+                infoDTO.setHandelStatus(tbVideoReport.getReportStatus());
+            }else {
+                infoDTO.setHandelStatus(0);
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public IPage<VideoInfoDTO> getPersonChkVideoPage(VideoInfoDTO videoInfoDTO, Page<VideoInfoDTO> page) {
+
+        IPage<VideoInfoDTO> list= baseMapper.getPersonChkVideoPage(page, videoInfoDTO);
+        for(VideoInfoDTO infoDTO:list.getRecords()){
+            //视频审核信息获取
+            if(0==infoDTO.getMachineChkStatus()){
+                infoDTO.setCheckStatus(0);
+            }else {
+                infoDTO.setCheckStatus(1);
+            }
+            if(1==infoDTO.getMachineChkStatus()&&1==infoDTO.getPersonChkStatus()){
+                infoDTO.setCheckStatus(2);
+            }else if(1==infoDTO.getMachineChkStatus()&&2==infoDTO.getPersonChkStatus()){
+                infoDTO.setCheckStatus(3);
+            }
+            //视频举报信息获取
+            TbVideoReport tbVideoReport=iTbVideoReportService.getVideoReportByVideoId(infoDTO.getVideoId());
+            if(tbVideoReport!=null){
+                infoDTO.setHandelStatus(tbVideoReport.getReportStatus());
+                // 获取举报人信息
+                Long reportUserId = tbVideoReport.getReportUserId();
+
+
+
+
+
+            }else {
+                infoDTO.setHandelStatus(0);
+            }
+        }
+        return list;
+    }
+
+    @Override
     public IPage<TbVideo> selectPageVideos(Page page) {
 
         //Page<TbVideo> pageRequest = new Page(StringUtils.hasText(pageNum) ? Integer.valueOf(pageNum) - 1 : 0, 10);
@@ -212,11 +272,5 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
         List<TbVideo> list = baseMapper.selectAllByPageAndCondition(page, video);
         return null;
     }
-
-//    @Override
-//    public IPage<TbVideo> selectAllByPageAndCondition(TbVideo video, Page page) {
-//        return baseMapper.selectAllByPageAndCondition(video,page);
-//    }
-
 
 }

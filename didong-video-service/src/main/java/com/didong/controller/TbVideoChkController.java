@@ -30,9 +30,10 @@ public class TbVideoChkController {
     public Response backChkVideo(@RequestBody Map map){
 
         long vidoeId = (long) map.get("vidoeId");
+        long backUserId = (long) map.get("backUserId");
         Integer chkVal = (Integer) map.get("chkVal");
 
-        return tbChkVideoService.chkVideo(vidoeId,chkVal);
+        return tbChkVideoService.chkVideo(vidoeId,chkVal,backUserId);
     }
 
 }

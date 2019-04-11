@@ -8,7 +8,8 @@
 
     <update id="updateVideoUpDownStatus">
         update tb_video_chk
-        set video_up_down_status =#{chkVal}
+        set video_up_down_status =#{chkVal},
+        chk_person =#{backUserId}
         where video_id=#{videoId}
     </update>
 

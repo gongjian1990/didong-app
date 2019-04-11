@@ -96,7 +96,7 @@ public class TbChkVideoServiceImpl extends ServiceImpl<TbVideoChkMapper, TbVideo
     }
 
     @Override
-    public Response chkVideo(long videoId, Integer chkVal) {
+    public Response chkVideo(long videoId, Integer chkVal,long backUserId) {
 
         try {
             TbVideoChk tbVideoChk = baseMapper.selectOne(new QueryWrapper<TbVideoChk>().eq("video_id", videoId));
@@ -108,10 +108,11 @@ public class TbChkVideoServiceImpl extends ServiceImpl<TbVideoChkMapper, TbVideo
                 tbVideoChk.setVideoId(videoId);
                 tbVideoChk.setVideoUpDownStatus(chkVal);
                 tbVideoChk.setPersonChkTime(new Date());
+                tbVideoChk.setChkPerson(backUserId);
                 baseMapper.insert(tbVideoChk);
             }
 
-            baseMapper.updateVideoUpDownStatus(videoId, chkVal);
+            baseMapper.updateVideoUpDownStatus(videoId, chkVal,backUserId);
         } catch (Exception e) {
             e.printStackTrace();
             return Response.error(new ResultData(500,"审核出错",null));
