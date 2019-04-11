@@ -11,6 +11,7 @@ import com.didong.mapper.TbVideoMapper;
 import com.didong.service.*;
 import com.didong.serviceEntity.TbVideo;
 import com.didong.serviceEntity.TbVideoChk;
+import com.didong.serviceEntity.TbVideoComment;
 import com.didong.serviceEntity.TbVideoReport;
 import com.didong.util.IdGeneratorUtil;
 import com.didong.util.VodUploadUtil;
@@ -93,9 +94,23 @@ public class TbVideoServiceImpl extends ServiceImpl<TbVideoMapper, TbVideo> impl
 
     @Override
     public IPage<VideoInfoAppDTO> getNewestVideo(Long userId, Page<VideoInfoAppDTO> page, Date queryTime) {
-        IPage<VideoInfoAppDTO> iPage= baseMapper.getNewestVideo(page,queryTime);
-        for(VideoInfoAppDTO videoInfoAppDTO:iPage.getRecords()){
-            iTbVideoCommentService.getVideoCommentNumByVideoId(videoInfoAppDTO.getVideoId());
+        IPage<VideoInfoAppDTO> iPage = baseMapper.getNewestVideo(page, queryTime);
+        for (VideoInfoAppDTO videoInfoAppDTO : iPage.getRecords()) {
+            //获取视频评论内容以及评论数量
+            List<TbVideoComment> list = iTbVideoCommentService.getVideoCommentNumByVideoId(videoInfoAppDTO.getVideoId());
+            if(null!=list&list.size()>0){
+                videoInfoAppDTO.setCommentList(list);
+                videoInfoAppDTO.setCommentNums(Long.valueOf(list.size()));
+            }else {
+                videoInfoAppDTO.setCommentNums(0L);
+            }
+            //获取视频点赞数量
+            Long thumbsUpNums=iTbVideoThumbsUpService.getVideoThumbsUpNumByVideoId(videoInfoAppDTO.getVideoId());
+            videoInfoAppDTO.setThumbUpNums(thumbsUpNums);
+
+            //获取视频分享数量
+            Long shareNums=iTbVideoShareService.getVideoShareNumByVideoId(videoInfoAppDTO.getVideoId());
+            videoInfoAppDTO.setShareNums(shareNums);
         }
         return iPage;
     }

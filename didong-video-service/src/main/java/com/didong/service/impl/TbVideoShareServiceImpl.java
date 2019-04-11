@@ -1,5 +1,6 @@
 package com.didong.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.didong.mapper.TbVideoShareMapper;
 import com.didong.service.ITbVideoShareService;
@@ -17,4 +18,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class TbVideoShareServiceImpl extends ServiceImpl<TbVideoShareMapper, TbVideoShare> implements ITbVideoShareService {
 
+    @Override
+    public Long getVideoShareNumByVideoId(Long videoId) {
+       return Long.valueOf(baseMapper.selectCount(new QueryWrapper<TbVideoShare>().eq("video_id",videoId)));
+    }
 }

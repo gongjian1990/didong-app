@@ -11,4 +11,6 @@ package com.didong.service;
  */
 public interface ITbVideoThumbsUpService {
 
+    Long getVideoThumbsUpNumByVideoId(Long userId);
+
 }
